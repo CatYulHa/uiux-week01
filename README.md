@@ -11,5 +11,5 @@
 ## 제출 주소
 
 - GitHub Repository URL: 'https://github.com/CatYulHa/uiux-week01'
-- Published Website URL: `https://본인아이디.github.io/uiux-week01/`
+- Published Website URL: 'https://catyulha.github.io/uiux-week01/'
 
