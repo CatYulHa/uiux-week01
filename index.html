@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="UI/UX 프로그래밍 1주차 학습 페이지. UI와 UX, 웹의 기본 구조">
+  <title>하율 · UI/UX 첫 번째 페이지</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">본문 바로가기</a>
+  <header class="header wrap">
+    <a class="logo" href="#">HY<span>↗</span></a>
+    <nav aria-label="주요 메뉴"><a href="#concept">UI & UX</a><a href="#structure">웹의 구조</a><a href="#practice">인터랙션 실습</a></nav>
+    <span class="week-label">WEEK 01</span>
+  </header>
+
+  <main id="main">
+    <section class="hero wrap" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="dot"></span> MY FIRST WEB EXPERIENCE</p>
+        <h1 id="hero-title">작은 화면에서 시작하는<br><span>좋은 사용자 경험.</span></h1>
+        <p class="hero-description">UI/UX 프로그래밍의 이해와<br>웹 인터페이스의 기본 구조</p>
+        <a class="primary-link" href="#concept">첫 번째 학습 살펴보기 <span>↘</span></a>
+        <div class="student"><span class="avatar">하</span><div><strong>하율</strong><span>12406050 · UI/UX 프로그래밍 · 1주차</span></div></div>
+      </div>
+      <div class="hero-art" aria-label="구조, 스타일, 상호작용으로 구성되는 웹 화면 일러스트">
+        <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+        <span class="floating-label label-html">&lt;/&gt; HTML</span>
+        <div class="browser-card"><div class="browser-top"><span></span><span></span><span></span><small>my-first-page.html</small></div><div class="browser-body"><span class="mini-tag">HELLO, WEB!</span><h2>생각을 화면으로,<br>화면을 경험으로.</h2><div class="mock-line"></div><div class="mock-line short"></div><div class="mock-cards"><span>구조<br><b>HTML</b></span><span>표현<br><b>CSS</b></span><span>동작<br><b>JS</b></span></div><div class="mock-button">Let's create <span>↗</span></div></div></div>
+        <span class="floating-label label-css">✳ CSS</span><span class="floating-label label-js">{ } JavaScript</span><span class="art-caption">IDEA → INTERFACE → EXPERIENCE</span>
+      </div>
+    </section>
+
+    <div class="topic-strip"><div class="wrap"><span>01 / UNDERSTAND</span><p>보이는 요소를 이해하고, 사용하는 경험을 생각합니다.</p><span aria-hidden="true">✳</span></div></div>
+
+    <section class="section wrap" id="concept">
+      <div class="section-heading"><div><p class="eyebrow">01 — THE BASICS</p><h2>UI와 UX, 무엇이 다를까요?</h2></div><p>화면의 요소와 사용자의 경험은 서로 연결되어 있습니다.</p></div>
+      <div class="concept-grid">
+        <article class="concept-card ui-card"><div class="card-top"><span>보이고, 누르는 것</span><span class="symbol">↗</span></div><h3>UI<span>User Interface</span></h3><p>사용자가 직접 보고 조작하는 화면 요소입니다.<br>버튼, 메뉴, 입력창, 색상과 배치가 포함됩니다.</p><div class="ui-example"><span class="example-button">확인하기</span><span class="example-input">이름을 입력하세요</span></div><p class="card-note">예시 · 눈에 잘 띄고 의미가 분명한 버튼</p></article>
+        <article class="concept-card ux-card"><div class="card-top"><span>이해하고, 느끼는 것</span><span class="symbol">✳</span></div><h3>UX<span>User Experience</span></h3><p>서비스를 이용하는 과정에서 형성되는 전체 경험입니다.<br>이해하기 쉬운 흐름, 편리함과 만족감을 포함합니다.</p><div class="ux-example"><span>정보 찾기</span><i>→</i><span>행동하기</span><i>→</i><span>목표 달성 ✓</span></div><p class="card-note">예시 · 원하는 정보를 쉽게 찾고 작업을 끝내는 경험</p></article>
+      </div>
+      <div class="principles"><strong>좋은 경험을 만드는 5가지 기준</strong><div><span>01 명확성</span><span>02 일관성</span><span>03 피드백</span><span>04 효율성</span><span>05 접근성</span></div></div>
+    </section>
+
+    <section class="structure-section" id="structure"><div class="section wrap">
+      <div class="section-heading"><div><p class="eyebrow">02 — HOW THE WEB WORKS</p><h2>하나의 웹페이지, 세 가지 역할.</h2></div><p>탭을 선택해 웹을 구성하는 기술을 알아보세요.</p></div>
+      <div class="tech-layout"><div class="tech-tabs" role="tablist" aria-label="웹 기술" aria-orientation="vertical">
+        <button id="tab-html" role="tab" aria-selected="true" aria-controls="tech-panel" data-tech="html"><span class="tech-number">01</span><span><strong>HTML</strong><small>내용과 구조</small></span><span class="tab-arrow">↗</span></button>
+        <button id="tab-css" role="tab" aria-selected="false" aria-controls="tech-panel" tabindex="-1" data-tech="css"><span class="tech-number">02</span><span><strong>CSS</strong><small>디자인과 표현</small></span><span class="tab-arrow">↗</span></button>
+        <button id="tab-js" role="tab" aria-selected="false" aria-controls="tech-panel" tabindex="-1" data-tech="js"><span class="tech-number">03</span><span><strong>JavaScript</strong><small>동작과 상호작용</small></span><span class="tab-arrow">↗</span></button>
+      </div><div class="code-panel" id="tech-panel" role="tabpanel" aria-labelledby="tab-html" tabindex="0"><div class="code-top"><span id="code-filename">index.html</span><span class="code-dots">● ● ●</span></div><div class="code-content"><p id="tech-description">HTML은 제목, 문단, 버튼처럼 화면에 들어갈 내용과 구조를 만듭니다.</p><pre><code id="code-example">&lt;main&gt;
+  &lt;h1&gt;안녕하세요, 하율입니다.&lt;/h1&gt;
+  &lt;p&gt;나의 첫 웹페이지입니다.&lt;/p&gt;
+  &lt;button&gt;눌러보세요&lt;/button&gt;
+&lt;/main&gt;</code></pre><span class="code-note" id="tech-analogy">건물에 비유하면, 공간을 이루는 뼈대입니다.</span></div></div></div>
+    </div></section>
+
+    <section class="section wrap practice-section" id="practice"><div><p class="eyebrow">03 — TRY IT YOURSELF</p><h2>클릭 한 번에도,<br>피드백이 필요해요.</h2><p class="practice-description">버튼을 누르면 숫자와 메시지가 바뀝니다.<br>사용자의 행동에 화면이 반응하는 작은 UX를 체험해 보세요.</p><div class="feedback-flow"><span>사용자 행동</span> → <span>시스템 반응</span> → <span>결과 확인</span></div></div><div class="interaction-card"><span class="live-label"><span class="dot"></span> INTERACTION LAB</span><div class="counter"><strong id="click-count">0</strong><span>번의 인터랙션</span></div><p id="feedback-message" role="status" aria-live="polite">아래 버튼으로 첫 인터랙션을 만들어 보세요.</p><button class="interaction-button" id="experience-button">클릭해 보세요 <span>↗</span></button><button class="reset-button" id="reset-button" disabled>처음으로 되돌리기</button></div></section>
+
+    <section class="wrap reflection"><span class="reflection-icon" aria-hidden="true">✳</span><div><p class="eyebrow">WEEK 01 · LEARNING NOTE</p><h2>화면을 만드는 일은, 사용자를 생각하는 일.</h2><p>HTML로 구조를 만들고, CSS로 보기 좋게 표현하고, JavaScript로 반응을 넣습니다.</p></div><span class="reflection-week">01</span></section>
+  </main>
+  <footer class="wrap footer"><a class="logo" href="#">HY<span>↗</span></a><span>UI/UX 프로그래밍 1주차 과제</span></p><a class="back-top" href="#">맨 위로 ↑</a></footer>
+</body>
+</html>
