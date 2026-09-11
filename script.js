@@ -3,6 +3,7 @@ const goalForm = document.getElementById('goal-form');
 const goalInput = document.getElementById('learning-goal');
 const goalFeedback = document.getElementById('goal-feedback');
 const goalNext = document.getElementById('goal-next');
+document.getElementById('goal-submit').disabled = false;
 
 goalInput.addEventListener('input', () => {
   goalInput.setCustomValidity('');
