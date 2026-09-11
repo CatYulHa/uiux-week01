@@ -2,9 +2,9 @@
 const examples = {
   html: {
     filename: 'index.html',
-    description: 'HTML은 서비스 이름, 소개 문단, 이동 링크에 의미와 구조를 부여합니다.',
-    code: '<section id="about">\n  <h2>서비스 소개</h2>\n  <p>작은 실습으로 웹을 배웁니다.</p>\n  <a href="#features">주요 기능 보기</a>\n</section>',
-    analogy: '이 페이지에서 찾기 · 서비스 소개와 주요 기능 영역'
+    description: 'HTML은 제목, 문단, 이동 링크에 의미와 구조를 부여합니다.',
+    code: '<section id="about">\n  <h2>과제 소개</h2>\n  <p>HTML 구조와 내부 이동 실습</p>\n  <a href="#features">실습 내용 보기</a>\n</section>',
+    analogy: '이 페이지에서 찾기 · 과제 소개와 실습 내용 영역'
   },
   css: {
     filename: 'style.css',

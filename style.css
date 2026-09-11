@@ -5,7 +5,7 @@
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 .skip-link:not(:focus){clip-path:inset(50%);width:1px;height:1px;overflow:hidden;white-space:nowrap;padding:0}
 
-/* 2주차: 1주차의 색상과 컴포넌트를 이어 사용하는 서비스 소개 페이지. */
+/* 2주차: 1주차의 색상과 컴포넌트를 이어 사용하는 과제 페이지. */
 .feature-demos { margin-top: 30px; }
 .demo-intro, .demo-description { font-size: 13px; color: var(--muted); }
 .demo-description { margin: 0 0 24px; }
