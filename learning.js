@@ -2,21 +2,21 @@
 const examples = {
   html: {
     filename: 'index.html',
-    description: 'HTML은 제목, 문단, 버튼처럼 화면에 들어갈 내용과 구조를 만듭니다.',
-    code: '<main>\n  <h1>안녕하세요, 하율입니다.</h1>\n  <p>나의 첫 웹페이지입니다.</p>\n  <button>눌러보세요</button>\n</main>',
-    analogy: '건물에 비유하면, 공간을 이루는 뼈대입니다.'
+    description: 'HTML은 서비스 이름, 소개 문단, 이동 링크에 의미와 구조를 부여합니다.',
+    code: '<section id="about">\n  <h2>서비스 소개</h2>\n  <p>작은 실습으로 웹을 배웁니다.</p>\n  <a href="#features">주요 기능 보기</a>\n</section>',
+    analogy: '이 페이지에서 찾기 · 서비스 소개와 주요 기능 영역'
   },
   css: {
     filename: 'style.css',
     description: 'CSS는 색상, 글꼴, 여백과 배치를 정해 화면을 읽기 좋게 표현합니다.',
     code: 'button {\n  background-color: #315d47;\n  color: white;\n  padding: 12px 20px;\n  border-radius: 6px;\n}',
-    analogy: '건물에 비유하면, 공간을 꾸미는 인테리어입니다.'
+    analogy: '이 페이지에서 찾기 · 녹색 버튼과 카드의 여백'
   },
   js: {
     filename: 'script.js',
     description: 'JavaScript는 클릭과 입력에 반응하고 화면의 내용과 상태를 바꿉니다.',
     code: "const button = document.querySelector('button');\n\nbutton.addEventListener('click', () => {\n  button.textContent = '클릭이 전달되었어요!';\n});",
-    analogy: '건물에 비유하면, 버튼을 누를 때 문이 열리는 기능입니다.'
+    analogy: '이 페이지에서 찾기 · 클릭에 반응하는 숫자와 학습 목표 메시지'
   }
 };
 

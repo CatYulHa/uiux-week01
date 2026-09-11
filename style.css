@@ -6,6 +6,30 @@
 .skip-link:not(:focus){clip-path:inset(50%);width:1px;height:1px;overflow:hidden;white-space:nowrap;padding:0}
 
 /* 2주차: 1주차의 색상과 컴포넌트를 이어 사용하는 서비스 소개 페이지. */
+.feature-demos { margin-top: 30px; }
+.demo-intro, .demo-description { font-size: 13px; color: var(--muted); }
+.demo-description { margin: 0 0 24px; }
+.feature-demo { margin-top: 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--paper); }
+.feature-demo summary { display: flex; align-items: center; gap: 16px; padding: 20px 24px; cursor: pointer; list-style: none; font-size: 15px; font-weight: 700; }
+.feature-demo summary::-webkit-details-marker { display: none; }
+.feature-demo summary:focus-visible { outline: 3px solid #718e31; outline-offset: 3px; border-radius: 10px; }
+.feature-demo[open] summary { border-bottom: 1px solid var(--line); }
+.demo-number { font-size: 11px; font-weight: 500; color: var(--muted); }
+.demo-toggle { margin-left: auto; font-size: 24px; font-weight: 400; line-height: 1; }
+.feature-demo[open] .demo-toggle { transform: rotate(45deg); }
+.demo-content { padding: 28px; }
+.demo-next { margin-top: 24px; }
+.demo-practice { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
+.demo-practice h3 { font-size: 23px; line-height: 1.5; margin: 0; }
+@media (max-width: 720px) {
+  .feature-demo summary { padding: 17px 16px; gap: 10px; font-size: 13px; }
+  .demo-content { padding: 20px 14px; }
+  .demo-content .concept-card { padding: 20px 16px; }
+  .demo-practice { grid-template-columns: 1fr; gap: 24px; }
+  .demo-content .ux-example { flex-wrap: wrap; }
+  .demo-content .feedback-flow { flex-wrap: wrap; gap: 8px; }
+  .demo-content .interaction-card { padding: 24px 18px; }
+}
 [hidden] { display: none !important; }
 .service-logo { font-size: 24px; letter-spacing: -1.5px; white-space: nowrap; }
 .hero-tagline { display: block; margin-top: 10px; }
