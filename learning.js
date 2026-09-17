@@ -9,8 +9,8 @@ const examples = {
   css: {
     filename: 'style.css',
     description: 'CSS는 색상, 글꼴, 여백과 배치를 정해 화면을 읽기 좋게 표현합니다.',
-    code: 'button {\n  background-color: #315d47;\n  color: white;\n  padding: 12px 20px;\n  border-radius: 6px;\n}',
-    analogy: '이 페이지에서 찾기 · 녹색 버튼과 카드의 여백'
+    code: '.feature-grid {\n  display: flex;\n  gap: 20px;\n}\n.feature-card {\n  flex: 1;\n  padding: 30px 26px;\n  border: 1px solid #dce3d8;\n}',
+    analogy: '이 페이지에서 찾기 · 한 줄로 놓인 실습 내용 카드와 카드 사이 간격'
   },
   js: {
     filename: 'script.js',
