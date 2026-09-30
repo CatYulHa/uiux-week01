@@ -14,9 +14,9 @@ const examples = {
   },
   js: {
     filename: 'script.js',
-    description: 'JavaScript는 클릭과 입력에 반응하고 화면의 내용과 상태를 바꿉니다.',
-    code: "const button = document.querySelector('button');\n\nbutton.addEventListener('click', () => {\n  button.textContent = '클릭이 전달되었어요!';\n});",
-    analogy: '이 페이지에서 찾기 · 클릭에 반응하는 숫자와 학습 목표 메시지'
+    description: 'JavaScript는 클릭과 입력, 폼 제출에 반응하고 조건에 따라 화면의 내용과 상태를 바꿉니다.',
+    code: "const goalForm = document.querySelector('#goal-form');\n\nfunction handleGoalSubmit(event) {\n  event.preventDefault();\n  const goal = goalInput.value.trim();\n\n  if (goal === '') {\n    showGoalMessage('학습 목표를 입력해 주세요.', 'error');\n  } else {\n    showGoalMessage('목표를 정했습니다.', 'success');\n    updateGoalButton(true);\n  }\n}\n\ngoalForm.addEventListener('submit', handleGoalSubmit);",
+    analogy: '이 페이지에서 찾기 · 학습 목표를 제출하면 바뀌는 안내 문구와 버튼 상태'
   }
 };
 

@@ -3,11 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="하율의 UI/UX 프로그래밍 4주차 과제. 3주차 페이지에 viewport, 유동 너비, CSS Grid, 768px 미디어 쿼리를 적용해 화면 크기에 맞게 레이아웃을 재구성했습니다.">
-  <title>UI/UX 프로그래밍 · 4주차 과제</title>
+  <meta name="description" content="하율의 UI/UX 프로그래밍 5주차 과제. 4주차 반응형 페이지에 JavaScript를 연결해 학습 목표 제출에 따라 안내 문구, 색, 버튼 상태가 바뀌도록 했습니다.">
+  <title>UI/UX 프로그래밍 · 5주차 과제</title>
   <link rel="stylesheet" href="style.css">
-  <script src="script.js" defer></script>
-  <script src="learning.js" defer></script>
 </head>
 <body class="service-page">
   <!-- UX 기획
@@ -20,6 +18,8 @@
     4주차 반응형: 내용과 읽는 순서는 그대로 두고 화면 너비에 따라 배치만 바꾼다.
     viewport로 기기 너비를 기준으로 삼고, 콘텐츠와 이미지는 width·max-width로 화면 안에 맞춘다.
     실습 내용 카드는 Grid로 열 수를 자동 조정하고, 768px 이하에서는 메뉴·카드·입력 폼을 한 열로 바꾼다.
+    5주차 JavaScript: 학습 목표 폼의 제출을 감지해 처리 함수를 실행한다.
+    입력값이 비었거나 5자 미만이면 오류 문구를, 목표를 정하면 완료 문구·색·버튼 상태를 함께 보여준다.
   -->
   <a class="skip-link" href="#main">본문 바로가기</a>
   <header id="top">
@@ -31,36 +31,36 @@
         <a href="#steps">실습 순서</a>
         <a href="#start">학습 목표</a>
       </nav>
-      <span class="week-label">WEEK 04</span>
+      <span class="week-label">WEEK 05</span>
     </div>
     <div class="hero wrap">
       <div class="hero-copy">
-        <p class="eyebrow"><span class="dot"></span> UI/UX PROGRAMMING · WEEK 04</p>
-        <h1>UI/UX 프로그래밍<span class="hero-tagline">4주차 과제</span></h1>
-        <p class="hero-description">화면 크기에 따라 레이아웃 재구성하기</p>
+        <p class="eyebrow"><span class="dot"></span> UI/UX PROGRAMMING · WEEK 05</p>
+        <h1>UI/UX 프로그래밍<span class="hero-tagline">5주차 과제</span></h1>
+        <p class="hero-description">JavaScript로 사용자 행동에 반응하기</p>
         <a class="primary-link" href="#start">오늘의 학습 목표 정하기 <span aria-hidden="true">↗</span></a>
         <a class="secondary-link" href="#about">과제 내용 보기 ↓</a>
-        <div class="student"><span class="avatar" aria-hidden="true">하</span><div><strong>하율</strong><span>12406050 · UI/UX 프로그래밍 · 4주차</span></div></div>
+        <div class="student"><span class="avatar" aria-hidden="true">하</span><div><strong>하율</strong><span>12406050 · UI/UX 프로그래밍 · 5주차</span></div></div>
       </div>
       <div class="hero-art" aria-hidden="true">
         <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
-        <span class="floating-label label-html">&lt;/&gt; viewport</span>
+        <span class="floating-label label-html">&lt;/&gt; submit 이벤트</span>
         <div class="browser-card">
-          <div class="browser-top"><span></span><span></span><span></span><small>style.css</small></div>
-          <div class="browser-body"><span class="mini-tag">WEEK 04 · RESPONSIVE</span><p class="art-title">화면 크기에 맞춰<br>레이아웃 바꾸기</p><div class="mock-line"></div><div class="mock-line short"></div><div class="mock-cards"><span>구조<br><b>HTML</b></span><span>표현<br><b>CSS</b></span><span>동작<br><b>JS</b></span></div><div class="mock-button">실습 내용 <span>↗</span></div></div>
+          <div class="browser-top"><span></span><span></span><span></span><small>script.js</small></div>
+          <div class="browser-body"><span class="mini-tag">WEEK 05 · JAVASCRIPT</span><p class="art-title">사용자 행동에<br>반응하기</p><div class="mock-line"></div><div class="mock-line short"></div><div class="mock-cards"><span>구조<br><b>HTML</b></span><span>표현<br><b>CSS</b></span><span>동작<br><b>JS</b></span></div><div class="mock-button">실습 내용 <span>↗</span></div></div>
         </div>
-        <span class="floating-label label-css">✳ Grid 자동 열</span><span class="floating-label label-js">{ } 768px 전환</span><span class="art-caption">HTML · CSS · JAVASCRIPT</span>
+        <span class="floating-label label-css">✳ if · else</span><span class="floating-label label-js">{ } 상태 피드백</span><span class="art-caption">HTML · CSS · JAVASCRIPT</span>
       </div>
     </div>
   </header>
 
   <main id="main">
-    <div class="topic-strip"><div class="wrap"><span>WEEK 04 / RESPONSIVE</span><p>viewport · width · max-width · Grid · 768px 미디어 쿼리</p><span aria-hidden="true">✳</span></div></div>
+    <div class="topic-strip"><div class="wrap"><span>WEEK 05 / JAVASCRIPT</span><p>변수 · 자료형 · 조건문 · 함수 · submit 이벤트 · DOM</p><span aria-hidden="true">✳</span></div></div>
 
     <section class="section wrap" id="about" aria-labelledby="about-title">
-      <div class="section-heading"><div><p class="eyebrow">01 — ASSIGNMENT</p><h2 id="about-title">과제 소개</h2></div><p>3주차 페이지에 반응형 CSS를 적용한 4주차 실습입니다.</p></div>
+      <div class="section-heading"><div><p class="eyebrow">01 — ASSIGNMENT</p><h2 id="about-title">과제 소개</h2></div><p>4주차 페이지에 JavaScript를 연결한 5주차 실습입니다.</p></div>
       <div class="about-layout">
-        <div class="about-copy"><h3>화면 크기에 따라 레이아웃 재구성하기</h3><p>3주차에 완성한 HTML과 style.css를 그대로 이어서 사용하고, 콘텐츠 영역과 이미지에 width와 max-width를 적용해 화면 너비에 맞게 줄어들도록 했습니다.</p><p>실습 내용 카드는 CSS Grid로 열 수를 자동 조정하고, 768px 이하에서는 메뉴와 카드, 학습 목표 입력창과 버튼을 한 열로 배치했습니다.</p><a class="text-link" href="#features">실습 내용 보기 <span aria-hidden="true">↓</span></a></div>
+        <div class="about-copy"><h3>JavaScript로 사용자 행동에 반응하기</h3><p>4주차에 완성한 반응형 페이지에 script.js를 연결하고, 학습 목표 폼을 제출하면 처리 함수가 실행되도록 했습니다.</p><p>변수와 조건문으로 입력값과 목표 설정 상태를 판단하고, 결과에 따라 안내 문구와 색, 버튼 상태가 함께 바뀝니다.</p><a class="text-link" href="#features">실습 내용 보기 <span aria-hidden="true">↓</span></a></div>
         <figure class="service-preview">
           <img src="assets/images/service.png" alt="UI의 눈에 보이는 버튼과 UX의 목표 정하기·개념 확인·직접 체험 흐름을 나란히 비교하는 예제 화면" width="1118" height="527" loading="lazy">
           <figcaption><span class="dot" aria-hidden="true"></span>실습 화면 · UI와 UX 비교하기</figcaption>
@@ -128,13 +128,13 @@
     </section>
 
     <section class="wrap reflection start-section" id="start" aria-labelledby="start-title">
-      <div class="start-copy"><p class="eyebrow">04 — INPUT</p><h2 id="start-title">학습 목표</h2><p>학습 목표를 한 줄로 작성하는 입력 실습입니다.</p><a class="text-link" href="#concept">개념 예제 보기 <span aria-hidden="true">↑</span></a></div>
+      <div class="start-copy"><p class="eyebrow">04 — INPUT</p><h2 id="start-title">학습 목표</h2><p>학습 목표를 입력하고 버튼을 누르면 처리 결과를 안내 문구와 버튼 상태로 알려줍니다.</p><a class="text-link" href="#concept">개념 예제 보기 <span aria-hidden="true">↑</span></a></div>
       <!-- 최소 입력 영역: label과 연결된 입력 한 칸과 제출 버튼. -->
-      <form id="goal-form" action="#start" method="get">
+      <form id="goal-form" action="#start" method="get" novalidate>
         <label for="learning-goal">오늘의 학습 목표 <span>(필수)</span></label>
-        <input type="text" id="learning-goal" name="goal" placeholder="예: UI와 UX의 차이 이해하기" maxlength="80" required aria-describedby="goal-help">
-        <button class="interaction-button" id="goal-submit" type="submit" disabled>학습 목표 정하기 <span aria-hidden="true">↗</span></button>
-        <p id="goal-help">80자 이내로 적어주세요. 목표는 이 화면에서만 확인하며, 새로고침하면 지워집니다.</p>
+        <input type="text" id="learning-goal" name="goal" placeholder="예: UI와 UX의 차이 이해하기" minlength="5" maxlength="80" required aria-describedby="goal-help goal-feedback">
+        <button class="interaction-button" id="goal-submit" type="submit" disabled><span class="button-label">학습 목표 정하기</span> <span class="button-icon" aria-hidden="true">↗</span></button>
+        <p id="goal-help">5자 이상 80자 이내로 적어주세요. 목표는 이 화면에서만 확인하며, 새로고침하면 지워집니다.</p>
         <p id="goal-feedback" role="status" aria-live="polite"></p>
         <a class="text-link" id="goal-next" href="#concept" hidden>목표를 정했어요. 개념 예제 펼치기 ↑</a>
         <noscript><p>목표 확인 기능은 JavaScript가 필요합니다. 실습 예제를 펼쳐 내용을 읽을 수 있습니다.</p></noscript>
@@ -142,6 +142,10 @@
     </section>
   </main>
 
-  <footer class="wrap footer"><a class="logo service-logo" href="#top">HY<span>↗</span></a><p>UI/UX 프로그래밍 · 4주차 과제<br><span>하율 · 12406050 · 2026</span></p><a class="back-top" href="#top">맨 위로 ↑</a></footer>
+  <footer class="wrap footer"><a class="logo service-logo" href="#top">HY<span>↗</span></a><p>UI/UX 프로그래밍 · 5주차 과제<br><span>하율 · 12406050 · 2026</span></p><a class="back-top" href="#top">맨 위로 ↑</a></footer>
+
+  <!-- 5주차: 화면 요소를 모두 만든 뒤 JavaScript를 실행하도록 body 끝에서 불러옵니다. -->
+  <script src="script.js"></script>
+  <script src="learning.js"></script>
 </body>
 </html>
