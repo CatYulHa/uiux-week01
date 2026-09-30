@@ -1,9 +1,10 @@
-# UI/UX · 1–4주차 학습 기록
+# UI/UX · 1–5주차 학습 기록
 
 - 수업: UI/UX 프로그래밍
 - 2주차 주제: HTML로 사용자 경험의 구조 만들기
 - 3주차 주제: CSS로 정보 위계와 레이아웃 만들기
 - 4주차 주제: 화면 크기에 따라 레이아웃 재구성하기
+- 5주차 주제: JavaScript로 사용자 행동에 반응하기
 
 ## 제출 주소
 
@@ -48,6 +49,16 @@
 - 확인: 1100px, 768px, 390px에서 가로 스크롤과 잘림 없음
 
 
+## 5주차 JavaScript
+
+- 연결: `</body>` 앞에서 `script.js`, `learning.js` 불러오기
+- 요소 선택: `querySelector`로 학습 목표 폼·입력창·버튼·결과 문구 선택
+- 함수·이벤트: `submit`에 `handleGoalSubmit`, `input`에 `handleGoalInput` 연결 / `event.preventDefault()`로 새로고침 방지
+- 변수·조건문: `const minGoalLength = 5`, `let savedGoal = ''` / `if`·`else`로 빈 입력, 5자 미만, 처음 정한 목표, 바꾼 목표 구분
+- 피드백: `textContent`로 안내 문구, `classList`로 `is-success`·`is-error` 색, `disabled`로 버튼 완료 상태 표시
+- 확인: 1100px, 768px, 390px에서 입력·제출·버튼 상태 변화 확인
+
+
 ## 파일 구성
 
 ```text
@@ -55,7 +66,7 @@ uiux-week01/
 ├── index.html                # UX 기획 주석
 ├── learn.html                # 학습실
 ├── style.css                 # 디자인·Flexbox·Grid·반응형·상태 피드백
-├── script.js                 # 학습 목표 입력
+├── script.js                 # 학습 목표 제출·조건 처리·피드백
 ├── learning.js               # 클릭·초기화
 ├── assets/images/service.png # 서비스 화면
 └── README.md                 # 소개

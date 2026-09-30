@@ -62,7 +62,7 @@
 #learning-goal:focus-visible { outline: 3px solid #718e31; outline-offset: 3px; }
 #goal-submit { flex: 1 0 auto; width: auto; align-items: center; gap: 18px; }
 #goal-help { width: 100%; color: var(--muted); font-size: 11px; margin: 0 0 7px; }
-#goal-feedback { width: 100%; margin: 0; font-size: 12px; color: var(--green); overflow-wrap: anywhere; }
+#goal-feedback { width: 100%; margin: 0; font-size: 12px; color: var(--muted); overflow-wrap: anywhere; }
 #goal-feedback:empty { display: none; }
 #goal-next { margin-top: 4px; }
 #goal-form noscript { width: 100%; }
@@ -95,6 +95,13 @@
 @media (prefers-reduced-motion: reduce) {
   .header nav a, .primary-link, .interaction-button, .feature-card, #learning-goal { transition: none; }
 }
+
+/* 5주차: 학습 목표 처리 결과를 안내 문구·색·버튼 상태로 함께 보여줍니다. */
+#goal-feedback.is-success, #goal-feedback.is-error { padding: 10px 14px; border-radius: 6px; font-weight: 500; }
+#goal-feedback.is-success { color: var(--green); background-color: #edf2e4; }
+#goal-feedback.is-error { color: #a1372b; background-color: #fbecea; }
+#learning-goal[aria-invalid="true"] { border-color: #a1372b; }
+#goal-submit.is-success:disabled { opacity: 1; background-color: #e8edde; color: var(--green); }
 
 /* 4주차: 뷰포트 너비가 768px 이하일 때 메뉴·카드·입력 폼을 한 열로 바꾸고 글자와 여백을 조정합니다.
    1~3주차의 720px 모바일 규칙도 이 조건 안으로 옮겨 전환 기준을 768px 하나로 통일했습니다. */
