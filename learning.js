@@ -15,12 +15,12 @@ const examples = {
   js: {
     filename: 'script.js',
     description: 'JavaScript는 클릭과 입력, 폼 제출에 반응하고 조건에 따라 화면의 내용과 상태를 바꿉니다.',
-    code: "const goalForm = document.querySelector('#goal-form');\n\nfunction handleGoalSubmit(event) {\n  event.preventDefault();\n  const goal = goalInput.value.trim();\n\n  if (goal === '') {\n    showGoalMessage('학습 목표를 입력해 주세요.', 'error');\n  } else {\n    showGoalMessage('목표를 정했습니다.', 'success');\n    updateGoalButton(true);\n  }\n}\n\ngoalForm.addEventListener('submit', handleGoalSubmit);",
-    analogy: '이 페이지에서 찾기 · 학습 목표를 제출하면 바뀌는 안내 문구와 버튼 상태'
+    code: "const demoTabs = document.querySelectorAll('.demo-tab');\n\nfunction handleTabClick(event) {\n  resetTabsAndPanels();\n  activateTab(event.currentTarget);\n}\n\ndemoTabs.forEach(function (tab) {\n  tab.addEventListener('click', handleTabClick);\n});",
+    analogy: '이 페이지에서 찾기 · 누르면 예제가 바뀌는 실습 내용 탭'
   }
 };
 
-const tabs = [...document.querySelectorAll('[role="tab"]')];
+const tabs = [...document.querySelectorAll('.tech-tabs [role="tab"]')];
 function selectTab(tab) {
   tabs.forEach(item => {
     const selected = item === tab;

@@ -9,14 +9,8 @@
 .feature-demos { margin-top: 30px; }
 .demo-intro, .demo-description { font-size: 13px; color: var(--muted); }
 .demo-description { margin: 0 0 24px; }
-.feature-demo { margin-top: 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--paper); }
-.feature-demo summary { display: flex; align-items: center; gap: 16px; padding: 20px 24px; cursor: pointer; list-style: none; font-size: 15px; font-weight: 700; }
-.feature-demo summary::-webkit-details-marker { display: none; }
-.feature-demo summary:focus-visible { outline: 3px solid #718e31; outline-offset: 3px; border-radius: 10px; }
-.feature-demo[open] summary { border-bottom: 1px solid var(--line); }
+.demo-panel { margin-top: 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--paper); scroll-margin-top: 110px; }
 .demo-number { font-size: 11px; font-weight: 500; color: var(--muted); }
-.demo-toggle { margin-left: auto; font-size: 24px; font-weight: 400; line-height: 1; }
-.feature-demo[open] .demo-toggle { transform: rotate(45deg); }
 .demo-content { padding: 28px; }
 .demo-next { margin-top: 24px; }
 .demo-practice { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; }
@@ -55,7 +49,7 @@
 .start-section h2 { font-size: 27px; }
 .start-copy > p:not(.eyebrow) { color: var(--muted); font-size: 13px; margin: 16px 0 22px; }
 #goal-form { display: flex; flex-wrap: wrap; gap: 10px; background: var(--paper); border: 1px solid var(--line); padding: 25px; border-radius: 9px; min-width: 0; }
-#goal-form label { display: block; width: 100%; font-weight: 700; font-size: 13px; }
+#goal-form label { display: block; font-weight: 700; font-size: 13px; }
 #goal-form label span { font-weight: 400; color: var(--muted); font-size: 11px; }
 #learning-goal { flex: 999 1 200px; min-width: 0; min-height: 46px; border: 1px solid #a5b39a; border-radius: 5px; padding: 11px 13px; color: var(--ink); background: #fff; font: inherit; font-size: 16px; }
 #learning-goal::placeholder { color: #687466; font-size: 13px; }
@@ -92,16 +86,45 @@
 #learning-goal:hover { border-color: #718e31; }
 #learning-goal:focus { border-color: var(--green); outline: 3px solid #cfe0a4; outline-offset: 2px; }
 #learning-goal:focus-visible { outline-color: #718e31; }
-@media (prefers-reduced-motion: reduce) {
-  .header nav a, .primary-link, .interaction-button, .feature-card, #learning-goal { transition: none; }
-}
 
 /* 5주차: 학습 목표 처리 결과를 안내 문구·색·버튼 상태로 함께 보여줍니다. */
 #goal-feedback.is-success, #goal-feedback.is-error { padding: 10px 14px; border-radius: 6px; font-weight: 500; }
 #goal-feedback.is-success { color: var(--green); background-color: #edf2e4; }
 #goal-feedback.is-error { color: #a1372b; background-color: #fbecea; }
 #learning-goal[aria-invalid="true"] { border-color: #a1372b; }
-#goal-submit.is-success:disabled { opacity: 1; background-color: #e8edde; color: var(--green); }
+.interaction-button.is-success:disabled { opacity: 1; background-color: #e8edde; color: var(--green); }
+
+/* 6주차: 실습 예제 탭의 기본·선택 상태 */
+.demo-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.demo-tab { flex: 1 1 200px; display: flex; align-items: center; gap: 12px; padding: 16px 20px; border: 1px solid var(--line); border-radius: 10px; background-color: var(--paper); color: var(--ink); font-size: 14px; font-weight: 700; text-align: left; transition: background-color .2s ease, border-color .2s ease, color .2s ease; }
+.demo-tab:hover { background-color: #e8edde; }
+.demo-tab.is-active { background-color: var(--green); border-color: var(--green); color: #fff; }
+.demo-tab.is-active .demo-number { color: var(--lime); }
+
+/* 6주차: 학습 목표 글자 수(input) */
+.goal-label-row { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; width: 100%; }
+#goal-count { font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; transition: color .2s ease; }
+#goal-count.is-ready { color: var(--green); font-weight: 700; }
+
+/* 6주차: 실습 순서 체크(change)와 학습 마치기(click) */
+.step-check { display: inline-flex; align-items: center; gap: 8px; margin-top: 16px; padding: 7px 12px; border: 1px solid var(--line); border-radius: 6px; background-color: #fff; color: var(--green); font-size: 13px; font-weight: 700; cursor: pointer; transition: background-color .2s ease, border-color .2s ease; }
+.step-check:hover { border-color: #b9c8a8; }
+.step-check input { width: 18px; height: 18px; margin: 0; accent-color: var(--green); cursor: pointer; }
+.steps-list li.is-done { border-top-color: var(--green); }
+.steps-list li.is-done::before { content: '✓'; background-color: var(--green); color: #fff; }
+.steps-list li.is-done .step-check { background-color: #edf2e4; border-color: #b9c8a8; }
+.steps-progress { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 14px 24px; margin-top: 34px; padding: 22px 24px; border: 1px solid var(--line); border-radius: 12px; background-color: var(--paper); transition: background-color .2s ease, border-color .2s ease; }
+.progress-track { grid-column: 1 / -1; height: 8px; border-radius: 8px; background-color: #e7ebdf; overflow: hidden; }
+#steps-bar { display: block; width: 0; height: 100%; border-radius: inherit; background-color: var(--green); transition: width .3s ease; }
+#steps-status { margin: 0; font-size: 13px; color: var(--muted); }
+#finish-button { width: auto; align-items: center; gap: 18px; }
+.steps-progress.is-ready #steps-status, .steps-progress.is-complete #steps-status { color: var(--green); font-weight: 700; }
+.steps-progress.is-complete { background-color: #edf2e4; border-color: #b9c8a8; }
+.steps-progress.is-complete #finish-button { background-color: #fff; }
+
+@media (prefers-reduced-motion: reduce) {
+  .header nav a, .primary-link, .interaction-button, .feature-card, #learning-goal, .demo-tab, .step-check, .steps-progress, #steps-bar, #goal-count { transition: none; }
+}
 
 /* 4주차: 뷰포트 너비가 768px 이하일 때 메뉴·카드·입력 폼을 한 열로 바꾸고 글자와 여백을 조정합니다.
    1~3주차의 720px 모바일 규칙도 이 조건 안으로 옮겨 전환 기준을 768px 하나로 통일했습니다. */
@@ -140,8 +163,7 @@
   .footer { padding-block: 25px; gap: 17px; }
   .eyebrow { font-size: 9px; }
 
-  /* 2주차: 펼쳐 보는 실습 예제 */
-  .feature-demo summary { padding: 17px 16px; gap: 10px; font-size: 13px; }
+  /* 2주차: 실습 예제 */
   .demo-content { padding: 20px 14px; }
   .demo-content .concept-card { padding: 20px 16px; }
   .demo-practice { grid-template-columns: 1fr; gap: 24px; }
@@ -186,4 +208,12 @@
   #goal-form { flex-direction: column; align-items: stretch; padding: 20px 16px; }
   #learning-goal, #goal-submit { flex: none; width: 100%; }
   #goal-submit { min-height: 48px; }
+
+  /* 6주차: 탭을 세로로 쌓고, 진행 상황과 버튼을 한 열로 배치합니다. */
+  .demo-tabs { flex-direction: column; }
+  .demo-tab { flex: none; width: 100%; padding: 14px 16px; font-size: 13px; }
+  .demo-panel { scroll-margin-top: 200px; }
+  .step-check { min-height: 44px; }
+  .steps-progress { grid-template-columns: 1fr; padding: 20px 16px; }
+  #finish-button { width: 100%; min-height: 48px; }
 }
