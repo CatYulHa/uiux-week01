@@ -186,6 +186,8 @@ function handleGoalInput() {
     showGoalMessage('고친 목표를 적용하려면 ‘목표 바꾸기’를 눌러 주세요.', 'none');
     updateGoalButton(false);
   }
+  // 7주차: 고친 목표를 적용하기 전에는 다음 단계 버튼을 숨깁니다.
+  if (savedGoal !== '') goalNext.hidden = goal !== savedGoal;
 }
 
 // submit·input 이벤트와 처리 함수를 연결합니다.
@@ -252,3 +254,159 @@ finishButton.addEventListener('click', handleFinishClick);
 // JavaScript가 실행되면 진행 상황 영역을 보여줍니다.
 stepsProgress.hidden = false;
 updateSteps();
+
+// 7주차: 시작 → 목표 입력 → 예제·시간 선택 → 계획 확인 → 완료로 이어지는 학습 계획 흐름입니다.
+// 1단계는 위의 학습 목표 폼을 그대로 쓰고, 계획은 서버로 보내지 않고 현재 화면에만 표시합니다.
+const planFlow = document.querySelector('#plan-flow');
+const planHead = document.querySelector('#plan-head');
+const planSteps = document.querySelectorAll('.plan-step');
+const planProgress = document.querySelector('#plan-progress');
+const planTrackItems = document.querySelectorAll('.plan-track li');
+const planStartLinks = document.querySelectorAll('[data-plan-start]');
+const planExampleField = document.querySelector('#plan-example-field');
+const planExamples = document.querySelectorAll('input[name="plan-example"]');
+const planExampleError = document.querySelector('#plan-example-error');
+const planTime = document.querySelector('#plan-time');
+const planSummaryItems = document.querySelectorAll('[data-summary]');
+const planGo = document.querySelector('#plan-go');
+const planGoLabel = planGo.querySelector('.button-label');
+
+// Array: 진행 표시에 쓰는 단계 이름. 마지막 단계의 다음 번호가 완료 화면입니다.
+const planStepNames = ['목표 입력', '예제·시간 선택', '계획 확인'];
+const planDoneStep = planStepNames.length + 1;
+// String: 다시 세울 때 되돌릴 학습 시간
+const defaultPlanTime = '20';
+// Number: 지금 보고 있는 단계. 0은 시작 전입니다.
+let currentPlanStep = 0;
+
+// data-step이 현재 단계와 같은 영역만 보여주고 진행 표시를 맞춥니다.
+function showPlanStep(step) {
+  planSteps.forEach(function (item) {
+    item.hidden = Number(item.dataset.step) !== step;
+  });
+  planTrackItems.forEach(function (item, index) {
+    item.classList.toggle('is-done', index + 1 < step);
+    item.classList.toggle('is-current', index + 1 === step);
+  });
+  currentPlanStep = step;
+  planHead.hidden = step === 0;
+  planFlow.classList.toggle('is-complete', step === planDoneStep);
+
+  if (step === planDoneStep) {
+    planProgress.textContent = `${planStepNames.length}단계 모두 완료`;
+  } else if (step > 0) {
+    planProgress.textContent = `${step} / ${planStepNames.length} · ${planStepNames[step - 1]}`;
+  }
+}
+
+// 단계를 바꾼 뒤 1단계는 입력창으로, 나머지는 그 단계의 제목으로 초점을 옮깁니다.
+function goToPlanStep(step) {
+  showPlanStep(step);
+  if (step === 1) {
+    goalInput.focus();
+  } else {
+    planFlow.querySelector(`.plan-step[data-step="${step}"] .plan-title`).focus();
+  }
+}
+
+// 고른 예제에만 선택 표시를 합니다.
+function updatePlanOptions() {
+  planExamples.forEach(function (radio) {
+    radio.closest('.plan-option').classList.toggle('is-selected', radio.checked);
+  });
+}
+
+// 예제 선택 오류 문구와 테두리를 함께 바꿉니다. 빈 문자열이면 오류를 지웁니다.
+function showExampleError(message) {
+  planExampleError.textContent = message;
+  planExampleField.classList.toggle('has-error', message !== '');
+}
+
+// 확인·완료 화면에 정한 목표와 고른 예제·시간을 채웁니다.
+function fillPlanSummary(example) {
+  const values = {
+    goal: savedGoal,
+    example: example.nextElementSibling.textContent,
+    time: planTime.options[planTime.selectedIndex].textContent
+  };
+  planSummaryItems.forEach(function (item) {
+    item.textContent = values[item.dataset.summary];
+  });
+  // 완료 화면의 버튼은 고른 예제의 탭으로 이동합니다.
+  planGo.href = `#${example.value}`;
+  planGoLabel.textContent = `‘${values.example}’ 시작하기`;
+}
+
+function handlePlanStart() {
+  goToPlanStep(1);
+}
+
+// 기존 진입 링크로 들어오면 시작 화면을 건너뛰고 1단계를 엽니다. 진행 중이면 그대로 둡니다.
+function handlePlanLinkClick() {
+  if (currentPlanStep !== 0) return;
+  showPlanStep(1);
+  // 브라우저가 #start로 이동한 뒤 입력창으로 초점을 옮깁니다.
+  setTimeout(() => goalInput.focus({ preventScroll: true }));
+}
+
+function handleExampleChange() {
+  showExampleError('');
+  updatePlanOptions();
+}
+
+// 예제를 고르지 않았으면 현재 단계에 머물고, 골랐으면 확인 화면으로 넘어갑니다.
+function handlePlanCheck() {
+  const example = document.querySelector('input[name="plan-example"]:checked');
+  if (example === null) {
+    showExampleError('실습할 예제를 하나 골라 주세요.');
+    planExamples[0].focus();
+    return;
+  }
+  showExampleError('');
+  fillPlanSummary(example);
+  goToPlanStep(3);
+}
+
+// 다시 세우기: 목표·선택·오류·진행 상태를 처음으로 되돌리고 1단계로 돌아갑니다.
+function resetPlan() {
+  savedGoal = '';
+  goalInput.value = '';
+  showGoalMessage('', 'none');
+  updateGoalCount();
+  updateGoalButton(false);
+  goalNext.hidden = true;
+  planExamples.forEach(function (radio) {
+    radio.checked = false;
+  });
+  planTime.value = defaultPlanTime;
+  showExampleError('');
+  updatePlanOptions();
+  goToPlanStep(1);
+}
+
+// 시작·다음·이전·확정·다시 세우기 버튼과 처리 함수를 연결합니다.
+document.querySelector('#plan-start').addEventListener('click', handlePlanStart);
+planStartLinks.forEach(function (link) {
+  link.addEventListener('click', handlePlanLinkClick);
+});
+goalNext.addEventListener('click', function () {
+  goToPlanStep(2);
+});
+planExamples.forEach(function (radio) {
+  radio.addEventListener('change', handleExampleChange);
+});
+document.querySelector('#plan-back-2').addEventListener('click', function () {
+  goToPlanStep(1);
+});
+document.querySelector('#plan-next-2').addEventListener('click', handlePlanCheck);
+document.querySelector('#plan-back-3').addEventListener('click', function () {
+  goToPlanStep(2);
+});
+document.querySelector('#plan-confirm').addEventListener('click', function () {
+  goToPlanStep(planDoneStep);
+});
+document.querySelector('#plan-restart').addEventListener('click', resetPlan);
+
+// JavaScript가 실행되면 시작 화면부터 보여줍니다.
+updatePlanOptions();
+showPlanStep(0);

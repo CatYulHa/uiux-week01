@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="하율의 UI/UX 프로그래밍 6주차 과제. 5주차 페이지에 click·input·change 이벤트와 탭 UI를 더해 사용자 행동에 따라 문구, 색, 버튼 상태가 함께 바뀌도록 했습니다.">
-  <title>UI/UX 프로그래밍 · 6주차 과제</title>
+  <meta name="description" content="하율의 UI/UX 프로그래밍 7주차 과제. 6주차 페이지에 목표 입력, 예제·시간 선택, 확인, 완료로 이어지는 학습 계획 흐름을 더했습니다.">
+  <title>UI/UX 프로그래밍 · 7주차 과제</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="service-page">
@@ -22,6 +22,9 @@
     입력값이 비었거나 5자 미만이면 오류 문구를, 목표를 정하면 완료 문구·색·버튼 상태를 함께 보여준다.
     6주차 이벤트: 실습 예제는 탭 3개로 바꿔 선택한 탭의 예제만 보여준다.
     목표를 입력하면(input) 글자 수를, 실습 순서를 체크하면(change) 진행 상황을, 학습 마치기 버튼을 누르면(click) 완료 상태를 보여준다.
+    7주차 사용자 흐름: 주요 사용자는 이 페이지의 예제로 UI/UX를 처음 배우는 학습자이고, 목표는 오늘의 학습 계획을 완성하는 것이다.
+    시작 → 목표 입력 → 예제·시간 선택 → 계획 확인 → 완료 순서로 진행하며, 완료 화면에서 고른 예제로 이동할 수 있으면 완료다.
+    필수 입력·선택이 빠지면 현재 단계에 머물며 고칠 방법을 알려주고, 이전으로 돌아가도 값이 유지되며, 다시 세우기는 흐름을 초기화한다.
   -->
   <a class="skip-link" href="#main">본문 바로가기</a>
   <header id="top">
@@ -31,38 +34,38 @@
         <a href="#about">과제 소개</a>
         <a href="#features">실습 내용</a>
         <a href="#steps">실습 순서</a>
-        <a href="#start">학습 목표</a>
+        <a href="#start">학습 계획</a>
       </nav>
-      <span class="week-label">WEEK 06</span>
+      <span class="week-label">WEEK 07</span>
     </div>
     <div class="hero wrap">
       <div class="hero-copy">
-        <p class="eyebrow"><span class="dot"></span> UI/UX PROGRAMMING · WEEK 06</p>
-        <h1>UI/UX 프로그래밍<span class="hero-tagline">6주차 과제</span></h1>
-        <p class="hero-description">이벤트 처리와 동적 UI 구현</p>
-        <a class="primary-link" href="#start">오늘의 학습 목표 정하기 <span aria-hidden="true">↗</span></a>
+        <p class="eyebrow"><span class="dot"></span> UI/UX PROGRAMMING · WEEK 07</p>
+        <h1>UI/UX 프로그래밍<span class="hero-tagline">7주차 과제</span></h1>
+        <p class="hero-description">사용자 흐름과 인터랙션 시나리오</p>
+        <a class="primary-link" href="#start" data-plan-start>오늘의 학습 계획 세우기 <span aria-hidden="true">↗</span></a>
         <a class="secondary-link" href="#about">과제 내용 보기 ↓</a>
-        <div class="student"><span class="avatar" aria-hidden="true">하</span><div><strong>하율</strong><span>12406050 · UI/UX 프로그래밍 · 6주차</span></div></div>
+        <div class="student"><span class="avatar" aria-hidden="true">하</span><div><strong>하율</strong><span>12406050 · UI/UX 프로그래밍 · 7주차</span></div></div>
       </div>
       <div class="hero-art" aria-hidden="true">
         <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
-        <span class="floating-label label-html">&lt;/&gt; click · input</span>
+        <span class="floating-label label-html">① 입력 · 선택</span>
         <div class="browser-card">
           <div class="browser-top"><span></span><span></span><span></span><small>script.js</small></div>
-          <div class="browser-body"><span class="mini-tag">WEEK 06 · EVENTS</span><p class="art-title">행동에 따라<br>바뀌는 화면</p><div class="mock-line"></div><div class="mock-line short"></div><div class="mock-cards"><span>구조<br><b>HTML</b></span><span>표현<br><b>CSS</b></span><span>동작<br><b>JS</b></span></div><div class="mock-button">실습 내용 <span>↗</span></div></div>
+          <div class="browser-body"><span class="mini-tag">WEEK 07 · USER FLOW</span><p class="art-title">시작부터 완료까지<br>이어지는 흐름</p><div class="mock-line"></div><div class="mock-line short"></div><div class="mock-cards"><span>구조<br><b>HTML</b></span><span>표현<br><b>CSS</b></span><span>동작<br><b>JS</b></span></div><div class="mock-button">학습 계획 세우기 <span>↗</span></div></div>
         </div>
-        <span class="floating-label label-css">✳ change</span><span class="floating-label label-js">{ } 탭 전환</span><span class="art-caption">HTML · CSS · JAVASCRIPT</span>
+        <span class="floating-label label-css">② 확인</span><span class="floating-label label-js">③ 완료</span><span class="art-caption">HTML · CSS · JAVASCRIPT</span>
       </div>
     </div>
   </header>
 
   <main id="main">
-    <div class="topic-strip"><div class="wrap"><span>WEEK 06 / EVENTS</span><p>click · input · change · classList · disabled · 탭 UI</p><span aria-hidden="true">✳</span></div></div>
+    <div class="topic-strip"><div class="wrap"><span>WEEK 07 / USER FLOW</span><p>시작 → 입력 → 선택 → 확인 → 완료 · 이전 · 다시 세우기</p><span aria-hidden="true">✳</span></div></div>
 
     <section class="section wrap" id="about" aria-labelledby="about-title">
-      <div class="section-heading"><div><p class="eyebrow">01 — ASSIGNMENT</p><h2 id="about-title">과제 소개</h2></div><p>5주차 페이지에 이벤트와 탭 UI를 더한 6주차 실습입니다.</p></div>
+      <div class="section-heading"><div><p class="eyebrow">01 — ASSIGNMENT</p><h2 id="about-title">과제 소개</h2></div><p>6주차 페이지에 학습 계획 흐름을 더한 7주차 실습입니다.</p></div>
       <div class="about-layout">
-        <div class="about-copy"><h3>이벤트 처리와 동적 UI 구현</h3><p>5주차 페이지에 click, input, change 이벤트를 더해 학습 목표 글자 수와 실습 순서 체크, 학습 마치기 버튼에 따라 문구와 색, 버튼 상태가 함께 바뀌도록 했습니다.</p><p>실습 내용 예제는 탭 3개로 바꿔, 선택한 탭과 그 탭의 예제만 보이도록 했습니다.</p><a class="text-link" href="#features">실습 내용 보기 <span aria-hidden="true">↓</span></a></div>
+        <div class="about-copy"><h3>사용자 흐름과 인터랙션 시나리오</h3><p>6주차까지 따로 동작하던 학습 목표 입력과 실습 예제를 ‘오늘의 학습 계획 세우기’라는 하나의 흐름으로 연결했습니다. 목표를 적고, 실습할 예제와 시간을 고르고, 내용을 확인하면 계획이 완성됩니다.</p><p>필수 입력이나 선택이 빠지면 다음 단계로 넘어가지 않고 고칠 방법을 알려주며, 이전 단계로 돌아가도 입력한 값이 그대로 남습니다.</p><a class="text-link" href="#features">실습 내용 보기 <span aria-hidden="true">↓</span></a></div>
         <figure class="service-preview">
           <img src="assets/images/service.png" alt="UI의 눈에 보이는 버튼과 UX의 목표 정하기·개념 확인·직접 체험 흐름을 나란히 비교하는 예제 화면" width="1118" height="527" loading="lazy">
           <figcaption><span class="dot" aria-hidden="true"></span>실습 화면 · UI와 UX 비교하기</figcaption>
@@ -89,7 +92,7 @@
         <div class="demo-panel is-active" id="concept" role="tabpanel" aria-labelledby="tab-concept">
           <div class="demo-content">
             <div class="concept-grid">
-              <article class="concept-card ui-card"><div class="card-top"><span>눈에 보이는 화면 요소</span><span class="symbol" aria-hidden="true">↗</span></div><h3>UI<span>User Interface</span></h3><p>지금 보고 있는 메뉴, 버튼, 입력창이 UI입니다. 사용자가 무엇을 누르고 입력할지 분명하게 보여줍니다.</p><div class="ui-example"><a class="example-button" href="#start">학습 목표 정하기 ↗</a></div><p class="card-note">직접 확인 · 이 버튼을 누르면 목표 입력 영역으로 이동합니다.</p></article>
+              <article class="concept-card ui-card"><div class="card-top"><span>눈에 보이는 화면 요소</span><span class="symbol" aria-hidden="true">↗</span></div><h3>UI<span>User Interface</span></h3><p>지금 보고 있는 메뉴, 버튼, 입력창이 UI입니다. 사용자가 무엇을 누르고 입력할지 분명하게 보여줍니다.</p><div class="ui-example"><a class="example-button" href="#start" data-plan-start>학습 목표 정하기 ↗</a></div><p class="card-note">직접 확인 · 이 버튼을 누르면 목표 입력 영역으로 이동합니다.</p></article>
               <article class="concept-card ux-card"><div class="card-top"><span>목표를 이루는 전체 과정</span><span class="symbol" aria-hidden="true">✳</span></div><h3>UX<span>User Experience</span></h3><p>학습 내용을 이해하고 목표를 정한 뒤 예제를 체험하는 과정이 UX입니다. 원하는 내용을 쉽게 찾고 배울 수 있는지가 중요합니다.</p><div class="ux-example"><span>목표 정하기</span><i aria-hidden="true">→</i><span>개념 확인</span><i aria-hidden="true">→</i><span>직접 체험</span></div><p class="card-note">생각해 보기 · 다음 행동이 자연스럽게 이어지나요?</p></article>
             </div>
             <div class="principles"><strong>좋은 경험을 만드는 5가지 기준</strong><div><span>01 명확성</span><span>02 일관성</span><span>03 피드백</span><span>04 효율성</span><span>05 접근성</span></div></div>
@@ -126,7 +129,7 @@
     <section class="section wrap" id="steps" aria-labelledby="steps-title">
       <div class="section-heading"><div><p class="eyebrow">03 — STEPS</p><h2 id="steps-title">실습 순서</h2></div><p>목표 작성 → 예제 확인 → 직접 실행</p></div>
       <ol class="steps-list">
-        <li><h3>오늘의 목표 정하기</h3><p>아래 입력창에 오늘 배우고 싶은 내용을 한 줄로 적어 학습 방향을 정합니다.</p><label class="step-check"><input type="checkbox"> 목표를 정했어요</label></li>
+        <li><h3>오늘의 목표 정하기</h3><p>아래 학습 계획에서 오늘 배우고 싶은 내용을 한 줄로 적고, 실습할 예제와 시간을 골라 학습 방향을 정합니다.</p><label class="step-check"><input type="checkbox"> 목표를 정했어요</label></li>
         <li><h3>개념과 예제 살펴보기</h3><p>실습 내용의 탭을 눌러 UI와 UX를 비교하고 HTML, CSS, JavaScript 코드 탭을 차례로 선택합니다.</p><label class="step-check"><input type="checkbox"> 예제를 살펴봤어요</label></li>
         <li><h3>직접 누르고 확인하기</h3><p>인터랙션 실습 버튼을 누르고 화면의 변화를 확인하며 목표로 정한 내용을 복습합니다.</p><label class="step-check"><input type="checkbox"> 직접 확인했어요</label></li>
       </ol>
@@ -139,21 +142,87 @@
     </section>
 
     <section class="wrap reflection start-section" id="start" aria-labelledby="start-title">
-      <div class="start-copy"><p class="eyebrow">04 — INPUT</p><h2 id="start-title">학습 목표</h2><p>학습 목표를 입력하고 버튼을 누르면 처리 결과를 안내 문구와 버튼 상태로 알려줍니다.</p><a class="text-link" href="#concept">개념 예제 보기 <span aria-hidden="true">↑</span></a></div>
-      <!-- 최소 입력 영역: label과 연결된 입력 한 칸과 제출 버튼. -->
-      <form id="goal-form" action="#start" method="get" novalidate>
-        <div class="goal-label-row"><label for="learning-goal">오늘의 학습 목표 <span>(필수)</span></label><span id="goal-count">0 / 80자</span></div>
-        <input type="text" id="learning-goal" name="goal" placeholder="예: UI와 UX의 차이 이해하기" minlength="5" maxlength="80" required aria-describedby="goal-count goal-help goal-feedback">
-        <button class="interaction-button" id="goal-submit" type="submit" disabled><span class="button-label">학습 목표 정하기</span> <span class="button-icon" aria-hidden="true">↗</span></button>
-        <p id="goal-help">5자 이상 80자 이내로 적어주세요. 목표는 이 화면에서만 확인하며, 새로고침하면 지워집니다.</p>
-        <p id="goal-feedback" role="status" aria-live="polite"></p>
-        <a class="text-link" id="goal-next" href="#concept" hidden>목표를 정했어요. 개념 예제 보기 ↑</a>
-        <noscript><p>목표 확인 기능은 JavaScript가 필요합니다. 실습 예제는 위에서 모두 읽을 수 있습니다.</p></noscript>
-      </form>
+      <div class="start-copy"><p class="eyebrow">04 — PLAN</p><h2 id="start-title">학습 계획</h2><p>목표를 적고 실습할 예제와 시간을 고른 뒤, 내용을 확인하면 오늘의 학습 계획이 완성됩니다.</p><a class="text-link" href="#concept">개념 예제 보기 <span aria-hidden="true">↑</span></a></div>
+      <!-- 7주차: 시작 → 목표 입력 → 예제·시간 선택 → 계획 확인 → 완료로 이어지는 학습 계획 흐름.
+           data-step이 붙은 단계 중 현재 단계만 보여줍니다. JavaScript가 꺼져 있으면 목표 입력 단계만 보입니다. -->
+      <div class="plan-flow" id="plan-flow">
+        <div class="plan-head" id="plan-head" hidden>
+          <p id="plan-progress" role="status" aria-live="polite">1 / 3 · 목표 입력</p>
+          <ol class="plan-track" aria-hidden="true"><li>목표 입력</li><li>예제·시간 선택</li><li>계획 확인</li></ol>
+        </div>
+
+        <!-- 시작: 흐름에 들어가기 전에 무엇을 하게 되는지 알려줍니다. -->
+        <div class="plan-step plan-intro" data-step="0" hidden>
+          <h3 class="plan-title">오늘의 학습 계획 세우기</h3>
+          <p class="plan-help">세 단계를 차례로 마치면 오늘의 학습 계획이 완성됩니다.</p>
+          <ol class="plan-outline"><li>학습 목표 입력</li><li>실습할 예제와 시간 선택</li><li>계획 확인</li></ol>
+          <button class="interaction-button" id="plan-start" type="button"><span class="button-label">학습 계획 세우기</span> <span class="button-icon" aria-hidden="true">↗</span></button>
+        </div>
+
+        <!-- 1단계 입력: 5주차 학습 목표 폼. label과 연결된 입력 한 칸과 제출 버튼. -->
+        <form class="plan-step" data-step="1" id="goal-form" action="#start" method="get" novalidate>
+          <div class="goal-label-row"><label for="learning-goal">오늘의 학습 목표 <span>(필수)</span></label><span id="goal-count">0 / 80자</span></div>
+          <input type="text" id="learning-goal" name="goal" placeholder="예: UI와 UX의 차이 이해하기" minlength="5" maxlength="80" required aria-describedby="goal-count goal-help goal-feedback">
+          <button class="interaction-button" id="goal-submit" type="submit" disabled><span class="button-label">학습 목표 정하기</span> <span class="button-icon" aria-hidden="true">↗</span></button>
+          <p id="goal-help">5자 이상 80자 이내로 적어주세요. 목표는 이 화면에서만 확인하며, 새로고침하면 지워집니다.</p>
+          <p id="goal-feedback" role="status" aria-live="polite"></p>
+          <button class="interaction-button" id="goal-next" type="button" hidden><span class="button-label">다음 · 실습 예제 고르기</span> <span class="button-icon" aria-hidden="true">→</span></button>
+          <noscript><p>학습 계획 기능은 JavaScript가 필요합니다. 실습 예제는 위에서 모두 읽을 수 있습니다.</p></noscript>
+        </form>
+
+        <!-- 2단계 선택: 실습할 예제(필수)와 학습 시간. -->
+        <div class="plan-step" data-step="2" hidden>
+          <h3 class="plan-title" tabindex="-1">실습할 예제와 시간 고르기</h3>
+          <fieldset class="plan-field" id="plan-example-field" aria-describedby="plan-example-error">
+            <legend>실습할 예제 <span>(필수)</span></legend>
+            <label class="plan-option"><input type="radio" name="plan-example" value="concept"><span>UI와 UX 비교하기</span></label>
+            <label class="plan-option"><input type="radio" name="plan-example" value="structure"><span>코드 예제 바꿔보기</span></label>
+            <label class="plan-option"><input type="radio" name="plan-example" value="practice"><span>클릭과 피드백 체험하기</span></label>
+          </fieldset>
+          <p class="plan-error" id="plan-example-error" role="alert"></p>
+          <label class="plan-label" for="plan-time">학습 시간</label>
+          <select id="plan-time" name="time"><option value="10">10분</option><option value="20" selected>20분</option><option value="30">30분</option></select>
+          <div class="plan-actions">
+            <button class="plan-back" id="plan-back-2" type="button"><span aria-hidden="true">←</span> 이전</button>
+            <button class="interaction-button" id="plan-next-2" type="button"><span class="button-label">다음 · 계획 확인하기</span> <span class="button-icon" aria-hidden="true">→</span></button>
+          </div>
+        </div>
+
+        <!-- 3단계 확인: 앞 단계에서 입력·선택한 값을 보여줍니다. -->
+        <div class="plan-step" data-step="3" hidden>
+          <h3 class="plan-title" tabindex="-1">계획 확인하기</h3>
+          <p class="plan-help">내용이 맞으면 계획을 확정하세요. 고치려면 이전 단계로 돌아가면 됩니다.</p>
+          <dl class="plan-summary">
+            <div><dt>학습 목표</dt><dd data-summary="goal"></dd></div>
+            <div><dt>실습 예제</dt><dd data-summary="example"></dd></div>
+            <div><dt>학습 시간</dt><dd data-summary="time"></dd></div>
+          </dl>
+          <div class="plan-actions">
+            <button class="plan-back" id="plan-back-3" type="button"><span aria-hidden="true">←</span> 이전</button>
+            <button class="interaction-button" id="plan-confirm" type="button"><span class="button-label">이 계획으로 확정하기</span> <span class="button-icon" aria-hidden="true">✓</span></button>
+          </div>
+        </div>
+
+        <!-- 완료: 확정한 계획과 다음 행동을 보여줍니다. -->
+        <div class="plan-step plan-done" data-step="4" hidden>
+          <p class="plan-badge"><span aria-hidden="true">✓</span> 계획 완료</p>
+          <h3 class="plan-title" tabindex="-1">오늘의 학습 계획을 완성했습니다</h3>
+          <dl class="plan-summary">
+            <div><dt>학습 목표</dt><dd data-summary="goal"></dd></div>
+            <div><dt>실습 예제</dt><dd data-summary="example"></dd></div>
+            <div><dt>학습 시간</dt><dd data-summary="time"></dd></div>
+          </dl>
+          <p class="plan-help">이제 고른 예제로 실습을 시작해 보세요.</p>
+          <div class="plan-actions">
+            <a class="interaction-button" id="plan-go" href="#concept"><span class="button-label">고른 예제 시작하기</span> <span class="button-icon" aria-hidden="true">↑</span></a>
+            <button class="plan-back" id="plan-restart" type="button">계획 다시 세우기</button>
+          </div>
+        </div>
+      </div>
     </section>
   </main>
 
-  <footer class="wrap footer"><a class="logo service-logo" href="#top">HY<span>↗</span></a><p>UI/UX 프로그래밍 · 6주차 과제<br><span>하율 · 12406050 · 2026</span></p><a class="back-top" href="#top">맨 위로 ↑</a></footer>
+  <footer class="wrap footer"><a class="logo service-logo" href="#top">HY<span>↗</span></a><p>UI/UX 프로그래밍 · 7주차 과제<br><span>하율 · 12406050 · 2026</span></p><a class="back-top" href="#top">맨 위로 ↑</a></footer>
 
   <!-- 5주차: 화면 요소를 모두 만든 뒤 JavaScript를 실행하도록 body 끝에서 불러옵니다. -->
   <script src="script.js"></script>

@@ -48,7 +48,7 @@
 .start-section { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; padding: 42px; }
 .start-section h2 { font-size: 27px; }
 .start-copy > p:not(.eyebrow) { color: var(--muted); font-size: 13px; margin: 16px 0 22px; }
-#goal-form { display: flex; flex-wrap: wrap; gap: 10px; background: var(--paper); border: 1px solid var(--line); padding: 25px; border-radius: 9px; min-width: 0; }
+#goal-form { display: flex; flex-wrap: wrap; gap: 10px; min-width: 0; }
 #goal-form label { display: block; font-weight: 700; font-size: 13px; }
 #goal-form label span { font-weight: 400; color: var(--muted); font-size: 11px; }
 #learning-goal { flex: 999 1 200px; min-width: 0; min-height: 46px; border: 1px solid #a5b39a; border-radius: 5px; padding: 11px 13px; color: var(--ink); background: #fff; font: inherit; font-size: 16px; }
@@ -58,7 +58,7 @@
 #goal-help { width: 100%; color: var(--muted); font-size: 11px; margin: 0 0 7px; }
 #goal-feedback { width: 100%; margin: 0; font-size: 12px; color: var(--muted); overflow-wrap: anywhere; }
 #goal-feedback:empty { display: none; }
-#goal-next { margin-top: 4px; }
+#goal-next { align-items: center; margin-top: 4px; }
 #goal-form noscript { width: 100%; }
 .service-page .footer p { margin: 0; }
 
@@ -122,8 +122,56 @@
 .steps-progress.is-complete { background-color: #edf2e4; border-color: #b9c8a8; }
 .steps-progress.is-complete #finish-button { background-color: #fff; }
 
+/* 7주차: 학습 계획 흐름의 틀과 진행 표시. 5주차 폼의 테두리와 여백은 흐름 전체를 감싸는 .plan-flow로 옮겼습니다. */
+.start-section { align-items: start; }
+.plan-flow { min-width: 0; padding: 25px; border: 1px solid var(--line); border-radius: 9px; background-color: var(--paper); transition: border-color .2s ease, box-shadow .2s ease; }
+.plan-flow.is-complete { border-color: var(--green); box-shadow: 0 0 0 1px var(--green); }
+.plan-head { margin-bottom: 20px; }
+#plan-progress { margin: 0 0 10px; font-size: 12px; font-weight: 700; color: var(--green); }
+.plan-track { display: flex; gap: 6px; list-style: none; margin: 0; padding: 0; }
+.plan-track li { flex: 1; min-width: 0; padding-top: 8px; border-top: 4px solid #e7ebdf; font-size: 11px; line-height: 1.5; color: var(--muted); transition: border-color .2s ease, color .2s ease; }
+.plan-track li.is-done { border-top-color: #9db58a; }
+.plan-track li.is-current { border-top-color: var(--green); color: var(--green); font-weight: 700; }
+.plan-title { margin: 0 0 10px; font-size: 18px; line-height: 1.5; letter-spacing: -.4px; }
+.plan-help { margin: 0 0 14px; font-size: 13px; color: var(--muted); }
+.plan-outline { margin: 0 0 20px; padding-left: 20px; font-size: 13px; }
+#plan-start { align-items: center; }
+
+/* 7주차: 예제·시간 선택과 선택 누락 오류 */
+.plan-field { min-width: 0; margin: 0; padding: 0; border: 0; }
+.plan-field legend, .plan-label { display: block; padding: 0; font-size: 13px; font-weight: 700; }
+.plan-field legend span { font-size: 11px; font-weight: 400; color: var(--muted); }
+.plan-option { display: flex; align-items: center; gap: 10px; min-height: 46px; margin-top: 8px; padding: 10px 14px; border: 1px solid #a5b39a; border-radius: 6px; background-color: #fff; font-size: 14px; cursor: pointer; transition: background-color .2s ease, border-color .2s ease; }
+.plan-option:hover { border-color: #718e31; }
+.plan-option input { flex: none; width: 18px; height: 18px; margin: 0; accent-color: var(--green); cursor: pointer; }
+.plan-option.is-selected { border-color: var(--green); background-color: #edf2e4; font-weight: 700; }
+.plan-field.has-error .plan-option { border-color: #a1372b; }
+.plan-error { margin: 10px 0 0; padding: 10px 14px; border-radius: 6px; background-color: #fbecea; color: #a1372b; font-size: 12px; font-weight: 500; }
+.plan-error:empty { display: none; }
+.plan-label { margin: 18px 0 8px; }
+#plan-time { width: 100%; min-height: 46px; padding: 10px 13px; border: 1px solid #a5b39a; border-radius: 5px; background-color: #fff; color: var(--ink); font: inherit; font-size: 16px; transition: border-color .2s ease; }
+#plan-time:hover { border-color: #718e31; }
+#plan-time:focus-visible { outline: 3px solid #718e31; outline-offset: 3px; }
+
+/* 7주차: 확인·완료 화면과 이전·다음 버튼 */
+.plan-summary { margin: 0; border: 1px solid var(--line); border-radius: 8px; background-color: #fff; }
+.plan-summary > div { display: grid; grid-template-columns: 76px 1fr; gap: 12px; padding: 12px 14px; }
+.plan-summary > div + div { border-top: 1px solid var(--line); }
+.plan-summary dt { font-size: 12px; color: var(--muted); }
+.plan-summary dd { min-width: 0; margin: 0; font-size: 14px; font-weight: 700; overflow-wrap: anywhere; }
+.plan-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+.plan-actions .interaction-button { flex: 1 1 180px; width: auto; align-items: center; gap: 18px; }
+.plan-back { padding: 13px 18px; border: 1px solid #a5b39a; border-radius: 6px; background-color: #fff; color: var(--green); font-size: 12px; font-weight: 700; transition: background-color .2s ease, transform .1s ease; }
+.plan-back:hover { background-color: #e8edde; }
+.plan-back:active { transform: translateY(1px); }
+.plan-back:focus-visible { outline: 3px solid #718e31; outline-offset: 3px; }
+.plan-badge { display: inline-block; margin: 0 0 12px; padding: 3px 12px; border-radius: 30px; background-color: var(--green); color: #fff; font-size: 11px; font-weight: 700; }
+.plan-done .plan-help { margin: 16px 0 0; }
+.plan-done .plan-actions { flex-direction: column; margin-top: 12px; }
+.plan-done .plan-actions .interaction-button { flex: none; width: 100%; }
+
 @media (prefers-reduced-motion: reduce) {
-  .header nav a, .primary-link, .interaction-button, .feature-card, #learning-goal, .demo-tab, .step-check, .steps-progress, #steps-bar, #goal-count { transition: none; }
+  .header nav a, .primary-link, .interaction-button, .feature-card, #learning-goal, .demo-tab, .step-check, .steps-progress, #steps-bar, #goal-count, .plan-flow, .plan-track li, .plan-option, #plan-time, .plan-back { transition: none; }
 }
 
 /* 4주차: 뷰포트 너비가 768px 이하일 때 메뉴·카드·입력 폼을 한 열로 바꾸고 글자와 여백을 조정합니다.
@@ -205,7 +253,7 @@
   .feature-grid { grid-template-columns: 1fr; }
 
   /* 4주차: 학습 목표 입력창과 버튼을 세로로 배치합니다. */
-  #goal-form { flex-direction: column; align-items: stretch; padding: 20px 16px; }
+  #goal-form { flex-direction: column; align-items: stretch; }
   #learning-goal, #goal-submit { flex: none; width: 100%; }
   #goal-submit { min-height: 48px; }
 
@@ -216,4 +264,9 @@
   .step-check { min-height: 44px; }
   .steps-progress { grid-template-columns: 1fr; padding: 20px 16px; }
   #finish-button { width: 100%; min-height: 48px; }
+
+  /* 7주차: 학습 계획 단계의 여백을 줄이고, 선택지와 버튼을 누르기 쉬운 높이로 맞춥니다. */
+  .plan-flow { padding: 20px 16px; }
+  .plan-option, .plan-back, .plan-actions .interaction-button, #plan-start, #goal-next { min-height: 48px; }
+  .plan-summary > div { grid-template-columns: 1fr; gap: 2px; }
 }

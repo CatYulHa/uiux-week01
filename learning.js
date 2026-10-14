@@ -14,9 +14,9 @@ const examples = {
   },
   js: {
     filename: 'script.js',
-    description: 'JavaScript는 클릭과 입력, 폼 제출에 반응하고 조건에 따라 화면의 내용과 상태를 바꿉니다.',
-    code: "const demoTabs = document.querySelectorAll('.demo-tab');\n\nfunction handleTabClick(event) {\n  resetTabsAndPanels();\n  activateTab(event.currentTarget);\n}\n\ndemoTabs.forEach(function (tab) {\n  tab.addEventListener('click', handleTabClick);\n});",
-    analogy: '이 페이지에서 찾기 · 누르면 예제가 바뀌는 실습 내용 탭'
+    description: 'JavaScript는 클릭과 입력에 반응하고, 조건에 따라 다음 단계로 넘어갈지 현재 단계에 머물지를 정합니다.',
+    code: "function showPlanStep(step) {\n  planSteps.forEach(function (item) {\n    item.hidden = Number(item.dataset.step) !== step;\n  });\n}\n\nfunction handlePlanCheck() {\n  if (example === null) {\n    showExampleError('실습할 예제를 하나 골라 주세요.');\n    return;\n  }\n  showPlanStep(3);\n}",
+    analogy: '이 페이지에서 찾기 · 단계가 바뀌는 학습 계획 세우기'
   }
 };
 
