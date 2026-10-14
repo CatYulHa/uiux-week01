@@ -1,9 +1,9 @@
-// 6주차: 실습 예제 탭 3개를 버튼과 패널로 연결합니다.
+// 6주차: 실습 예제 탭
 const demoTabList = document.querySelector('.demo-tabs');
 const demoTabs = document.querySelectorAll('.demo-tab');
 const demoPanels = document.querySelectorAll('.demo-panel');
 
-// 모든 탭의 선택 상태를 지우고 모든 패널을 숨깁니다.
+// 모든 탭 선택 해제, 모든 패널 숨김
 function resetTabsAndPanels() {
   demoTabs.forEach(function (tab) {
     tab.classList.remove('is-active');
@@ -16,7 +16,7 @@ function resetTabsAndPanels() {
   });
 }
 
-// 선택한 탭을 표시하고 data-target에 적힌 패널만 보여줍니다.
+// 선택한 탭과 data-target 패널만 표시
 function activateTab(selectedTab) {
   const targetPanel = document.querySelector(selectedTab.dataset.target);
   selectedTab.classList.add('is-active');
@@ -35,7 +35,7 @@ function handleTabClick(event) {
   selectDemoTab(event.currentTarget);
 }
 
-// 키보드 사용자는 방향키와 Home·End로 탭을 옮깁니다.
+// 방향키, Home, End로 탭 이동
 function handleTabKeydown(event) {
   const tabList = [...demoTabs];
   const index = tabList.indexOf(event.currentTarget);
@@ -55,11 +55,11 @@ demoTabs.forEach(function (tab) {
   tab.addEventListener('keydown', handleTabKeydown);
 });
 
-// JavaScript가 실행되면 탭을 보여주고 첫 번째 예제만 남깁니다.
+// 탭 목록 표시, 첫 번째 예제 선택
 demoTabList.hidden = false;
 selectDemoTab(demoTabs[0]);
 
-// 내부 링크로 예제에 도착하면 해당 예제의 탭을 엽니다.
+// #concept 같은 링크로 오면 해당 탭 열기
 function openExample(hash) {
   const panel = document.getElementById(hash.slice(1));
   if (!panel || !panel.classList.contains('demo-panel')) return null;
@@ -72,7 +72,7 @@ document.addEventListener('click', event => {
   const link = event.target.closest('a[href^="#"]');
   if (!link || event.button !== 0 || event.ctrlKey || event.metaKey || event.shiftKey || event.altKey) return;
   const tab = openExample(link.hash);
-  // 브라우저가 주소의 #위치로 이동한 뒤 선택한 탭으로 초점을 옮깁니다.
+  // 주소 이동 후 탭으로 초점 이동
   if (tab) setTimeout(() => tab.focus({ preventScroll: true }));
 });
 
@@ -83,8 +83,7 @@ function revealFragment() {
 window.addEventListener('hashchange', revealFragment);
 revealFragment();
 
-// 5주차: 학습 목표 폼의 제출을 감지하고, 입력값과 상태에 맞는 결과를 보여줍니다.
-// 목표는 서버로 전송하거나 저장하지 않고 현재 화면에만 표시합니다.
+// 5주차: 학습 목표 폼. 목표는 저장하지 않고 화면에만 표시
 const goalForm = document.querySelector('#goal-form');
 const goalInput = document.querySelector('#learning-goal');
 const goalCount = document.querySelector('#goal-count');
@@ -94,25 +93,24 @@ const goalNext = document.querySelector('#goal-next');
 const goalSubmitLabel = goalSubmit.querySelector('.button-label');
 const goalSubmitIcon = goalSubmit.querySelector('.button-icon');
 
-// Number: 목표로 받는 최소 글자 수
+// Number: 최소 글자 수
 const minGoalLength = 5;
-// String: 마지막으로 정한 목표. 빈 문자열이면 아직 정하기 전입니다.
+// String: 정한 목표. 비어 있으면 아직 정하기 전
 let savedGoal = '';
 
-// JavaScript가 실행되면 목표 버튼을 사용할 수 있게 합니다.
 goalSubmit.disabled = false;
 
-// 입력값에 문제가 있으면 오류 문구를, 없으면 빈 문자열을 돌려줍니다.
+// 오류 문구 반환. 문제가 없으면 빈 문자열
 function getGoalError(goal) {
   if (goal === '') {
     return '학습 목표를 입력해 주세요.';
   } else if (goal.length < minGoalLength) {
-    return `목표를 ${minGoalLength}자 이상으로 조금 더 구체적으로 적어 주세요.`;
+    return `목표를 ${minGoalLength}자 이상 적어 주세요.`;
   }
   return '';
 }
 
-// 안내 문구를 바꾸고 결과에 맞는 스타일(is-success, is-error)을 적용합니다.
+// 안내 문구와 색 변경
 function showGoalMessage(message, result) {
   goalFeedback.textContent = message;
   goalFeedback.classList.toggle('is-success', result === 'success');
@@ -120,13 +118,13 @@ function showGoalMessage(message, result) {
   goalInput.setAttribute('aria-invalid', String(result === 'error'));
 }
 
-// 6주차: 글자 수를 보여주고, 목표로 받을 수 있는 길이가 되면 초록색으로 바꿉니다.
+// 6주차: 글자 수 표시. 5자 이상이면 초록색
 function updateGoalCount() {
   goalCount.textContent = `${goalInput.value.length} / ${goalInput.maxLength}자`;
   goalCount.classList.toggle('is-ready', goalInput.value.trim().length >= minGoalLength);
 }
 
-// 목표를 정한 상태면 버튼을 완료 상태로 바꿔 같은 목표를 다시 제출하지 않게 합니다.
+// 버튼 문구와 상태 변경
 function updateGoalButton(isDone) {
   goalSubmit.disabled = isDone;
   goalSubmit.classList.toggle('is-success', isDone);
@@ -142,7 +140,7 @@ function updateGoalButton(isDone) {
   }
 }
 
-// 폼이 제출될 때 실행할 함수입니다.
+// 폼 제출 처리
 function handleGoalSubmit(event) {
   event.preventDefault();
   const goal = goalInput.value.trim();
@@ -154,7 +152,7 @@ function handleGoalSubmit(event) {
     return;
   }
 
-  // Boolean: 처음 정하는 목표인지, 버튼을 눌러 제출했는지 확인합니다.
+  // Boolean: 처음 정하는 목표인지, 버튼으로 제출했는지
   const isFirstGoal = savedGoal === '';
   const submittedByButton = document.activeElement === goalSubmit;
   savedGoal = goal;
@@ -162,17 +160,16 @@ function handleGoalSubmit(event) {
   updateGoalCount();
 
   if (isFirstGoal) {
-    showGoalMessage(`오늘의 목표를 정했습니다: “${goal}”`, 'success');
+    showGoalMessage(`목표를 정했습니다: ${goal}`, 'success');
   } else {
-    showGoalMessage(`목표를 바꿨습니다: “${goal}”`, 'success');
+    showGoalMessage(`목표를 바꿨습니다: ${goal}`, 'success');
   }
   updateGoalButton(true);
   goalNext.hidden = false;
-  // 비활성화된 버튼 대신 다음 행동 링크로 초점을 옮깁니다.
   if (submittedByButton) goalNext.focus();
 }
 
-// 입력할 때마다 글자 수를 바꾸고, 목표를 정한 뒤 내용을 고치면 다시 제출할 수 있게 합니다.
+// 입력할 때마다 글자 수와 버튼 상태 변경
 function handleGoalInput() {
   const goal = goalInput.value.trim();
   updateGoalCount();
@@ -180,22 +177,21 @@ function handleGoalInput() {
   if (savedGoal === '') {
     showGoalMessage('', 'none');
   } else if (goal === savedGoal) {
-    showGoalMessage(`현재 목표: “${savedGoal}”`, 'success');
+    showGoalMessage(`현재 목표: ${savedGoal}`, 'success');
     updateGoalButton(true);
   } else {
-    showGoalMessage('고친 목표를 적용하려면 ‘목표 바꾸기’를 눌러 주세요.', 'none');
+    showGoalMessage("'목표 바꾸기'를 눌러 적용해 주세요.", 'none');
     updateGoalButton(false);
   }
-  // 7주차: 고친 목표를 적용하기 전에는 다음 단계 버튼을 숨깁니다.
+  // 7주차: 고친 목표를 적용하기 전에는 다음 버튼 숨김
   if (savedGoal !== '') goalNext.hidden = goal !== savedGoal;
 }
 
-// submit·input 이벤트와 처리 함수를 연결합니다.
 goalForm.addEventListener('submit', handleGoalSubmit);
 goalInput.addEventListener('input', handleGoalInput);
 updateGoalCount();
 
-// 6주차: 실습 순서 체크박스(change)와 학습 마치기 버튼(click)으로 진행 상황을 보여줍니다.
+// 6주차: 실습 순서 체크(change), 학습 마치기(click)
 const stepChecks = document.querySelectorAll('.step-check input');
 const stepsProgress = document.querySelector('#steps-progress');
 const stepsBar = document.querySelector('#steps-bar');
@@ -204,10 +200,10 @@ const finishButton = document.querySelector('#finish-button');
 const finishLabel = finishButton.querySelector('.button-label');
 const finishIcon = finishButton.querySelector('.button-icon');
 
-// Boolean: 학습 마치기 버튼을 눌렀는지
+// Boolean: 학습 마치기를 눌렀는지
 let isFinished = false;
 
-// 체크한 단계 수에 맞춰 단계 표시·진행 문구·막대·버튼 상태를 함께 바꿉니다.
+// 체크한 단계 수에 맞춰 문구, 막대, 버튼 변경
 function updateSteps() {
   let doneCount = 0;
   stepChecks.forEach(function (check) {
@@ -216,7 +212,7 @@ function updateSteps() {
   });
   const total = stepChecks.length;
   const allDone = doneCount === total;
-  // 체크를 하나라도 해제하면 다시 마치기 전 상태로 돌아갑니다.
+  // 체크를 해제하면 마치기 전으로 복귀
   if (!allDone) isFinished = false;
 
   stepsBar.style.width = `${(doneCount / total) * 100}%`;
@@ -226,15 +222,15 @@ function updateSteps() {
   finishButton.classList.toggle('is-success', isFinished);
 
   if (isFinished) {
-    stepsStatus.textContent = savedGoal === '' ? '오늘 학습을 마쳤어요. 수고했어요!' : `오늘 학습을 마쳤어요. 목표: “${savedGoal}”`;
+    stepsStatus.textContent = savedGoal === '' ? '오늘 학습을 마쳤습니다.' : `오늘 학습을 마쳤습니다. 목표: ${savedGoal}`;
     finishLabel.textContent = '학습 완료';
     finishIcon.textContent = '✓';
   } else if (allDone) {
-    stepsStatus.textContent = `${doneCount} / ${total}단계 완료 · 버튼을 눌러 오늘 학습을 마무리하세요.`;
+    stepsStatus.textContent = `${doneCount} / ${total}단계 완료 · 학습을 마칠 수 있습니다.`;
     finishLabel.textContent = '오늘 학습 마치기';
     finishIcon.textContent = '↗';
   } else {
-    stepsStatus.textContent = `${doneCount} / ${total}단계 완료 · 세 단계를 모두 체크하면 오늘 학습을 마칠 수 있어요.`;
+    stepsStatus.textContent = `${doneCount} / ${total}단계 완료`;
     finishLabel.textContent = '오늘 학습 마치기';
     finishIcon.textContent = '↗';
   }
@@ -245,18 +241,15 @@ function handleFinishClick() {
   updateSteps();
 }
 
-// change·click 이벤트와 처리 함수를 연결합니다.
 stepChecks.forEach(function (check) {
   check.addEventListener('change', updateSteps);
 });
 finishButton.addEventListener('click', handleFinishClick);
 
-// JavaScript가 실행되면 진행 상황 영역을 보여줍니다.
 stepsProgress.hidden = false;
 updateSteps();
 
-// 7주차: 시작 → 목표 입력 → 예제·시간 선택 → 계획 확인 → 완료로 이어지는 학습 계획 흐름입니다.
-// 1단계는 위의 학습 목표 폼을 그대로 쓰고, 계획은 서버로 보내지 않고 현재 화면에만 표시합니다.
+// 7주차: 학습 계획 흐름 (시작 → 목표 입력 → 예제·시간 선택 → 확인 → 완료)
 const planFlow = document.querySelector('#plan-flow');
 const planHead = document.querySelector('#plan-head');
 const planSteps = document.querySelectorAll('.plan-step');
@@ -271,15 +264,16 @@ const planSummaryItems = document.querySelectorAll('[data-summary]');
 const planGo = document.querySelector('#plan-go');
 const planGoLabel = planGo.querySelector('.button-label');
 
-// Array: 진행 표시에 쓰는 단계 이름. 마지막 단계의 다음 번호가 완료 화면입니다.
+// Array: 단계 이름
 const planStepNames = ['목표 입력', '예제·시간 선택', '계획 확인'];
+// Number: 완료 화면 번호
 const planDoneStep = planStepNames.length + 1;
-// String: 다시 세울 때 되돌릴 학습 시간
+// String: 기본 학습 시간
 const defaultPlanTime = '20';
-// Number: 지금 보고 있는 단계. 0은 시작 전입니다.
+// Number: 현재 단계. 0은 시작 전
 let currentPlanStep = 0;
 
-// data-step이 현재 단계와 같은 영역만 보여주고 진행 표시를 맞춥니다.
+// 현재 단계만 표시하고 진행 표시 변경
 function showPlanStep(step) {
   planSteps.forEach(function (item) {
     item.hidden = Number(item.dataset.step) !== step;
@@ -299,7 +293,7 @@ function showPlanStep(step) {
   }
 }
 
-// 단계를 바꾼 뒤 1단계는 입력창으로, 나머지는 그 단계의 제목으로 초점을 옮깁니다.
+// 단계를 바꾸고 초점 이동 (1단계는 입력창, 나머지는 제목)
 function goToPlanStep(step) {
   showPlanStep(step);
   if (step === 1) {
@@ -309,20 +303,20 @@ function goToPlanStep(step) {
   }
 }
 
-// 고른 예제에만 선택 표시를 합니다.
+// 고른 예제에 선택 표시
 function updatePlanOptions() {
   planExamples.forEach(function (radio) {
     radio.closest('.plan-option').classList.toggle('is-selected', radio.checked);
   });
 }
 
-// 예제 선택 오류 문구와 테두리를 함께 바꿉니다. 빈 문자열이면 오류를 지웁니다.
+// 예제 선택 오류 표시. 빈 문자열이면 지움
 function showExampleError(message) {
   planExampleError.textContent = message;
   planExampleField.classList.toggle('has-error', message !== '');
 }
 
-// 확인·완료 화면에 정한 목표와 고른 예제·시간을 채웁니다.
+// 확인·완료 화면에 목표, 예제, 시간 표시
 function fillPlanSummary(example) {
   const values = {
     goal: savedGoal,
@@ -332,20 +326,19 @@ function fillPlanSummary(example) {
   planSummaryItems.forEach(function (item) {
     item.textContent = values[item.dataset.summary];
   });
-  // 완료 화면의 버튼은 고른 예제의 탭으로 이동합니다.
   planGo.href = `#${example.value}`;
-  planGoLabel.textContent = `‘${values.example}’ 시작하기`;
+  planGoLabel.textContent = `${values.example} 시작하기`;
 }
 
 function handlePlanStart() {
   goToPlanStep(1);
 }
 
-// 기존 진입 링크로 들어오면 시작 화면을 건너뛰고 1단계를 엽니다. 진행 중이면 그대로 둡니다.
+// 첫 화면 버튼으로 들어오면 바로 1단계 표시
 function handlePlanLinkClick() {
   if (currentPlanStep !== 0) return;
   showPlanStep(1);
-  // 브라우저가 #start로 이동한 뒤 입력창으로 초점을 옮깁니다.
+  // 주소 이동 후 입력창으로 초점 이동
   setTimeout(() => goalInput.focus({ preventScroll: true }));
 }
 
@@ -354,11 +347,11 @@ function handleExampleChange() {
   updatePlanOptions();
 }
 
-// 예제를 고르지 않았으면 현재 단계에 머물고, 골랐으면 확인 화면으로 넘어갑니다.
+// 예제를 고르지 않으면 현재 단계 유지
 function handlePlanCheck() {
   const example = document.querySelector('input[name="plan-example"]:checked');
   if (example === null) {
-    showExampleError('실습할 예제를 하나 골라 주세요.');
+    showExampleError('예제를 하나 골라 주세요.');
     planExamples[0].focus();
     return;
   }
@@ -367,7 +360,7 @@ function handlePlanCheck() {
   goToPlanStep(3);
 }
 
-// 다시 세우기: 목표·선택·오류·진행 상태를 처음으로 되돌리고 1단계로 돌아갑니다.
+// 다시 세우기: 입력, 선택, 오류, 진행 상태 초기화
 function resetPlan() {
   savedGoal = '';
   goalInput.value = '';
@@ -384,7 +377,6 @@ function resetPlan() {
   goToPlanStep(1);
 }
 
-// 시작·다음·이전·확정·다시 세우기 버튼과 처리 함수를 연결합니다.
 document.querySelector('#plan-start').addEventListener('click', handlePlanStart);
 planStartLinks.forEach(function (link) {
   link.addEventListener('click', handlePlanLinkClick);
@@ -407,6 +399,5 @@ document.querySelector('#plan-confirm').addEventListener('click', function () {
 });
 document.querySelector('#plan-restart').addEventListener('click', resetPlan);
 
-// JavaScript가 실행되면 시작 화면부터 보여줍니다.
 updatePlanOptions();
 showPlanStep(0);

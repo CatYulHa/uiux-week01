@@ -6,7 +6,7 @@
   <title>UI/UX 프로그래밍 과제 페이지로 이동</title>
   <link rel="canonical" href="https://catyulha.github.io/uiux-week01/">
   <script>
-    // 기존 README와 북마크의 주소를 통합 페이지의 같은 예제로 연결합니다.
+    // 예전 주소를 index.html의 같은 위치로 연결
     const destination = new URL('index.html', location.href);
     const sections = ['#concept', '#structure', '#practice', '#about', '#features', '#steps', '#start'];
     destination.hash = sections.includes(location.hash) ? location.hash : '#features';
