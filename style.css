@@ -170,8 +170,50 @@
 .plan-done .plan-actions { flex-direction: column; margin-top: 12px; }
 .plan-done .plan-actions .interaction-button { flex: none; width: 100%; }
 
+/* 중간고사: 완료 화면의 퀴즈 버튼, 진행 상황 */
+#plan-quiz { background-color: var(--green); color: #fff; }
+#plan-quiz:hover { background-color: #204732; }
+#plan-quiz-status { margin: 12px 0 0; padding: 10px 14px; border-radius: 6px; background-color: #fff; border: 1px solid var(--line); font-size: 12px; font-weight: 500; color: var(--muted); }
+#plan-quiz-status:empty { display: none; }
+#plan-quiz-status.is-success { border-color: #b9c8a8; background-color: #edf2e4; color: var(--green); font-weight: 700; }
+
+/* 중간고사: 퀴즈 문제, 채점 상태 */
+.quiz-kicker { margin: 0 0 8px; font-size: 10px; font-weight: 700; letter-spacing: 2px; color: #738559; }
+#quiz-status { margin: 0 0 14px; font-size: 12px; font-weight: 700; color: var(--green); }
+.quiz-item { min-width: 0; margin: 0 0 12px; padding: 16px; border: 1px solid var(--line); border-radius: 8px; background-color: #fff; transition: border-color .2s ease, background-color .2s ease; }
+.quiz-item legend { float: left; display: flex; gap: 8px; width: 100%; padding: 0; font-size: 14px; font-weight: 700; line-height: 1.6; }
+.quiz-item legend + .plan-option { clear: both; }
+.quiz-number { flex: none; display: grid; place-items: center; width: 22px; height: 22px; margin-top: 1px; border-radius: 50%; background-color: #edf2e4; color: var(--green); font-size: 11px; }
+.quiz-item .plan-option { font-size: 13px; }
+.quiz-item.is-locked .plan-option { cursor: default; }
+.quiz-item.is-locked .plan-option:not(.is-selected) { opacity: .55; }
+.quiz-item.is-locked .plan-option:hover { border-color: #a5b39a; }
+.quiz-item.is-locked .plan-option.is-selected:hover { border-color: var(--green); }
+.quiz-feedback { margin: 10px 0 0; font-size: 12px; font-weight: 700; }
+.quiz-item.has-error { border-color: #a1372b; background-color: #fdf6f5; }
+.quiz-item.is-correct { border-color: var(--green); background-color: #f3f7ec; }
+.quiz-item.is-correct .quiz-number { background-color: var(--green); color: #fff; }
+.quiz-item.is-correct .quiz-feedback { color: var(--green); }
+.quiz-item.is-wrong { border-color: #a1372b; background-color: #fdf6f5; }
+.quiz-item.is-wrong .quiz-number { background-color: #a1372b; color: #fff; }
+.quiz-item.is-wrong .plan-option.is-selected { border-color: #a1372b; background-color: #fbecea; }
+.quiz-item.is-wrong .quiz-feedback { color: #a1372b; }
+.quiz-item.is-retry { border-color: #c79a3e; }
+.quiz-item.is-retry .quiz-feedback { color: #8a5a12; font-weight: 500; }
+.quiz-result { margin-top: 12px; padding: 14px 16px; border-radius: 8px; border: 1px solid #e3c98f; background-color: #fbf3e2; color: #8a5a12; }
+.quiz-result p { margin: 0; font-size: 12px; }
+.quiz-result .quiz-badge { margin-bottom: 2px; font-size: 14px; font-weight: 700; }
+.quiz[data-state="passed"] .quiz-result { border-color: #b9c8a8; background-color: #edf2e4; color: var(--green); }
+#quiz-go { background-color: var(--green); color: #fff; }
+.quiz-cancel { display: block; min-height: 40px; margin: 10px auto 0; padding: 8px 14px; border: 0; background: transparent; color: #a1372b; font-size: 12px; font-weight: 700; text-decoration: underline; text-underline-offset: 3px; }
+.quiz-cancel:focus-visible { outline: 3px solid #718e31; outline-offset: 3px; }
+.quiz-confirm { margin-top: 16px; padding: 16px; border: 1px solid #a1372b; border-radius: 8px; background-color: #fff; }
+.quiz-confirm > p { margin: 0; font-size: 13px; font-weight: 700; color: #a1372b; }
+.quiz-confirm .plan-actions { margin-top: 12px; }
+#quiz-stop { background-color: #a1372b; color: #fff; }
+
 @media (prefers-reduced-motion: reduce) {
-  .header nav a, .primary-link, .interaction-button, .feature-card, #learning-goal, .demo-tab, .step-check, .steps-progress, #steps-bar, #goal-count, .plan-flow, .plan-track li, .plan-option, #plan-time, .plan-back { transition: none; }
+  .header nav a, .primary-link, .interaction-button, .feature-card, #learning-goal, .demo-tab, .step-check, .steps-progress, #steps-bar, #goal-count, .plan-flow, .plan-track li, .plan-option, #plan-time, .plan-back, .quiz-item { transition: none; }
 }
 
 /* 4주차: 768px 이하 모바일 레이아웃 */
@@ -268,4 +310,8 @@
   .plan-flow { padding: 20px 16px; }
   .plan-option, .plan-back, .plan-actions .interaction-button, #plan-start, #goal-next { min-height: 48px; }
   .plan-summary > div { grid-template-columns: 1fr; gap: 2px; }
+
+  /* 중간고사: 퀴즈 여백, 버튼 높이 */
+  .quiz-item { padding: 14px 12px; }
+  .quiz-cancel { min-height: 48px; }
 }

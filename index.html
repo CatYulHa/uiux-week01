@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="하율의 UI/UX 프로그래밍 7주차 과제. 학습 계획을 세우는 흐름을 추가했습니다.">
-  <title>UI/UX 프로그래밍 · 7주차 과제</title>
+  <meta name="description" content="하율의 UI/UX 프로그래밍 중간고사 과제. 학습 계획 뒤에 이해도 확인 퀴즈를 추가했습니다.">
+  <title>UI/UX 프로그래밍 · 중간고사 과제</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="service-page">
   <!-- UX 기획
     사용자: UI/UX를 처음 배우는 학습자
     목적: 예제를 눌러 보며 UI/UX 기초를 익힌다
-    핵심 행동: 오늘의 학습 계획을 세운다
+    핵심 행동: 학습 계획을 세우고 퀴즈로 이해했는지 확인한다
     정보 순서: 제목 → 과제 소개 → 실습 내용 → 실습 순서 → 학습 계획 → 작성자 정보
     3주차 CSS: 글자 크기와 색으로 위계 구분, Flexbox 배치, hover·focus·active 상태
     4주차 반응형: viewport, 유동 너비, Grid, 768px 이하 한 열 배치
@@ -19,6 +19,8 @@
     6주차 이벤트: 탭 3개, 글자 수(input), 실습 순서 체크(change), 학습 마치기(click)
     7주차 사용자 흐름: 시작 → 목표 입력 → 예제·시간 선택 → 계획 확인 → 완료
     필수값이 비면 현재 단계 유지, 이전은 값 유지, 다시 세우기는 초기화
+    중간고사: 계획 완료 → 이해도 퀴즈 → 채점 → 틀린 문제 다시 풀기 → 통과
+    답하지 않은 문제 안내, 계획 보기는 답 유지, 그만두기는 확인 후 초기화
   -->
   <a class="skip-link" href="#main">본문 바로가기</a>
   <header id="top">
@@ -30,36 +32,36 @@
         <a href="#steps">실습 순서</a>
         <a href="#start">학습 계획</a>
       </nav>
-      <span class="week-label">WEEK 07</span>
+      <span class="week-label">WEEK 08</span>
     </div>
     <div class="hero wrap">
       <div class="hero-copy">
-        <p class="eyebrow"><span class="dot"></span> UI/UX PROGRAMMING · WEEK 07</p>
-        <h1>UI/UX 프로그래밍<span class="hero-tagline">7주차 과제</span></h1>
-        <p class="hero-description">사용자 흐름과 인터랙션 시나리오</p>
+        <p class="eyebrow"><span class="dot"></span> UI/UX PROGRAMMING · WEEK 08</p>
+        <h1>UI/UX 프로그래밍<span class="hero-tagline">중간고사 과제</span></h1>
+        <p class="hero-description">학습 계획과 이해도 확인 퀴즈</p>
         <a class="primary-link" href="#start" data-plan-start>학습 계획 세우기 <span aria-hidden="true">↗</span></a>
         <a class="secondary-link" href="#about">과제 내용 보기 ↓</a>
-        <div class="student"><span class="avatar" aria-hidden="true">하</span><div><strong>하율</strong><span>12406050 · UI/UX 프로그래밍 · 7주차</span></div></div>
+        <div class="student"><span class="avatar" aria-hidden="true">하</span><div><strong>하율</strong><span>12406050 · UI/UX 프로그래밍 · 중간고사</span></div></div>
       </div>
       <div class="hero-art" aria-hidden="true">
         <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
-        <span class="floating-label label-html">① 입력 · 선택</span>
+        <span class="floating-label label-html">① 계획</span>
         <div class="browser-card">
           <div class="browser-top"><span></span><span></span><span></span><small>script.js</small></div>
-          <div class="browser-body"><span class="mini-tag">WEEK 07 · USER FLOW</span><p class="art-title">시작부터 완료까지<br>이어지는 흐름</p><div class="mock-line"></div><div class="mock-line short"></div><div class="mock-cards"><span>구조<br><b>HTML</b></span><span>표현<br><b>CSS</b></span><span>동작<br><b>JS</b></span></div><div class="mock-button">학습 계획 세우기 <span>↗</span></div></div>
+          <div class="browser-body"><span class="mini-tag">WEEK 08 · MIDTERM</span><p class="art-title">계획부터 퀴즈까지<br>이어지는 흐름</p><div class="mock-line"></div><div class="mock-line short"></div><div class="mock-cards"><span>구조<br><b>HTML</b></span><span>표현<br><b>CSS</b></span><span>동작<br><b>JS</b></span></div><div class="mock-button">학습 계획 세우기 <span>↗</span></div></div>
         </div>
-        <span class="floating-label label-css">② 확인</span><span class="floating-label label-js">③ 완료</span><span class="art-caption">HTML · CSS · JAVASCRIPT</span>
+        <span class="floating-label label-css">② 퀴즈</span><span class="floating-label label-js">③ 통과</span><span class="art-caption">HTML · CSS · JAVASCRIPT</span>
       </div>
     </div>
   </header>
 
   <main id="main">
-    <div class="topic-strip"><div class="wrap"><span>WEEK 07 / USER FLOW</span><p>시작 → 입력 → 선택 → 확인 → 완료</p><span aria-hidden="true">✳</span></div></div>
+    <div class="topic-strip"><div class="wrap"><span>WEEK 08 / MIDTERM</span><p>계획 완료 → 퀴즈 → 채점 → 다시 풀기 → 통과</p><span aria-hidden="true">✳</span></div></div>
 
     <section class="section wrap" id="about" aria-labelledby="about-title">
-      <div class="section-heading"><div><p class="eyebrow">01 — ASSIGNMENT</p><h2 id="about-title">과제 소개</h2></div><p>6주차 페이지에 학습 계획 흐름을 추가했습니다.</p></div>
+      <div class="section-heading"><div><p class="eyebrow">01 — ASSIGNMENT</p><h2 id="about-title">과제 소개</h2></div><p>7주차 학습 계획 뒤에 이해도 확인 퀴즈를 추가했습니다.</p></div>
       <div class="about-layout">
-        <div class="about-copy"><h3>사용자 흐름과 인터랙션 시나리오</h3><p>학습 목표 입력과 실습 예제를 학습 계획 세우기 흐름으로 연결했습니다.</p><p>목표 입력, 예제·시간 선택, 확인, 완료 순서로 진행합니다.</p><a class="text-link" href="#features">실습 내용 보기 <span aria-hidden="true">↓</span></a></div>
+        <div class="about-copy"><h3>학습 계획과 이해도 확인 퀴즈</h3><p>계획을 확정하면 고른 예제의 퀴즈 3문제를 풀 수 있습니다.</p><p>채점하면 문제마다 정답과 오답이 표시되고, 틀린 문제만 다시 풉니다.</p><a class="text-link" href="#features">실습 내용 보기 <span aria-hidden="true">↓</span></a></div>
         <figure class="service-preview">
           <img src="assets/images/service.png" alt="UI와 UX를 비교하는 예제 화면" width="1118" height="527" loading="lazy">
           <figcaption><span class="dot" aria-hidden="true"></span>실습 화면 · UI와 UX 비교하기</figcaption>
@@ -135,7 +137,7 @@
     </section>
 
     <section class="wrap reflection start-section" id="start" aria-labelledby="start-title">
-      <div class="start-copy"><p class="eyebrow">04 — PLAN</p><h2 id="start-title">학습 계획</h2><p>목표를 적고 예제와 시간을 고르면 학습 계획이 완성됩니다.</p><a class="text-link" href="#concept">개념 예제 보기 <span aria-hidden="true">↑</span></a></div>
+      <div class="start-copy"><p class="eyebrow">04 — PLAN</p><h2 id="start-title">학습 계획</h2><p>목표를 적고 예제와 시간을 고르면 학습 계획이 완성됩니다. 계획을 마치면 퀴즈로 확인합니다.</p><a class="text-link" href="#concept">개념 예제 보기 <span aria-hidden="true">↑</span></a></div>
       <!-- 7주차: 학습 계획 흐름. data-step 중 현재 단계만 표시 -->
       <div class="plan-flow" id="plan-flow">
         <div class="plan-head" id="plan-head" hidden>
@@ -204,17 +206,118 @@
             <div><dt>실습 예제</dt><dd data-summary="example"></dd></div>
             <div><dt>학습 시간</dt><dd data-summary="time"></dd></div>
           </dl>
-          <p class="plan-help">고른 예제부터 시작해 보세요.</p>
+          <p class="plan-help">예제를 본 뒤 퀴즈로 확인해 보세요.</p>
+          <p id="plan-quiz-status" role="status" aria-live="polite"></p>
           <div class="plan-actions">
             <a class="interaction-button" id="plan-go" href="#concept"><span class="button-label">고른 예제 시작하기</span> <span class="button-icon" aria-hidden="true">↑</span></a>
+            <button class="interaction-button" id="plan-quiz" type="button"><span class="button-label">이해도 퀴즈 풀기</span> <span class="button-icon" aria-hidden="true">→</span></button>
             <button class="plan-back" id="plan-restart" type="button">다시 세우기</button>
           </div>
         </div>
+
+        <!-- 중간고사: 이해도 확인 퀴즈. 고른 예제의 문제만 표시 -->
+        <section class="quiz" id="quiz" aria-labelledby="quiz-title" data-state="solving" hidden>
+          <p class="quiz-kicker">QUIZ · 3문제</p>
+          <h3 class="plan-title" id="quiz-title" tabindex="-1">이해도 확인 퀴즈</h3>
+          <p class="plan-help" id="quiz-goal"></p>
+          <p class="plan-help">문제마다 답을 하나씩 고르고 채점하세요. 모두 맞히면 통과입니다.</p>
+          <p id="quiz-status" role="status" aria-live="polite">0 / 3문제 답함</p>
+          <form id="quiz-form" action="#start" method="get" novalidate>
+            <div class="quiz-set" data-quiz="concept" hidden>
+              <fieldset class="quiz-item" data-hint="화면에 보이는 요소를 떠올려 보세요.">
+                <legend><span class="quiz-number">1</span>버튼, 메뉴, 입력창처럼 화면에 보이는 것은?</legend>
+                <label class="plan-option"><input type="radio" name="quiz-concept-1" value="1"><span>UX</span></label>
+                <label class="plan-option"><input type="radio" name="quiz-concept-1" value="2"><span>UI</span></label>
+                <label class="plan-option"><input type="radio" name="quiz-concept-1" value="3"><span>서버</span></label>
+                <p class="quiz-feedback" hidden></p>
+              </fieldset>
+              <fieldset class="quiz-item" data-hint="화면 하나가 아니라 사용하는 과정 전체입니다.">
+                <legend><span class="quiz-number">2</span>목표를 정하고 예제를 체험하는 과정 전체는?</legend>
+                <label class="plan-option"><input type="radio" name="quiz-concept-2" value="1"><span>UX</span></label>
+                <label class="plan-option"><input type="radio" name="quiz-concept-2" value="2"><span>UI</span></label>
+                <label class="plan-option"><input type="radio" name="quiz-concept-2" value="3"><span>CSS</span></label>
+                <p class="quiz-feedback" hidden></p>
+              </fieldset>
+              <fieldset class="quiz-item" data-hint="행동에 대한 화면의 대답입니다.">
+                <legend><span class="quiz-number">3</span>버튼을 누르면 화면이 바로 반응하는 것은 어떤 기준인가요?</legend>
+                <label class="plan-option"><input type="radio" name="quiz-concept-3" value="1"><span>일관성</span></label>
+                <label class="plan-option"><input type="radio" name="quiz-concept-3" value="2"><span>효율성</span></label>
+                <label class="plan-option"><input type="radio" name="quiz-concept-3" value="3"><span>피드백</span></label>
+                <p class="quiz-feedback" hidden></p>
+              </fieldset>
+            </div>
+            <div class="quiz-set" data-quiz="structure" hidden>
+              <fieldset class="quiz-item" data-hint="코드 예제의 첫 번째 탭입니다.">
+                <legend><span class="quiz-number">1</span>제목, 문단, 링크로 구조를 만드는 언어는?</legend>
+                <label class="plan-option"><input type="radio" name="quiz-structure-1" value="1"><span>CSS</span></label>
+                <label class="plan-option"><input type="radio" name="quiz-structure-1" value="2"><span>HTML</span></label>
+                <label class="plan-option"><input type="radio" name="quiz-structure-1" value="3"><span>JavaScript</span></label>
+                <p class="quiz-feedback" hidden></p>
+              </fieldset>
+              <fieldset class="quiz-item" data-hint="CSS 탭의 아래쪽 코드를 보세요.">
+                <legend><span class="quiz-number">2</span>768px 이하에서 카드를 한 열로 바꿀 때 쓰는 CSS는?</legend>
+                <label class="plan-option"><input type="radio" name="quiz-structure-2" value="1"><span>addEventListener</span></label>
+                <label class="plan-option"><input type="radio" name="quiz-structure-2" value="2"><span>&lt;section&gt;</span></label>
+                <label class="plan-option"><input type="radio" name="quiz-structure-2" value="3"><span>@media</span></label>
+                <p class="quiz-feedback" hidden></p>
+              </fieldset>
+              <fieldset class="quiz-item" data-hint="JavaScript에서 이벤트를 연결하는 함수입니다.">
+                <legend><span class="quiz-number">3</span>버튼 클릭에 함수를 연결하는 코드는?</legend>
+                <label class="plan-option"><input type="radio" name="quiz-structure-3" value="1"><span>addEventListener</span></label>
+                <label class="plan-option"><input type="radio" name="quiz-structure-3" value="2"><span>display: grid</span></label>
+                <label class="plan-option"><input type="radio" name="quiz-structure-3" value="3"><span>&lt;a href&gt;</span></label>
+                <p class="quiz-feedback" hidden></p>
+              </fieldset>
+            </div>
+            <div class="quiz-set" data-quiz="practice" hidden>
+              <fieldset class="quiz-item" data-hint="한 번 누를 때마다 1씩 늘어납니다.">
+                <legend><span class="quiz-number">1</span>클릭 예제에서 버튼을 3번 누르면 숫자는?</legend>
+                <label class="plan-option"><input type="radio" name="quiz-practice-1" value="1"><span>0</span></label>
+                <label class="plan-option"><input type="radio" name="quiz-practice-1" value="2"><span>1</span></label>
+                <label class="plan-option"><input type="radio" name="quiz-practice-1" value="3"><span>3</span></label>
+                <p class="quiz-feedback" hidden></p>
+              </fieldset>
+              <fieldset class="quiz-item" data-hint="처음 상태로 돌아갑니다.">
+                <legend><span class="quiz-number">2</span>초기화 버튼을 누르면?</legend>
+                <label class="plan-option"><input type="radio" name="quiz-practice-2" value="1"><span>숫자가 0이 된다</span></label>
+                <label class="plan-option"><input type="radio" name="quiz-practice-2" value="2"><span>숫자가 1 늘어난다</span></label>
+                <label class="plan-option"><input type="radio" name="quiz-practice-2" value="3"><span>페이지가 새로고침된다</span></label>
+                <p class="quiz-feedback" hidden></p>
+              </fieldset>
+              <fieldset class="quiz-item" data-hint="행동에 대한 화면의 대답입니다.">
+                <legend><span class="quiz-number">3</span>누르자마자 숫자와 메시지가 바뀌는 것은 어떤 기준인가요?</legend>
+                <label class="plan-option"><input type="radio" name="quiz-practice-3" value="1"><span>접근성</span></label>
+                <label class="plan-option"><input type="radio" name="quiz-practice-3" value="2"><span>피드백</span></label>
+                <label class="plan-option"><input type="radio" name="quiz-practice-3" value="3"><span>일관성</span></label>
+                <p class="quiz-feedback" hidden></p>
+              </fieldset>
+            </div>
+            <p class="plan-error" id="quiz-error" role="alert"></p>
+            <div class="quiz-result" id="quiz-result" tabindex="-1" hidden>
+              <p class="quiz-badge" id="quiz-badge"></p>
+              <p id="quiz-score"></p>
+            </div>
+            <div class="plan-actions" id="quiz-actions">
+              <button class="plan-back" id="quiz-back" type="button"><span aria-hidden="true">←</span> 계획 보기</button>
+              <button class="interaction-button" id="quiz-submit" type="submit"><span class="button-label">채점하기</span> <span class="button-icon" aria-hidden="true">✓</span></button>
+              <button class="interaction-button" id="quiz-retry" type="button" hidden><span class="button-label">틀린 문제 다시 풀기</span> <span class="button-icon" aria-hidden="true">↻</span></button>
+              <a class="interaction-button" id="quiz-go" href="#concept" hidden><span class="button-label">예제 다시 보기</span> <span class="button-icon" aria-hidden="true">↑</span></a>
+            </div>
+            <button class="quiz-cancel" id="quiz-cancel" type="button">그만두기</button>
+            <div class="quiz-confirm" id="quiz-confirm" hidden>
+              <p>그만두면 고른 답과 채점 결과가 지워집니다.</p>
+              <div class="plan-actions">
+                <button class="plan-back" id="quiz-keep" type="button">계속 풀기</button>
+                <button class="interaction-button" id="quiz-stop" type="button"><span class="button-label">그만두기</span> <span class="button-icon" aria-hidden="true">×</span></button>
+              </div>
+            </div>
+          </form>
+        </section>
       </div>
     </section>
   </main>
 
-  <footer class="wrap footer"><a class="logo service-logo" href="#top">HY<span>↗</span></a><p>UI/UX 프로그래밍 · 7주차 과제<br><span>하율 · 12406050 · 2026</span></p><a class="back-top" href="#top">맨 위로 ↑</a></footer>
+  <footer class="wrap footer"><a class="logo service-logo" href="#top">HY<span>↗</span></a><p>UI/UX 프로그래밍 · 중간고사 과제<br><span>하율 · 12406050 · 2026</span></p><a class="back-top" href="#top">맨 위로 ↑</a></footer>
 
   <!-- 5주차: body 끝에서 JavaScript 연결 -->
   <script src="script.js"></script>

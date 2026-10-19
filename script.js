@@ -401,3 +401,282 @@ document.querySelector('#plan-restart').addEventListener('click', resetPlan);
 
 updatePlanOptions();
 showPlanStep(0);
+
+// 중간고사: 이해도 확인 퀴즈 (계획 완료 → 퀴즈 → 채점 → 틀린 문제 다시 풀기 → 통과)
+const quiz = document.querySelector('#quiz');
+const quizForm = document.querySelector('#quiz-form');
+const quizTitle = document.querySelector('#quiz-title');
+const quizGoal = document.querySelector('#quiz-goal');
+const quizStatus = document.querySelector('#quiz-status');
+const quizSets = document.querySelectorAll('.quiz-set');
+const quizItemsAll = document.querySelectorAll('.quiz-item');
+const quizError = document.querySelector('#quiz-error');
+const quizResult = document.querySelector('#quiz-result');
+const quizBadge = document.querySelector('#quiz-badge');
+const quizScore = document.querySelector('#quiz-score');
+const quizActions = document.querySelector('#quiz-actions');
+const quizSubmit = document.querySelector('#quiz-submit');
+const quizRetry = document.querySelector('#quiz-retry');
+const quizGo = document.querySelector('#quiz-go');
+const quizGoLabel = quizGo.querySelector('.button-label');
+const quizCancel = document.querySelector('#quiz-cancel');
+const quizConfirm = document.querySelector('#quiz-confirm');
+const planDone = document.querySelector(`.plan-step[data-step="${planDoneStep}"]`);
+const planQuiz = document.querySelector('#plan-quiz');
+const planQuizLabel = planQuiz.querySelector('.button-label');
+const planQuizStatus = document.querySelector('#plan-quiz-status');
+
+// Object: 예제별 정답 번호
+const quizAnswers = {
+  concept: ['2', '1', '3'],
+  structure: ['2', '3', '1'],
+  practice: ['3', '1', '2']
+};
+// String: solving 푸는 중, retry 틀린 문제 있음, passed 통과
+let quizState = 'solving';
+// Number: 채점 횟수, 맞힌 문제 수
+let quizAttempts = 0;
+let quizCorrect = 0;
+// Element: 지금 푸는 예제의 문제 묶음
+let currentQuizSet = null;
+
+function getQuizItems() {
+  return [...currentQuizSet.querySelectorAll('.quiz-item')];
+}
+
+function getQuizChoice(item) {
+  return item.querySelector('input:checked');
+}
+
+// 답한 문제 수와 선택 표시 변경
+function updateQuizStatus() {
+  const items = getQuizItems();
+  const answered = items.filter(item => getQuizChoice(item) !== null).length;
+  quizStatus.textContent = `${answered} / ${items.length}문제 답함`;
+  currentQuizSet.querySelectorAll('.plan-option').forEach(function (option) {
+    option.classList.toggle('is-selected', option.querySelector('input').checked);
+  });
+  return answered;
+}
+
+// 답하지 않은 문제 번호로 오류 문구 만들기. 없으면 지움
+function showQuizError(items) {
+  const allItems = getQuizItems();
+  allItems.forEach(function (item) {
+    item.classList.toggle('has-error', items.includes(item));
+  });
+  if (items.length === 0) {
+    quizError.textContent = '';
+    return;
+  }
+  const numbers = items.map(item => `${allItems.indexOf(item) + 1}번`).join(', ');
+  quizError.textContent = `${numbers} 문제의 답을 골라 주세요.`;
+}
+
+// 상태에 맞는 버튼만 표시
+function updateQuizButtons() {
+  quiz.dataset.state = quizState;
+  quizSubmit.hidden = quizState !== 'solving';
+  quizRetry.hidden = quizState !== 'retry';
+  quizGo.hidden = quizState !== 'passed';
+  quizCancel.hidden = quizState === 'passed';
+}
+
+// 문제 잠금. 채점한 문제는 답을 바꿀 수 없음
+function lockQuizItem(item, isLocked) {
+  item.classList.toggle('is-locked', isLocked);
+  item.querySelectorAll('input').forEach(function (input) {
+    input.disabled = isLocked;
+  });
+}
+
+// 문제마다 정답·오답 표시, 점수 계산
+function gradeQuiz() {
+  const answers = quizAnswers[currentQuizSet.dataset.quiz];
+  const items = getQuizItems();
+  quizAttempts += 1;
+  quizCorrect = 0;
+
+  items.forEach(function (item, index) {
+    const isCorrect = getQuizChoice(item).value === answers[index];
+    const feedback = item.querySelector('.quiz-feedback');
+    if (isCorrect) quizCorrect += 1;
+    item.classList.remove('is-retry');
+    item.classList.toggle('is-correct', isCorrect);
+    item.classList.toggle('is-wrong', !isCorrect);
+    feedback.textContent = isCorrect ? '정답입니다.' : `오답입니다. 힌트: ${item.dataset.hint}`;
+    feedback.hidden = false;
+    lockQuizItem(item, true);
+  });
+
+  quizState = quizCorrect === items.length ? 'passed' : 'retry';
+  quizResult.hidden = false;
+  if (quizState === 'passed') {
+    quizBadge.textContent = '✓ 퀴즈 통과';
+    quizScore.textContent = `${items.length}문제를 모두 맞혔습니다. 채점 ${quizAttempts}번`;
+  } else {
+    quizBadge.textContent = `${items.length}문제 중 ${quizCorrect}개 정답`;
+    quizScore.textContent = '틀린 문제의 힌트를 보고 다시 풀어 보세요.';
+  }
+  quizStatus.textContent = `${quizCorrect} / ${items.length}문제 정답`;
+  updateQuizButtons();
+  quizResult.focus();
+}
+
+// 채점하기: 답하지 않은 문제가 있으면 채점하지 않음
+function handleQuizSubmit(event) {
+  event.preventDefault();
+  if (quizState !== 'solving') return;
+  const empty = getQuizItems().filter(item => getQuizChoice(item) === null);
+  if (empty.length > 0) {
+    showQuizError(empty);
+    empty[0].querySelector('input').focus();
+    return;
+  }
+  showQuizError([]);
+  gradeQuiz();
+}
+
+// 답을 고르면 그 문제의 오류 표시 지움
+function handleQuizChange(event) {
+  const item = event.target.closest('.quiz-item');
+  updateQuizStatus();
+  if (item.classList.contains('has-error')) {
+    showQuizError(getQuizItems().filter(other => other !== item && other.classList.contains('has-error')));
+  }
+}
+
+// 틀린 문제만 답을 지우고 다시 풀기. 맞힌 문제는 유지
+function handleQuizRetry() {
+  const wrongItems = getQuizItems().filter(item => item.classList.contains('is-wrong'));
+  wrongItems.forEach(function (item) {
+    item.querySelectorAll('input').forEach(function (input) {
+      input.checked = false;
+    });
+    item.classList.remove('is-wrong');
+    item.classList.add('is-retry');
+    item.querySelector('.quiz-feedback').textContent = `힌트: ${item.dataset.hint}`;
+    lockQuizItem(item, false);
+  });
+  quizState = 'solving';
+  quizResult.hidden = true;
+  updateQuizButtons();
+  updateQuizStatus();
+  wrongItems[0].querySelector('input').focus();
+}
+
+// 퀴즈 초기화: 답, 채점 결과, 오류, 횟수
+function resetQuiz() {
+  quizItemsAll.forEach(function (item) {
+    item.querySelectorAll('input').forEach(function (input) {
+      input.checked = false;
+    });
+    item.classList.remove('is-correct', 'is-wrong', 'is-retry', 'has-error');
+    item.querySelector('.quiz-feedback').hidden = true;
+    lockQuizItem(item, false);
+  });
+  document.querySelectorAll('.quiz-set .plan-option').forEach(function (option) {
+    option.classList.remove('is-selected');
+  });
+  quizState = 'solving';
+  quizAttempts = 0;
+  quizCorrect = 0;
+  quizError.textContent = '';
+  quizResult.hidden = true;
+  quizConfirm.hidden = true;
+  quizActions.hidden = false;
+  updateQuizButtons();
+  if (currentQuizSet !== null) updateQuizStatus();
+}
+
+// 완료 화면의 퀴즈 버튼 문구와 진행 상황
+function updatePlanQuiz(message) {
+  const items = currentQuizSet === null ? [] : getQuizItems();
+  const answered = items.filter(item => getQuizChoice(item) !== null).length;
+  planQuizStatus.classList.toggle('is-success', quizState === 'passed');
+  if (quizState === 'passed') {
+    planQuizLabel.textContent = '퀴즈 결과 보기';
+    planQuizStatus.textContent = `퀴즈 통과 · 채점 ${quizAttempts}번`;
+  } else if (quizState === 'retry') {
+    planQuizLabel.textContent = '퀴즈 이어서 풀기';
+    planQuizStatus.textContent = `퀴즈 ${quizCorrect} / ${items.length}문제 정답 · 틀린 문제가 남았습니다.`;
+  } else if (answered > 0) {
+    planQuizLabel.textContent = '퀴즈 이어서 풀기';
+    planQuizStatus.textContent = `퀴즈 ${answered} / ${items.length}문제 답함`;
+  } else {
+    planQuizLabel.textContent = '이해도 퀴즈 풀기';
+    planQuizStatus.textContent = message || '';
+  }
+}
+
+// 퀴즈 열기: 계획에서 고른 예제의 문제와 목표 표시
+function openQuiz() {
+  const example = document.querySelector('input[name="plan-example"]:checked');
+  const exampleName = example.nextElementSibling.textContent;
+  currentQuizSet = document.querySelector(`.quiz-set[data-quiz="${example.value}"]`);
+  quizSets.forEach(function (set) {
+    set.hidden = set !== currentQuizSet;
+  });
+  quizTitle.textContent = `퀴즈 · ${exampleName}`;
+  quizGoal.textContent = `목표: ${savedGoal}`;
+  quizGo.href = `#${example.value}`;
+  quizGoLabel.textContent = `${exampleName} 다시 보기`;
+  if (quizState === 'solving') updateQuizStatus();
+
+  planHead.hidden = true;
+  planDone.hidden = true;
+  quiz.hidden = false;
+  quizTitle.focus();
+}
+
+// 계획 보기·그만두기: 완료 화면으로 돌아가기
+function closeQuiz(message) {
+  quiz.hidden = true;
+  planHead.hidden = false;
+  planDone.hidden = false;
+  updatePlanQuiz(message);
+  planQuiz.focus();
+}
+
+// 그만두기: 고른 답이 있으면 먼저 확인
+function handleQuizCancel() {
+  const answered = getQuizItems().some(item => getQuizChoice(item) !== null);
+  if (!answered && quizAttempts === 0) {
+    closeQuiz('퀴즈를 그만뒀습니다. 언제든 다시 풀 수 있습니다.');
+    return;
+  }
+  quizActions.hidden = true;
+  quizCancel.hidden = true;
+  quizConfirm.hidden = false;
+  document.querySelector('#quiz-keep').focus();
+}
+
+function handleQuizKeep() {
+  quizConfirm.hidden = true;
+  quizActions.hidden = false;
+  updateQuizButtons();
+  quizCancel.focus();
+}
+
+function handleQuizStop() {
+  resetQuiz();
+  closeQuiz('퀴즈를 그만뒀습니다. 답을 지웠습니다.');
+}
+
+planQuiz.addEventListener('click', openQuiz);
+quizForm.addEventListener('submit', handleQuizSubmit);
+quizForm.addEventListener('change', handleQuizChange);
+quizRetry.addEventListener('click', handleQuizRetry);
+document.querySelector('#quiz-back').addEventListener('click', function () {
+  closeQuiz();
+});
+quizCancel.addEventListener('click', handleQuizCancel);
+document.querySelector('#quiz-keep').addEventListener('click', handleQuizKeep);
+document.querySelector('#quiz-stop').addEventListener('click', handleQuizStop);
+// 다시 세우기: 퀴즈도 처음 상태로
+document.querySelector('#plan-restart').addEventListener('click', function () {
+  resetQuiz();
+  quiz.hidden = true;
+  currentQuizSet = null;
+  updatePlanQuiz();
+});

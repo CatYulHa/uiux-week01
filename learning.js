@@ -15,8 +15,8 @@ const examples = {
   js: {
     filename: 'script.js',
     description: 'JavaScript는 클릭과 입력에 반응해 화면을 바꿉니다.',
-    code: "function showPlanStep(step) {\n  planSteps.forEach(function (item) {\n    item.hidden = Number(item.dataset.step) !== step;\n  });\n}\n\nfunction handlePlanCheck() {\n  if (example === null) {\n    showExampleError('예제를 하나 골라 주세요.');\n    return;\n  }\n  showPlanStep(3);\n}",
-    analogy: '이 페이지에서 찾기 · 학습 계획 세우기'
+    code: "function handleQuizSubmit(event) {\n  event.preventDefault();\n  const empty = getQuizItems()\n    .filter(item => getQuizChoice(item) === null);\n  if (empty.length > 0) {\n    showQuizError(empty);\n    return;\n  }\n  gradeQuiz();\n}\n\nquizForm.addEventListener('submit', handleQuizSubmit);",
+    analogy: '이 페이지에서 찾기 · 학습 계획 완료 뒤 이해도 퀴즈'
   }
 };
 
