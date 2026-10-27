@@ -15,8 +15,8 @@ const examples = {
   js: {
     filename: 'script.js',
     description: 'JavaScript는 클릭과 입력에 반응해 화면을 바꿉니다.',
-    code: "function handleQuizSubmit(event) {\n  event.preventDefault();\n  const empty = getQuizItems()\n    .filter(item => getQuizChoice(item) === null);\n  if (empty.length > 0) {\n    showQuizError(empty);\n    return;\n  }\n  gradeQuiz();\n}\n\nquizForm.addEventListener('submit', handleQuizSubmit);",
-    analogy: '이 페이지에서 찾기 · 학습 계획 완료 뒤 이해도 퀴즈'
+    code: "function validateRecordText(rule) {\n  const value = rule.input.value.trim();\n  if (value === '') {\n    return showFieldError(rule.input,\n      `${rule.name}을 입력해 주세요.`);\n  }\n  if (value.length < rule.min) {\n    return showFieldError(rule.input,\n      `${rule.name}을 ${rule.min}자 이상 적어 주세요.`);\n  }\n  clearFieldError(rule.input);\n  return true;\n}",
+    analogy: '이 페이지에서 찾기 · 학습 기록 폼'
   }
 };
 

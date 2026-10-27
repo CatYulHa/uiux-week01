@@ -680,3 +680,302 @@ document.querySelector('#plan-restart').addEventListener('click', function () {
   currentQuizSet = null;
   updatePlanQuiz();
 });
+
+// 9주차: 학습 기록 폼 (입력 조건 안내 → 검사 → 저장 중 → 완료·실패)
+const recordForm = document.querySelector('#record-form');
+const recordExample = document.querySelector('#record-example');
+const recordLearned = document.querySelector('#record-learned');
+const recordHasQuestion = document.querySelector('#record-has-question');
+const recordQuestionField = document.querySelector('#record-question-field');
+const recordQuestion = document.querySelector('#record-question');
+const recordStatus = document.querySelector('#record-status');
+const recordSubmit = document.querySelector('#record-submit');
+const recordSubmitLabel = recordSubmit.querySelector('.button-label');
+const recordReset = document.querySelector('#record-reset');
+const recordList = document.querySelector('#record-list');
+const recordEmpty = document.querySelector('#record-empty');
+const recordCount = document.querySelector('#record-count');
+const recordTemplate = document.querySelector('#record-template');
+
+// String: 브라우저 저장 키
+const recordStorageKey = 'hy-uiux-records';
+// Number: 저장에 걸리는 시간(ms), 목록에 보여 줄 개수
+const recordSaveDelay = 800;
+const recordShowCount = 5;
+// Object: 글자 수 조건이 있는 입력칸
+const recordTextRules = {
+  learned: { input: recordLearned, name: '오늘 배운 점', min: 10 },
+  question: { input: recordQuestion, name: '헷갈린 부분', min: 5 }
+};
+// Object: 안내 문구에 쓰는 항목 이름
+const recordFieldNames = {
+  'record-example': '실습한 예제',
+  'record-learned': '오늘 배운 점',
+  'record-question': '헷갈린 부분'
+};
+// Boolean: 저장 중인지
+let isRecordSaving = false;
+// String: 결과 문구 종류 (none, invalid 입력 확인, loading, success, error)
+let recordStatusType = 'none';
+
+function getRecordField(input) {
+  return input.closest('.record-field');
+}
+
+// 오류 표시: 문구, aria-invalid, 테두리 색
+function showFieldError(input, message) {
+  const field = getRecordField(input);
+  field.querySelector('.field-error').textContent = message;
+  field.classList.add('is-invalid');
+  field.classList.remove('is-valid');
+  input.setAttribute('aria-invalid', 'true');
+  return false;
+}
+
+function clearFieldError(input) {
+  const field = getRecordField(input);
+  field.querySelector('.field-error').textContent = '';
+  field.classList.remove('is-invalid');
+  input.setAttribute('aria-invalid', 'false');
+}
+
+// 예제 선택 검사
+function validateRecordExample() {
+  if (recordExample.value === '') return showFieldError(recordExample, '실습한 예제를 골라 주세요.');
+  clearFieldError(recordExample);
+  getRecordField(recordExample).classList.add('is-valid');
+  return true;
+}
+
+// 선택을 바꾸면 성공 표시. 오류가 없던 칸은 빈 값으로 돌려도 오류를 띄우지 않음
+function handleRecordExampleChange() {
+  const field = getRecordField(recordExample);
+  if (recordExample.value !== '' || field.classList.contains('is-invalid')) {
+    validateRecordExample();
+  } else {
+    field.classList.remove('is-valid');
+  }
+  if (recordStatusType === 'invalid') updateRecordSummary();
+}
+
+// 글자 수 검사. 빈 값과 짧은 값은 다른 문구
+function validateRecordText(rule) {
+  const value = rule.input.value.trim();
+  if (value === '') return showFieldError(rule.input, `${rule.name}을 입력해 주세요.`);
+  if (value.length < rule.min) return showFieldError(rule.input, `${rule.name}을 ${rule.min}자 이상 적어 주세요.`);
+  clearFieldError(rule.input);
+  getRecordField(rule.input).classList.add('is-valid');
+  return true;
+}
+
+// 입력 중: 글자 수와 조건 충족 여부. 오류가 있던 칸만 다시 검사
+function updateRecordText(rule) {
+  const field = getRecordField(rule.input);
+  const help = field.querySelector('.field-help');
+  const length = rule.input.value.trim().length;
+  field.querySelector('.field-count').textContent = `${rule.input.value.length} / ${rule.input.maxLength}자`;
+  if (length === 0) {
+    help.textContent = help.dataset.default;
+  } else if (length < rule.min) {
+    help.textContent = `${rule.min}자 이상 적어 주세요. ${rule.min - length}자 더 필요합니다.`;
+  } else {
+    help.textContent = '입력 조건을 충족했습니다.';
+  }
+  field.classList.toggle('is-valid', length >= rule.min);
+  if (field.classList.contains('is-invalid')) validateRecordText(rule);
+  if (recordStatusType === 'invalid') updateRecordSummary();
+}
+
+// 체크했을 때만 헷갈린 부분 칸 표시. 숨기면 disabled로 제출에서 제외
+function updateQuestionField() {
+  const isOn = recordHasQuestion.checked;
+  recordHasQuestion.setAttribute('aria-expanded', String(isOn));
+  recordQuestionField.hidden = !isOn;
+  recordQuestion.disabled = !isOn;
+  if (!isOn) clearFieldError(recordQuestion);
+  if (recordStatusType === 'invalid') updateRecordSummary();
+}
+
+// 결과 문구와 색
+function showRecordStatus(message, result) {
+  recordStatusType = result;
+  recordStatus.textContent = message;
+  recordStatus.classList.toggle('is-loading', result === 'loading');
+  recordStatus.classList.toggle('is-success', result === 'success');
+  recordStatus.classList.toggle('is-error', result === 'error' || result === 'invalid');
+}
+
+// 오류가 남은 항목을 안내. 모두 고치면 문구를 지우고 0을 돌려줌
+function updateRecordSummary() {
+  const invalid = [recordExample, recordLearned, recordQuestion].filter(function (input) {
+    return !input.disabled && getRecordField(input).classList.contains('is-invalid');
+  });
+  if (invalid.length === 0) {
+    showRecordStatus('', 'none');
+  } else {
+    showRecordStatus(`${invalid.length}개 항목을 확인해 주세요: ${invalid.map(input => recordFieldNames[input.id]).join(', ')}`, 'invalid');
+  }
+  return invalid;
+}
+
+// 버튼 상태: idle 기본, loading 저장 중, retry 실패 후
+function setRecordSubmitState(state) {
+  isRecordSaving = state === 'loading';
+  recordSubmit.disabled = isRecordSaving;
+  recordReset.disabled = isRecordSaving;
+  recordForm.setAttribute('aria-busy', String(isRecordSaving));
+  if (state === 'loading') {
+    recordSubmitLabel.textContent = '저장 중…';
+  } else if (state === 'retry') {
+    recordSubmitLabel.textContent = '다시 저장하기';
+  } else {
+    recordSubmitLabel.textContent = '기록 저장하기';
+  }
+}
+
+// 브라우저 저장소에서 기록 읽기. 쓸 수 없거나 값이 깨졌으면 빈 목록
+function loadRecords() {
+  try {
+    const records = JSON.parse(localStorage.getItem(recordStorageKey));
+    return Array.isArray(records) ? records : [];
+  } catch (error) {
+    return [];
+  }
+}
+
+// 기록 저장. 저장소를 쓸 수 없으면 false (사이트 데이터 차단, 저장 공간 부족 등)
+function saveRecord(record) {
+  try {
+    const records = loadRecords();
+    records.unshift(record);
+    localStorage.setItem(recordStorageKey, JSON.stringify(records));
+    return true;
+  } catch (error) {
+    return false;
+  }
+}
+
+function getExampleName(value) {
+  const option = [...recordExample.options].find(item => item.value === value && value !== '');
+  return option ? option.textContent : '예제';
+}
+
+function formatRecordTime(time) {
+  const date = new Date(time);
+  const pad = number => String(number).padStart(2, '0');
+  return `${date.getMonth() + 1}월 ${date.getDate()}일 ${pad(date.getHours())}:${pad(date.getMinutes())}`;
+}
+
+// 저장한 기록 목록. 최근 기록부터 표시
+function renderRecords(isNew) {
+  const records = loadRecords();
+  recordList.replaceChildren();
+  records.slice(0, recordShowCount).forEach(function (record, index) {
+    const item = recordTemplate.content.firstElementChild.cloneNode(true);
+    const time = item.querySelector('[data-record="time"]');
+    const question = item.querySelector('[data-record="question"]');
+    item.querySelector('[data-record="example"]').textContent = getExampleName(record.example);
+    item.querySelector('[data-record="learned"]').textContent = record.learned;
+    time.textContent = formatRecordTime(record.savedAt);
+    time.dateTime = new Date(record.savedAt).toISOString();
+    question.textContent = record.question ? `헷갈린 부분: ${record.question}` : '';
+    question.hidden = !record.question;
+    item.classList.toggle('is-new', isNew && index === 0);
+    recordList.append(item);
+  });
+  recordCount.textContent = records.length > recordShowCount ? `${records.length}개 · 최근 ${recordShowCount}개` : `${records.length}개`;
+  recordEmpty.hidden = records.length > 0;
+  recordList.hidden = records.length === 0;
+}
+
+// 입력값, 조건부 칸, 오류, 글자 수 초기화
+function clearRecordForm() {
+  recordForm.reset();
+  updateQuestionField();
+  [recordExample, recordLearned, recordQuestion].forEach(function (input) {
+    clearFieldError(input);
+    getRecordField(input).classList.remove('is-valid');
+  });
+  updateRecordText(recordTextRules.learned);
+  updateRecordText(recordTextRules.question);
+}
+
+// 저장 결과 처리. 실패하면 입력값 유지, 다시 저장 가능
+function finishRecordSave(data) {
+  const record = {
+    example: data.get('example'),
+    learned: data.get('learned').trim(),
+    question: data.has('question') ? data.get('question').trim() : '',
+    savedAt: Date.now()
+  };
+  if (!saveRecord(record)) {
+    setRecordSubmitState('retry');
+    showRecordStatus('저장하지 못했습니다. 브라우저 저장소를 쓸 수 없습니다. 입력한 내용은 그대로 있으니 다시 저장해 주세요.', 'error');
+    recordSubmit.focus();
+    return;
+  }
+  renderRecords(true);
+  clearRecordForm();
+  setRecordSubmitState('idle');
+  showRecordStatus('학습 기록을 저장했습니다. 저장한 기록 목록에서 볼 수 있습니다.', 'success');
+  recordStatus.focus();
+}
+
+// 제출: 모든 칸을 검사하고, 오류가 있으면 저장하지 않고 첫 오류 칸으로 이동
+function handleRecordSubmit(event) {
+  event.preventDefault();
+  if (isRecordSaving) return;
+  validateRecordExample();
+  validateRecordText(recordTextRules.learned);
+  if (!recordQuestion.disabled) validateRecordText(recordTextRules.question);
+  const invalid = updateRecordSummary();
+  if (invalid.length > 0) {
+    invalid[0].focus();
+    return;
+  }
+  // disabled인 칸은 FormData에 들어가지 않음
+  const data = new FormData(recordForm);
+  setRecordSubmitState('loading');
+  showRecordStatus('학습 기록을 저장하고 있습니다.', 'loading');
+  setTimeout(function () {
+    finishRecordSave(data);
+  }, recordSaveDelay);
+}
+
+// 다시 작성: 입력값, 안내 문구, 버튼 상태 초기화
+function handleRecordReset() {
+  clearRecordForm();
+  showRecordStatus('', 'none');
+  setRecordSubmitState('idle');
+  recordExample.focus();
+}
+
+// 계획 완료 화면에서 오면 계획의 예제를 미리 선택 (비어 있을 때만)
+function handlePlanRecordClick() {
+  const example = document.querySelector('input[name="plan-example"]:checked');
+  if (example !== null && recordExample.value === '') {
+    recordExample.value = example.value;
+    validateRecordExample();
+  }
+  // 주소 이동 후 배운 점 칸으로 초점 이동
+  setTimeout(() => recordLearned.focus({ preventScroll: true }));
+}
+
+document.querySelectorAll('#record-form .field-help').forEach(function (help) {
+  help.dataset.default = help.textContent;
+});
+recordExample.addEventListener('change', handleRecordExampleChange);
+recordLearned.addEventListener('input', function () {
+  updateRecordText(recordTextRules.learned);
+});
+recordQuestion.addEventListener('input', function () {
+  updateRecordText(recordTextRules.question);
+});
+recordHasQuestion.addEventListener('change', updateQuestionField);
+recordForm.addEventListener('submit', handleRecordSubmit);
+recordReset.addEventListener('click', handleRecordReset);
+document.querySelector('#plan-record').addEventListener('click', handlePlanRecordClick);
+
+recordSubmit.disabled = false;
+updateQuestionField();
+renderRecords(false);

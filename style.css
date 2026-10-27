@@ -212,8 +212,61 @@
 .quiz-confirm .plan-actions { margin-top: 12px; }
 #quiz-stop { background-color: #a1372b; color: #fff; }
 
+/* 9주차: 학습 기록 영역, 저장한 기록 목록 */
+.plan-record { margin-top: 14px; }
+.record-section { margin-top: 30px; border-radius: 12px; background-color: #e9eedf; }
+.record-section .eyebrow { font-size: 8px; margin-bottom: 9px; color: #647a4a; }
+.record-saved { margin-top: 26px; }
+.record-saved h3 { margin: 0 0 10px; font-size: 15px; }
+#record-count { color: var(--green); }
+#record-empty { margin: 0; padding: 14px; border: 1px dashed #b9c8a8; border-radius: 8px; font-size: 12px; color: var(--muted); }
+.record-list { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.record-item { min-width: 0; padding: 14px 16px; border: 1px solid var(--line); border-radius: 8px; background-color: #fff; overflow-wrap: anywhere; transition: border-color .2s ease, box-shadow .2s ease; }
+.record-item.is-new { border-color: var(--green); box-shadow: 0 0 0 1px var(--green); }
+.record-item p { margin: 0; font-size: 13px; }
+.record-item .record-item-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 10px; margin-bottom: 4px; font-size: 12px; }
+.record-item-head strong { color: var(--green); }
+.record-item-head time { color: var(--muted); }
+.record-item .record-item-question { margin-top: 6px; font-size: 12px; color: #8a5a12; }
+
+/* 9주차: 입력 필드 상태 (기본·초점·성공·오류) */
+.record-form { min-width: 0; padding: 25px; border: 1px solid var(--line); border-radius: 9px; background-color: var(--paper); }
+.record-form[aria-busy="true"] { cursor: progress; }
+.record-field { margin-top: 10px; }
+.record-field label { display: block; margin-bottom: 8px; font-size: 13px; font-weight: 700; }
+.record-field label span { font-size: 11px; font-weight: 400; color: var(--muted); }
+#record-example, .record-field textarea { display: block; width: 100%; min-height: 46px; padding: 10px 13px; border: 1px solid #a5b39a; border-radius: 5px; background-color: #fff; color: var(--ink); font: inherit; font-size: 16px; transition: border-color .2s ease, background-color .2s ease; }
+.record-field textarea { resize: vertical; line-height: 1.6; }
+.record-field textarea::placeholder { color: #687466; font-size: 13px; }
+#record-example:hover, .record-field textarea:hover { border-color: #718e31; }
+#record-example:focus-visible, .record-field textarea:focus-visible { outline: 3px solid #718e31; outline-offset: 3px; }
+.field-meta { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+.record-form .field-help { margin: 6px 0 0; font-size: 11px; color: var(--muted); }
+.field-count { flex: none; font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.field-error { min-height: 20px; margin: 4px 0 0; font-size: 12px; font-weight: 700; color: #a1372b; }
+.record-field.is-valid #record-example, .record-field.is-valid textarea { border-color: var(--green); }
+.record-field.is-valid .field-help { color: var(--green); font-weight: 700; }
+.record-field.is-invalid #record-example, .record-field.is-invalid textarea { border-color: #a1372b; background-color: #fdf6f5; }
+.record-check { margin-top: 4px; }
+.record-form > .plan-help { margin-bottom: 4px; }
+.record-toggle { display: inline-flex; align-items: center; gap: 8px; padding: 7px 12px; border: 1px solid #a5b39a; border-radius: 6px; background-color: #fff; color: var(--green); font-size: 13px; font-weight: 700; cursor: pointer; transition: background-color .2s ease, border-color .2s ease; }
+.record-toggle:hover { border-color: #718e31; }
+.record-toggle input { width: 18px; height: 18px; margin: 0; accent-color: var(--green); cursor: pointer; }
+.record-toggle:has(input:checked) { border-color: var(--green); background-color: #edf2e4; }
+.record-extra { padding: 14px 14px 4px; border-left: 3px solid #c79a3e; border-radius: 0 8px 8px 0; background-color: #fff; }
+
+/* 9주차: 저장 중·완료·실패 */
+.record-status { margin: 14px 0 0; padding: 10px 14px; border: 1px solid var(--line); border-radius: 6px; background-color: #fff; font-size: 12px; font-weight: 700; color: var(--muted); }
+.record-status:empty { display: none; }
+.record-status.is-loading { border-color: #b9c8a8; color: var(--green); }
+.record-status.is-success { border-color: #b9c8a8; background-color: #edf2e4; color: var(--green); }
+.record-status.is-error { border-color: #e7b9b2; background-color: #fbecea; color: #a1372b; }
+.record-status:focus-visible { outline: 3px solid #718e31; outline-offset: 3px; }
+#record-submit:disabled { cursor: progress; opacity: .6; }
+#record-reset:disabled { cursor: default; opacity: .45; }
+
 @media (prefers-reduced-motion: reduce) {
-  .header nav a, .primary-link, .interaction-button, .feature-card, #learning-goal, .demo-tab, .step-check, .steps-progress, #steps-bar, #goal-count, .plan-flow, .plan-track li, .plan-option, #plan-time, .plan-back, .quiz-item { transition: none; }
+  .header nav a, .primary-link, .interaction-button, .feature-card, #learning-goal, .demo-tab, .step-check, .steps-progress, #steps-bar, #goal-count, .plan-flow, .plan-track li, .plan-option, #plan-time, .plan-back, .quiz-item, .record-item, #record-example, .record-field textarea, .record-toggle { transition: none; }
 }
 
 /* 4주차: 768px 이하 모바일 레이아웃 */
@@ -314,4 +367,11 @@
   /* 중간고사: 퀴즈 여백, 버튼 높이 */
   .quiz-item { padding: 14px 12px; }
   .quiz-cancel { min-height: 48px; }
+
+  /* 9주차: 학습 기록 여백, 버튼 높이 */
+  .record-section { margin-top: 24px; }
+  .record-form { padding: 20px 16px; }
+  .record-toggle, #record-reset, #record-submit { min-height: 48px; }
+  .plan-record { display: inline-flex; align-items: center; min-height: 44px; }
+  .field-meta { flex-wrap: wrap; gap: 0 12px; }
 }

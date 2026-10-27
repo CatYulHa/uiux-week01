@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="하율의 UI/UX 프로그래밍 중간고사 과제. 학습 계획 뒤에 이해도 확인 퀴즈를 추가했습니다.">
-  <title>UI/UX 프로그래밍 · 중간고사 과제</title>
+  <meta name="description" content="하율의 UI/UX 프로그래밍 9주차 과제. 학습 기록 폼을 추가했습니다.">
+  <title>UI/UX 프로그래밍 · 9주차 과제</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="service-page">
   <!-- UX 기획
     사용자: UI/UX를 처음 배우는 학습자
     목적: 예제를 눌러 보며 UI/UX 기초를 익힌다
-    핵심 행동: 학습 계획을 세우고 퀴즈로 이해했는지 확인한다
-    정보 순서: 제목 → 과제 소개 → 실습 내용 → 실습 순서 → 학습 계획 → 작성자 정보
+    핵심 행동: 학습 계획을 세우고 퀴즈로 확인한 뒤 학습 기록을 남긴다
+    정보 순서: 제목 → 과제 소개 → 실습 내용 → 실습 순서 → 학습 계획 → 학습 기록 → 작성자 정보
     3주차 CSS: 글자 크기와 색으로 위계 구분, Flexbox 배치, hover·focus·active 상태
     4주차 반응형: viewport, 유동 너비, Grid, 768px 이하 한 열 배치
     5주차 JavaScript: 학습 목표 제출 검사, 문구·색·버튼 상태로 결과 표시
@@ -21,6 +21,8 @@
     필수값이 비면 현재 단계 유지, 이전은 값 유지, 다시 세우기는 초기화
     중간고사: 계획 완료 → 이해도 퀴즈 → 채점 → 틀린 문제 다시 풀기 → 통과
     답하지 않은 문제 안내, 계획 보기는 답 유지, 그만두기는 확인 후 초기화
+    9주차 폼: 학습 기록(예제 선택, 배운 점, 헷갈린 부분은 체크할 때만)
+    입력 중 글자 수·조건 표시, 오류 문구, 저장 중·완료·실패, 브라우저에 저장
   -->
   <a class="skip-link" href="#main">본문 바로가기</a>
   <header id="top">
@@ -31,37 +33,38 @@
         <a href="#features">실습 내용</a>
         <a href="#steps">실습 순서</a>
         <a href="#start">학습 계획</a>
+        <a href="#record">학습 기록</a>
       </nav>
-      <span class="week-label">WEEK 08</span>
+      <span class="week-label">WEEK 09</span>
     </div>
     <div class="hero wrap">
       <div class="hero-copy">
-        <p class="eyebrow"><span class="dot"></span> UI/UX PROGRAMMING · WEEK 08</p>
-        <h1>UI/UX 프로그래밍<span class="hero-tagline">중간고사 과제</span></h1>
-        <p class="hero-description">학습 계획과 이해도 확인 퀴즈</p>
+        <p class="eyebrow"><span class="dot"></span> UI/UX PROGRAMMING · WEEK 09</p>
+        <h1>UI/UX 프로그래밍<span class="hero-tagline">9주차 과제</span></h1>
+        <p class="hero-description">폼 UI와 입력 경험 설계</p>
         <a class="primary-link" href="#start" data-plan-start>학습 계획 세우기 <span aria-hidden="true">↗</span></a>
         <a class="secondary-link" href="#about">과제 내용 보기 ↓</a>
-        <div class="student"><span class="avatar" aria-hidden="true">하</span><div><strong>하율</strong><span>12406050 · UI/UX 프로그래밍 · 중간고사</span></div></div>
+        <div class="student"><span class="avatar" aria-hidden="true">하</span><div><strong>하율</strong><span>12406050 · UI/UX 프로그래밍 · 9주차</span></div></div>
       </div>
       <div class="hero-art" aria-hidden="true">
         <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
-        <span class="floating-label label-html">① 계획</span>
+        <span class="floating-label label-html">① 입력</span>
         <div class="browser-card">
           <div class="browser-top"><span></span><span></span><span></span><small>script.js</small></div>
-          <div class="browser-body"><span class="mini-tag">WEEK 08 · MIDTERM</span><p class="art-title">계획부터 퀴즈까지<br>이어지는 흐름</p><div class="mock-line"></div><div class="mock-line short"></div><div class="mock-cards"><span>구조<br><b>HTML</b></span><span>표현<br><b>CSS</b></span><span>동작<br><b>JS</b></span></div><div class="mock-button">학습 계획 세우기 <span>↗</span></div></div>
+          <div class="browser-body"><span class="mini-tag">WEEK 09 · FORM</span><p class="art-title">입력부터 저장까지<br>이어지는 폼</p><div class="mock-line"></div><div class="mock-line short"></div><div class="mock-cards"><span>구조<br><b>HTML</b></span><span>표현<br><b>CSS</b></span><span>동작<br><b>JS</b></span></div><div class="mock-button">기록 저장하기 <span>↗</span></div></div>
         </div>
-        <span class="floating-label label-css">② 퀴즈</span><span class="floating-label label-js">③ 통과</span><span class="art-caption">HTML · CSS · JAVASCRIPT</span>
+        <span class="floating-label label-css">② 검증</span><span class="floating-label label-js">③ 저장</span><span class="art-caption">HTML · CSS · JAVASCRIPT</span>
       </div>
     </div>
   </header>
 
   <main id="main">
-    <div class="topic-strip"><div class="wrap"><span>WEEK 08 / MIDTERM</span><p>계획 완료 → 퀴즈 → 채점 → 다시 풀기 → 통과</p><span aria-hidden="true">✳</span></div></div>
+    <div class="topic-strip"><div class="wrap"><span>WEEK 09 / FORM UX</span><p>입력 → 검사 → 오류 수정 → 저장 중 → 완료</p><span aria-hidden="true">✳</span></div></div>
 
     <section class="section wrap" id="about" aria-labelledby="about-title">
-      <div class="section-heading"><div><p class="eyebrow">01 — ASSIGNMENT</p><h2 id="about-title">과제 소개</h2></div><p>7주차 학습 계획 뒤에 이해도 확인 퀴즈를 추가했습니다.</p></div>
+      <div class="section-heading"><div><p class="eyebrow">01 — ASSIGNMENT</p><h2 id="about-title">과제 소개</h2></div><p>학습 기록 폼을 추가했습니다.</p></div>
       <div class="about-layout">
-        <div class="about-copy"><h3>학습 계획과 이해도 확인 퀴즈</h3><p>계획을 확정하면 고른 예제의 퀴즈 3문제를 풀 수 있습니다.</p><p>채점하면 문제마다 정답과 오답이 표시되고, 틀린 문제만 다시 풉니다.</p><a class="text-link" href="#features">실습 내용 보기 <span aria-hidden="true">↓</span></a></div>
+        <div class="about-copy"><h3>폼 UI와 입력 경험 설계</h3><p>실습한 예제와 오늘 배운 점을 남기는 학습 기록 폼을 만들었습니다.</p><p>입력 조건, 오류 문구, 저장 중·완료·실패 상태를 화면에 표시합니다.</p><a class="text-link" href="#record">학습 기록 보기 <span aria-hidden="true">↓</span></a></div>
         <figure class="service-preview">
           <img src="assets/images/service.png" alt="UI와 UX를 비교하는 예제 화면" width="1118" height="527" loading="lazy">
           <figcaption><span class="dot" aria-hidden="true"></span>실습 화면 · UI와 UX 비교하기</figcaption>
@@ -213,6 +216,7 @@
             <button class="interaction-button" id="plan-quiz" type="button"><span class="button-label">이해도 퀴즈 풀기</span> <span class="button-icon" aria-hidden="true">→</span></button>
             <button class="plan-back" id="plan-restart" type="button">다시 세우기</button>
           </div>
+          <a class="text-link plan-record" id="plan-record" href="#record">학습 기록 남기기 <span aria-hidden="true">↓</span></a>
         </div>
 
         <!-- 중간고사: 이해도 확인 퀴즈. 고른 예제의 문제만 표시 -->
@@ -315,9 +319,72 @@
         </section>
       </div>
     </section>
+
+    <!-- 9주차: 학습 기록 폼. 입력 조건 안내, 조건부 입력, 저장 중·완료·실패 -->
+    <section class="wrap start-section record-section" id="record" aria-labelledby="record-title">
+      <div class="start-copy">
+        <p class="eyebrow">05 — RECORD</p><h2 id="record-title">학습 기록</h2>
+        <p>실습한 예제와 오늘 배운 점을 남깁니다. 기록은 이 브라우저에 저장됩니다.</p>
+        <div class="record-saved">
+          <h3 id="record-list-title">저장한 기록 <span id="record-count">0개</span></h3>
+          <p id="record-empty">아직 저장한 기록이 없습니다.</p>
+          <ol class="record-list" id="record-list" aria-labelledby="record-list-title" hidden></ol>
+          <template id="record-template">
+            <li class="record-item">
+              <p class="record-item-head"><strong data-record="example"></strong> <time data-record="time"></time></p>
+              <p data-record="learned"></p>
+              <p class="record-item-question" data-record="question"></p>
+            </li>
+          </template>
+        </div>
+      </div>
+
+      <form class="record-form" id="record-form" action="#record" method="get" aria-busy="false" novalidate>
+        <h3 class="plan-title">오늘의 학습 기록</h3>
+        <p class="plan-help">(필수) 표시 항목을 모두 채우고 저장하세요.</p>
+
+        <div class="record-field" id="record-example-field">
+          <label for="record-example">실습한 예제 <span>(필수)</span></label>
+          <select id="record-example" name="example" required aria-describedby="record-example-help record-example-error">
+            <option value="">예제를 고르세요</option>
+            <option value="concept">UI와 UX 비교하기</option>
+            <option value="structure">코드 예제 바꿔보기</option>
+            <option value="practice">클릭과 피드백 체험하기</option>
+          </select>
+          <p class="field-help" id="record-example-help">실습 내용의 예제 3개 중 하나를 고르세요.</p>
+          <p class="field-error" id="record-example-error" role="alert"></p>
+        </div>
+
+        <div class="record-field" id="record-learned-field">
+          <label for="record-learned">오늘 배운 점 <span>(필수)</span></label>
+          <textarea id="record-learned" name="learned" rows="4" minlength="10" maxlength="200" required placeholder="예: UI는 화면 요소이고 UX는 사용하는 과정 전체다." aria-describedby="record-learned-help record-learned-error"></textarea>
+          <div class="field-meta"><p class="field-help" id="record-learned-help">10자 이상 적어 주세요.</p><span class="field-count" id="record-learned-count">0 / 200자</span></div>
+          <p class="field-error" id="record-learned-error" role="alert"></p>
+        </div>
+
+        <div class="record-check">
+          <label class="record-toggle"><input type="checkbox" id="record-has-question" name="hasQuestion" value="yes" aria-controls="record-question-field" aria-expanded="false" aria-describedby="record-has-question-help"> 헷갈린 부분이 있어요</label>
+          <p class="field-help" id="record-has-question-help">체크하면 헷갈린 부분을 적는 칸이 나타납니다.</p>
+        </div>
+
+        <div class="record-field record-extra" id="record-question-field" hidden>
+          <label for="record-question">헷갈린 부분 <span>(필수)</span></label>
+          <textarea id="record-question" name="question" rows="3" minlength="5" maxlength="100" required disabled placeholder="예: aria-describedby를 어디에 쓰는지 헷갈린다." aria-describedby="record-question-help record-question-error"></textarea>
+          <div class="field-meta"><p class="field-help" id="record-question-help">다음에 다시 볼 수 있게 5자 이상 적어 주세요.</p><span class="field-count" id="record-question-count">0 / 100자</span></div>
+          <p class="field-error" id="record-question-error" role="alert"></p>
+        </div>
+
+        <p class="record-status" id="record-status" role="status" aria-live="polite" tabindex="-1"></p>
+        <div class="plan-actions">
+          <button class="plan-back" id="record-reset" type="button">다시 작성</button>
+          <button class="interaction-button" id="record-submit" type="submit" disabled><span class="button-label">기록 저장하기</span> <span class="button-icon" aria-hidden="true">↗</span></button>
+        </div>
+        <noscript><p>학습 기록은 JavaScript가 켜져 있어야 저장할 수 있습니다.</p></noscript>
+      </form>
+    </section>
   </main>
 
-  <footer class="wrap footer"><a class="logo service-logo" href="#top">HY<span>↗</span></a><p>UI/UX 프로그래밍 · 중간고사 과제<br><span>하율 · 12406050 · 2026</span></p><a class="back-top" href="#top">맨 위로 ↑</a></footer>
+  <footer class="wrap footer"><a class="logo service-logo" href="#top">HY<span>↗</span></a><p>UI/UX 프로그래밍 · 9주차 과제<br><span>하율 · 12406050 · 2026</span></p><a class="back-top" href="#top">맨 위로 ↑</a></footer>
 
   <!-- 5주차: body 끝에서 JavaScript 연결 -->
   <script src="script.js"></script>
