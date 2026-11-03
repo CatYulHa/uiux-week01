@@ -8,7 +8,7 @@
   <script>
     // 예전 주소를 index.html의 같은 위치로 연결
     const destination = new URL('index.html', location.href);
-    const sections = ['#concept', '#structure', '#practice', '#about', '#features', '#steps', '#start'];
+    const sections = ['#concept', '#structure', '#practice', '#about', '#features', '#steps', '#start', '#record'];
     destination.hash = sections.includes(location.hash) ? location.hash : '#features';
     location.replace(destination.href);
   </script>

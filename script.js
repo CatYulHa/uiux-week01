@@ -694,8 +694,15 @@ const recordSubmitLabel = recordSubmit.querySelector('.button-label');
 const recordReset = document.querySelector('#record-reset');
 const recordList = document.querySelector('#record-list');
 const recordEmpty = document.querySelector('#record-empty');
-const recordCount = document.querySelector('#record-count');
 const recordTemplate = document.querySelector('#record-template');
+// 10주차: 기록 필터, 결과 수, 빈 결과 안내
+const recordFilter = document.querySelector('#record-filter');
+const recordFilterButtons = document.querySelectorAll('.filter-button');
+const recordResult = document.querySelector('#record-result');
+const recordEmptyTitle = document.querySelector('#record-empty-title');
+const recordEmptyHelp = document.querySelector('#record-empty-help');
+const recordEmptyWrite = document.querySelector('#record-empty-write');
+const recordEmptyAll = document.querySelector('#record-empty-all');
 
 // String: 브라우저 저장 키
 const recordStorageKey = 'hy-uiux-records';
@@ -715,6 +722,8 @@ const recordFieldNames = {
 };
 // Boolean: 저장 중인지
 let isRecordSaving = false;
+// String: 고른 필터. all은 전체, 나머지는 예제 값(concept, structure, practice)
+let currentRecordFilter = 'all';
 // String: 결과 문구 종류 (none, invalid 입력 확인, loading, success, error)
 let recordStatusType = 'none';
 
@@ -866,11 +875,42 @@ function formatRecordTime(time) {
   return `${date.getMonth() + 1}월 ${date.getDate()}일 ${pad(date.getHours())}:${pad(date.getMinutes())}`;
 }
 
-// 저장한 기록 목록. 최근 기록부터 표시
+// 10주차: 고른 예제의 기록만 남김. all이면 전체
+function getVisibleRecords(records) {
+  if (currentRecordFilter === 'all') return records;
+  return records.filter(record => record.example === currentRecordFilter);
+}
+
+// 10주차: 지금 보이는 기록 수 안내
+function updateRecordResult(total, matched, shown) {
+  const name = currentRecordFilter === 'all' ? '전체' : getExampleName(currentRecordFilter);
+  const count = matched > shown ? `${matched}개 중 최근 ${shown}개 표시` : `${shown}개 표시`;
+  recordResult.textContent = currentRecordFilter === 'all' ? `${name} ${count}` : `${name} ${count} · 전체 ${total}개`;
+}
+
+// 10주차: 빈 결과 안내. 기록이 하나도 없을 때와 고른 예제의 기록만 없을 때를 나눔
+function updateRecordEmpty(total, matched) {
+  const isFilteredEmpty = total > 0 && matched === 0;
+  recordEmpty.hidden = matched > 0;
+  recordEmpty.classList.toggle('is-filtered', isFilteredEmpty);
+  if (isFilteredEmpty) {
+    recordEmptyTitle.textContent = `${getExampleName(currentRecordFilter)} 기록이 없습니다.`;
+    recordEmptyHelp.textContent = '다른 예제를 고르거나 전체 기록을 보세요.';
+  } else {
+    recordEmptyTitle.textContent = '아직 저장한 기록이 없습니다.';
+    recordEmptyHelp.textContent = '실습한 예제와 배운 점을 적어 첫 기록을 남겨 보세요.';
+  }
+  recordEmptyWrite.hidden = isFilteredEmpty;
+  recordEmptyAll.hidden = !isFilteredEmpty;
+}
+
+// 저장한 기록 목록. 고른 예제의 기록을 최근 것부터 표시
 function renderRecords(isNew) {
   const records = loadRecords();
+  const matched = getVisibleRecords(records);
+  const shown = matched.slice(0, recordShowCount);
   recordList.replaceChildren();
-  records.slice(0, recordShowCount).forEach(function (record, index) {
+  shown.forEach(function (record, index) {
     const item = recordTemplate.content.firstElementChild.cloneNode(true);
     const time = item.querySelector('[data-record="time"]');
     const question = item.querySelector('[data-record="question"]');
@@ -883,9 +923,23 @@ function renderRecords(isNew) {
     item.classList.toggle('is-new', isNew && index === 0);
     recordList.append(item);
   });
-  recordCount.textContent = records.length > recordShowCount ? `${records.length}개 · 최근 ${recordShowCount}개` : `${records.length}개`;
-  recordEmpty.hidden = records.length > 0;
-  recordList.hidden = records.length === 0;
+  updateRecordResult(records.length, matched.length, shown.length);
+  updateRecordEmpty(records.length, matched.length);
+  recordList.hidden = shown.length === 0;
+}
+
+// 10주차: 필터 버튼의 선택 표시와 aria-pressed 변경
+function selectRecordFilter(filter) {
+  currentRecordFilter = filter;
+  recordFilterButtons.forEach(function (button) {
+    button.setAttribute('aria-pressed', String(button.dataset.filter === filter));
+  });
+}
+
+// 10주차: 필터를 고르면 선택 표시와 목록을 함께 바꿈
+function setRecordFilter(filter) {
+  selectRecordFilter(filter);
+  renderRecords(false);
 }
 
 // 입력값, 조건부 칸, 오류, 글자 수 초기화
@@ -914,10 +968,17 @@ function finishRecordSave(data) {
     recordSubmit.focus();
     return;
   }
+  // 10주차: 고른 필터에 새 기록이 안 보이면 전체 보기로 바꿈
+  const isHiddenByFilter = currentRecordFilter !== 'all' && currentRecordFilter !== record.example;
+  if (isHiddenByFilter) selectRecordFilter('all');
   renderRecords(true);
   clearRecordForm();
   setRecordSubmitState('idle');
-  showRecordStatus('학습 기록을 저장했습니다. 저장한 기록 목록에서 볼 수 있습니다.', 'success');
+  if (isHiddenByFilter) {
+    showRecordStatus('학습 기록을 저장했습니다. 새 기록이 보이도록 전체 보기로 바꿨습니다.', 'success');
+  } else {
+    showRecordStatus('학습 기록을 저장했습니다. 저장한 기록 목록에서 볼 수 있습니다.', 'success');
+  }
   recordStatus.focus();
 }
 
@@ -976,6 +1037,141 @@ recordForm.addEventListener('submit', handleRecordSubmit);
 recordReset.addEventListener('click', handleRecordReset);
 document.querySelector('#plan-record').addEventListener('click', handlePlanRecordClick);
 
+recordFilterButtons.forEach(function (button) {
+  button.addEventListener('click', function () {
+    setRecordFilter(button.dataset.filter);
+  });
+});
+// 빈 결과의 다음 행동: 전체 기록 보기, 첫 기록 남기기
+recordEmptyAll.addEventListener('click', function () {
+  setRecordFilter('all');
+  document.querySelector('.filter-button[data-filter="all"]').focus();
+});
+recordEmptyWrite.addEventListener('click', function () {
+  recordExample.focus();
+});
+
 recordSubmit.disabled = false;
+recordFilter.hidden = false;
 updateQuestionField();
 renderRecords(false);
+
+// 10주차: 상단 메뉴 (현재 위치 표시, 모바일 메뉴 열기·닫기)
+const siteHeader = document.querySelector('.site-header');
+const mainNav = document.querySelector('#main-nav');
+const menuToggle = document.querySelector('#menu-toggle');
+const menuToggleLabel = menuToggle.querySelector('.menu-label');
+const navLinks = [...mainNav.querySelectorAll('a')];
+// Array: 메뉴가 가리키는 영역 (#about, #features, #steps, #start, #record)
+const navSections = navLinks.map(link => document.querySelector(link.hash));
+// MediaQueryList: 메뉴 버튼을 쓰는 좁은 화면
+const narrowScreen = window.matchMedia('(max-width: 768px)');
+// Number: 스크롤이 멈춘 뒤 현재 위치를 다시 계산하기까지 기다리는 시간(ms)
+const navScrollDelay = 150;
+let navScrollTimer = 0;
+
+// 주소의 #id가 들어 있는 메뉴 영역. #concept → features, 메뉴 영역 밖(#top 등)이면 null
+function getNavSectionId(hash) {
+  let target = null;
+  try {
+    target = document.getElementById(decodeURIComponent(hash.slice(1)));
+  } catch (error) {
+    return null;
+  }
+  if (target === null) return null;
+  const section = navSections.find(item => item.contains(target));
+  return section ? section.id : null;
+}
+
+// 현재 위치 표시: 해당 메뉴에만 aria-current, 다른 메뉴에서는 제거
+function setCurrentNav(sectionId) {
+  navLinks.forEach(function (link) {
+    if (link.hash === `#${sectionId}`) {
+      link.setAttribute('aria-current', 'page');
+    } else {
+      link.removeAttribute('aria-current');
+    }
+  });
+}
+
+// 화면에 보이는 영역: 화면 위에서 40% 선을 지난 마지막 영역. 첫 화면이면 null
+function getSectionIdInView() {
+  const line = window.innerHeight * 0.4;
+  let sectionId = null;
+  navSections.forEach(function (section) {
+    if (section.getBoundingClientRect().top <= line) sectionId = section.id;
+  });
+  // 페이지 끝이라 더 내려갈 수 없을 때는 화면에 보이는 주소의 영역을 따름
+  const hashId = getNavSectionId(location.hash);
+  const isPageEnd = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+  if (isPageEnd && hashId !== null) {
+    const rect = document.getElementById(hashId).getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) return hashId;
+  }
+  return sectionId;
+}
+
+// 스크롤이 멈추면 메뉴와 주소를 보이는 영역에 맞춤. replaceState라 뒤로 가기 기록은 늘지 않음
+function syncNavWithScroll() {
+  const sectionId = getSectionIdInView();
+  setCurrentNav(sectionId);
+  if (sectionId === getNavSectionId(location.hash)) return;
+  history.replaceState(history.state, '', sectionId === null ? location.pathname + location.search : `#${sectionId}`);
+}
+
+// 메뉴 클릭·뒤로 가기로 주소가 바뀌면 바로 표시
+function handleNavHashChange() {
+  setCurrentNav(getNavSectionId(location.hash));
+}
+
+function handleNavScroll() {
+  clearTimeout(navScrollTimer);
+  navScrollTimer = setTimeout(syncNavWithScroll, navScrollDelay);
+}
+
+// 메뉴 열기·닫기: 실제 표시, 버튼 문구, aria-expanded를 함께 바꿈
+function setMenuOpen(isOpen) {
+  mainNav.classList.toggle('is-open', isOpen);
+  menuToggle.setAttribute('aria-expanded', String(isOpen));
+  menuToggleLabel.textContent = isOpen ? '메뉴 닫기' : '메뉴 열기';
+}
+
+function isMenuOpen() {
+  return menuToggle.getAttribute('aria-expanded') === 'true';
+}
+
+// Esc로 닫고 버튼으로 초점 이동
+function handleMenuKeydown(event) {
+  if (event.key !== 'Escape' || !isMenuOpen()) return;
+  setMenuOpen(false);
+  menuToggle.focus();
+}
+
+// 메뉴 밖을 누르면 닫기
+function handleMenuOutsideClick(event) {
+  if (isMenuOpen() && !siteHeader.contains(event.target)) setMenuOpen(false);
+}
+
+menuToggle.addEventListener('click', function () {
+  setMenuOpen(!isMenuOpen());
+});
+// 목적지를 고르면 메뉴를 닫음. 이동은 링크 기본 동작으로
+navLinks.forEach(function (link) {
+  link.addEventListener('click', function () {
+    setMenuOpen(false);
+  });
+});
+document.addEventListener('keydown', handleMenuKeydown);
+document.addEventListener('click', handleMenuOutsideClick);
+// 화면 폭이 바뀌면 열린 상태 초기화
+narrowScreen.addEventListener('change', function () {
+  setMenuOpen(false);
+});
+window.addEventListener('hashchange', handleNavHashChange);
+window.addEventListener('scroll', handleNavScroll, { passive: true });
+window.addEventListener('resize', handleNavScroll);
+
+// JavaScript가 켜져 있을 때만 좁은 화면에서 메뉴를 접음
+menuToggle.hidden = false;
+siteHeader.classList.add('has-menu-toggle');
+setCurrentNav(getNavSectionId(location.hash));

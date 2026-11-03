@@ -15,8 +15,8 @@ const examples = {
   js: {
     filename: 'script.js',
     description: 'JavaScript는 클릭과 입력에 반응해 화면을 바꿉니다.',
-    code: "function validateRecordText(rule) {\n  const value = rule.input.value.trim();\n  if (value === '') {\n    return showFieldError(rule.input,\n      `${rule.name}을 입력해 주세요.`);\n  }\n  if (value.length < rule.min) {\n    return showFieldError(rule.input,\n      `${rule.name}을 ${rule.min}자 이상 적어 주세요.`);\n  }\n  clearFieldError(rule.input);\n  return true;\n}",
-    analogy: '이 페이지에서 찾기 · 학습 기록 폼'
+    code: "function setCurrentNav(sectionId) {\n  navLinks.forEach(function (link) {\n    if (link.hash === `#${sectionId}`) {\n      link.setAttribute('aria-current', 'page');\n    } else {\n      link.removeAttribute('aria-current');\n    }\n  });\n}\n\nwindow.addEventListener('hashchange', function () {\n  setCurrentNav(getNavSectionId(location.hash));\n});",
+    analogy: '이 페이지에서 찾기 · 상단 주요 메뉴'
   }
 };
 
