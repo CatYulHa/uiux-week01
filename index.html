@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="하율의 UI/UX 프로그래밍 10주차 과제. 상단 메뉴, 현재 위치 표시, 학습 기록 필터를 추가했습니다.">
-  <title>UI/UX 프로그래밍 · 10주차 과제</title>
+  <meta name="description" content="하율의 UI/UX 프로그래밍 11주차 과제. 색 대비, 대체 텍스트, 버튼 이름, 키보드 조작과 초점 표시를 개선했습니다.">
+  <title>UI/UX 프로그래밍 · 11주차 과제</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="service-page">
@@ -25,6 +25,8 @@
     입력 중 글자 수·조건 표시, 오류 문구, 저장 중·완료·실패, 브라우저에 저장
     10주차 내비게이션: nav·ul·li 메뉴 5개, 보고 있는 영역을 메뉴에 표시(aria-current)
     저장한 기록을 예제별로 보기(aria-pressed), 결과 수와 빈 결과 안내, 768px 이하 메뉴 열기·닫기
+    11주차 접근성: 글자 대비 4.5:1 이상, 글자 12px 이상, 상태는 색과 기호·문구로 함께 표시
+    이미지 대체 텍스트, 기호를 뺀 링크 이름, 본문 바로가기, 초점 표시, 메뉴에 맞춘 탭 제목
   -->
   <a class="skip-link" href="#main">본문 바로가기</a>
   <!-- 10주차: 스크롤해도 보이는 상단 메뉴. 768px 이하에서는 메뉴 열기 버튼으로 펼침 -->
@@ -41,39 +43,40 @@
           <li><a href="#record">학습 기록</a></li>
         </ul>
       </nav>
-      <span class="week-label">WEEK 10</span>
+      <span class="week-label">WEEK 11</span>
     </div>
   </header>
 
-  <main id="main">
+  <!-- 11주차: 본문 바로가기로 오면 main이 초점을 받도록 tabindex="-1" -->
+  <main id="main" tabindex="-1">
     <section class="hero wrap" id="top" aria-labelledby="hero-title">
       <div class="hero-copy">
-        <p class="eyebrow"><span class="dot"></span> UI/UX PROGRAMMING · WEEK 10</p>
-        <h1 id="hero-title">UI/UX 프로그래밍<span class="hero-tagline">10주차 과제</span></h1>
-        <p class="hero-description">내비게이션 UI와 정보 탐색</p>
+        <p class="eyebrow"><span class="dot"></span> UI/UX PROGRAMMING · WEEK 11</p>
+        <h1 id="hero-title">UI/UX 프로그래밍<span class="hero-tagline">11주차 과제</span></h1>
+        <p class="hero-description">웹 접근성 개선</p>
         <a class="primary-link" href="#start" data-plan-start>학습 계획 세우기 <span aria-hidden="true">↗</span></a>
-        <a class="secondary-link" href="#about">과제 내용 보기 ↓</a>
-        <div class="student"><span class="avatar" aria-hidden="true">하</span><div><strong>하율</strong><span>12406050 · UI/UX 프로그래밍 · 10주차</span></div></div>
+        <a class="secondary-link" href="#about">과제 내용 보기 <span aria-hidden="true">↓</span></a>
+        <div class="student"><span class="avatar" aria-hidden="true">하</span><div><strong>하율</strong><span>12406050 · UI/UX 프로그래밍 · 11주차</span></div></div>
       </div>
       <div class="hero-art" aria-hidden="true">
         <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
-        <span class="floating-label label-html">① 이동</span>
+        <span class="floating-label label-html">① 대비</span>
         <div class="browser-card">
-          <div class="browser-top"><span></span><span></span><span></span><small>script.js</small></div>
-          <div class="browser-body"><span class="mini-tag">WEEK 10 · NAVIGATION</span><p class="art-title">원하는 곳으로 이동하고<br>기록을 골라 보는 메뉴</p><div class="mock-line"></div><div class="mock-line short"></div><div class="mock-cards"><span>구조<br><b>HTML</b></span><span>표현<br><b>CSS</b></span><span>동작<br><b>JS</b></span></div><div class="mock-button">학습 기록 보기 <span>↗</span></div></div>
+          <div class="browser-top"><span></span><span></span><span></span><small>style.css</small></div>
+          <div class="browser-body"><span class="mini-tag">WEEK 11 · ACCESSIBILITY</span><p class="art-title">누구나 읽고<br>조작할 수 있는 화면</p><div class="mock-line"></div><div class="mock-line short"></div><div class="mock-cards"><span>구조<br><b>HTML</b></span><span>표현<br><b>CSS</b></span><span>동작<br><b>JS</b></span></div><div class="mock-button">본문 바로가기 <span>↗</span></div></div>
         </div>
-        <span class="floating-label label-css">② 현재 위치</span><span class="floating-label label-js">③ 필터</span><span class="art-caption">HTML · CSS · JAVASCRIPT</span>
+        <span class="floating-label label-css">② 이름</span><span class="floating-label label-js">③ 키보드</span><span class="art-caption">HTML · CSS · JAVASCRIPT</span>
       </div>
     </section>
 
-    <div class="topic-strip"><div class="wrap"><span>WEEK 10 / NAVIGATION UX</span><p>메뉴 이동 → 현재 위치 → 기록 필터 → 모바일 메뉴</p><span aria-hidden="true">✳</span></div></div>
+    <div class="topic-strip"><div class="wrap"><span>WEEK 11 / ACCESSIBILITY</span><p>색 대비 → 대체 텍스트 → 이름과 라벨 → 키보드와 초점</p><span aria-hidden="true">✳</span></div></div>
 
     <section class="section wrap" id="about" aria-labelledby="about-title">
-      <div class="section-heading"><div><p class="eyebrow">01 — ASSIGNMENT</p><h2 id="about-title">과제 소개</h2></div><p>상단 메뉴와 기록 필터를 추가했습니다.</p></div>
+      <div class="section-heading"><div><p class="eyebrow">01 — ASSIGNMENT</p><h2 id="about-title">과제 소개</h2></div><p>웹 접근성 원칙을 적용했습니다.</p></div>
       <div class="about-layout">
-        <div class="about-copy"><h3>내비게이션 UI와 정보 탐색</h3><p>상단 메뉴를 목록 구조로 정리하고 지금 보고 있는 영역을 메뉴에 표시합니다.</p><p>저장한 학습 기록을 예제별로 골라 볼 수 있고, 좁은 화면에서는 메뉴를 열고 닫습니다.</p><a class="text-link" href="#record">학습 기록 보기 <span aria-hidden="true">↓</span></a></div>
+        <div class="about-copy"><h3>웹 접근성 개선</h3><p>글자 대비와 크기를 키우고, 오류·선택 상태를 색과 함께 기호와 문구로 표시합니다.</p><p>키보드만으로 메뉴, 학습 계획, 학습 기록을 이용할 수 있고 초점 위치가 늘 보입니다.</p><a class="text-link" href="#record">학습 기록 보기 <span aria-hidden="true">↓</span></a></div>
         <figure class="service-preview">
-          <img src="assets/images/service.png" alt="UI와 UX를 비교하는 예제 화면" width="1118" height="527" loading="lazy">
+          <img src="assets/images/service.png" alt="UI 카드와 UX 카드를 나란히 비교한 실습 화면. UI는 메뉴, 버튼, 입력창 같은 화면 요소이고, UX는 목표 정하기에서 개념 확인, 직접 체험으로 이어지는 과정입니다. 아래에 좋은 경험의 5가지 기준인 명확성, 일관성, 피드백, 효율성, 접근성이 있습니다." width="1118" height="527" loading="lazy">
           <figcaption><span class="dot" aria-hidden="true"></span>실습 화면 · UI와 UX 비교하기</figcaption>
         </figure>
       </div>
@@ -97,11 +100,11 @@
         <div class="demo-panel is-active" id="concept" role="tabpanel" aria-labelledby="tab-concept">
           <div class="demo-content">
             <div class="concept-grid">
-              <article class="concept-card ui-card"><div class="card-top"><span>화면에 보이는 요소</span><span class="symbol" aria-hidden="true">↗</span></div><h3>UI<span>User Interface</span></h3><p>메뉴, 버튼, 입력창처럼 화면에 보이는 것이 UI입니다.</p><div class="ui-example"><a class="example-button" href="#start" data-plan-start>학습 목표 정하기 ↗</a></div><p class="card-note">이 버튼을 누르면 목표 입력으로 이동합니다.</p></article>
+              <article class="concept-card ui-card"><div class="card-top"><span>화면에 보이는 요소</span><span class="symbol" aria-hidden="true">↗</span></div><h3>UI<span>User Interface</span></h3><p>메뉴, 버튼, 입력창처럼 화면에 보이는 것이 UI입니다.</p><div class="ui-example"><a class="example-button" href="#start" data-plan-start>학습 목표 정하기 <span aria-hidden="true">↗</span></a></div><p class="card-note">이 버튼을 누르면 목표 입력으로 이동합니다.</p></article>
               <article class="concept-card ux-card"><div class="card-top"><span>사용하는 전체 과정</span><span class="symbol" aria-hidden="true">✳</span></div><h3>UX<span>User Experience</span></h3><p>목표를 정하고 예제를 체험하는 과정 전체가 UX입니다.</p><div class="ux-example"><span>목표 정하기</span><i aria-hidden="true">→</i><span>개념 확인</span><i aria-hidden="true">→</i><span>직접 체험</span></div><p class="card-note">다음에 할 일이 바로 보이는지 확인해 보세요.</p></article>
             </div>
-            <div class="principles"><strong>좋은 UX의 5가지 기준</strong><div><span>01 명확성</span><span>02 일관성</span><span>03 피드백</span><span>04 효율성</span><span>05 접근성</span></div></div>
-            <a class="text-link demo-next" href="#structure">다음 · 코드 예제 바꿔보기 →</a>
+            <div class="principles"><strong id="principles-title">좋은 UX의 5가지 기준</strong><ol class="principle-list" aria-labelledby="principles-title"><li>01 명확성</li><li>02 일관성</li><li>03 피드백</li><li>04 효율성</li><li>05 접근성</li></ol></div>
+            <a class="text-link demo-next" href="#structure">다음 · 코드 예제 바꿔보기 <span aria-hidden="true">→</span></a>
           </div>
         </div>
         <div class="demo-panel" id="structure" role="tabpanel" aria-labelledby="tab-structure">
@@ -119,13 +122,13 @@
   &lt;a href="#features"&gt;실습 내용 보기&lt;/a&gt;
 &lt;/section&gt;</code></pre><span class="code-note" id="tech-analogy">이 페이지에서 찾기 · 과제 소개와 실습 내용 영역</span></div></div>
             </div>
-            <a class="text-link demo-next" href="#practice">다음 · 클릭과 피드백 체험하기 →</a>
+            <a class="text-link demo-next" href="#practice">다음 · 클릭과 피드백 체험하기 <span aria-hidden="true">→</span></a>
           </div>
         </div>
         <div class="demo-panel" id="practice" role="tabpanel" aria-labelledby="tab-practice">
           <div class="demo-content demo-practice">
             <div><h3>클릭과 피드백</h3><p class="practice-description">버튼을 누를 때마다 숫자와 메시지가 바뀝니다.</p><div class="feedback-flow"><span>버튼 누르기</span> → <span>화면 반응</span> → <span>결과 확인</span></div></div>
-            <div class="interaction-card"><span class="live-label"><span class="dot" aria-hidden="true"></span> TRY IT HERE</span><div class="counter"><strong id="click-count">0</strong><span>번 클릭</span></div><p id="feedback-message" role="status" aria-live="polite">아직 누르지 않았습니다.</p><button type="button" class="interaction-button" id="experience-button">클릭해 보세요 <span aria-hidden="true">↗</span></button><button type="button" class="reset-button" id="reset-button" disabled>초기화</button></div>
+            <div class="interaction-card"><span class="live-label"><span class="dot" aria-hidden="true"></span> TRY IT HERE</span><div class="counter"><strong id="click-count">0</strong><span>번 클릭</span></div><p id="feedback-message" role="status" aria-live="polite">아직 누르지 않았습니다.</p><button type="button" class="interaction-button" id="experience-button">클릭해 보세요 <span aria-hidden="true">↗</span></button><button type="button" class="reset-button" id="reset-button" disabled>횟수 초기화</button></div>
           </div>
         </div>
       </div>
@@ -407,7 +410,8 @@
     </section>
   </main>
 
-  <footer class="wrap footer"><a class="logo service-logo" href="#top">HY<span>↗</span></a><p>UI/UX 프로그래밍 · 10주차 과제<br><span>하율 · 12406050 · 2026</span></p><a class="back-top" href="#top">맨 위로 ↑</a></footer>
+  <!-- 11주차: 같은 곳으로 가는 로고 링크는 빼고 '맨 위로' 하나만 남김 -->
+  <footer class="wrap footer"><span class="logo service-logo" aria-hidden="true">HY<span>↗</span></span><p>UI/UX 프로그래밍 · 11주차 과제<br><span>하율 · 12406050 · 2026</span></p><a class="back-top" href="#top">맨 위로 <span aria-hidden="true">↑</span></a></footer>
 
   <!-- 5주차: body 끝에서 JavaScript 연결 -->
   <script src="script.js"></script>

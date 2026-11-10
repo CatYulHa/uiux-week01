@@ -15,8 +15,8 @@ const examples = {
   js: {
     filename: 'script.js',
     description: 'JavaScript는 클릭과 입력에 반응해 화면을 바꿉니다.',
-    code: "function setCurrentNav(sectionId) {\n  navLinks.forEach(function (link) {\n    if (link.hash === `#${sectionId}`) {\n      link.setAttribute('aria-current', 'page');\n    } else {\n      link.removeAttribute('aria-current');\n    }\n  });\n}\n\nwindow.addEventListener('hashchange', function () {\n  setCurrentNav(getNavSectionId(location.hash));\n});",
-    analogy: '이 페이지에서 찾기 · 상단 주요 메뉴'
+    code: "function setCurrentNav(sectionId) {\n  navLinks.forEach(function (link) {\n    if (link.hash === `#${sectionId}`) {\n      link.setAttribute('aria-current', 'page');\n    } else {\n      link.removeAttribute('aria-current');\n    }\n  });\n  const currentLink = navLinks.find(link =>\n    link.getAttribute('aria-current') === 'page');\n  document.title = currentLink\n    ? `${currentLink.textContent.trim()} | ${baseTitle}`\n    : baseTitle;\n}",
+    analogy: '이 페이지에서 찾기 · 상단 메뉴와 브라우저 탭 제목'
   }
 };
 

@@ -1069,6 +1069,8 @@ const narrowScreen = window.matchMedia('(max-width: 768px)');
 // Number: 스크롤이 멈춘 뒤 현재 위치를 다시 계산하기까지 기다리는 시간(ms)
 const navScrollDelay = 150;
 let navScrollTimer = 0;
+// String: 11주차. 기본 탭 제목. 현재 메뉴 이름을 앞에 붙임
+const baseTitle = document.title;
 
 // 주소의 #id가 들어 있는 메뉴 영역. #concept → features, 메뉴 영역 밖(#top 등)이면 null
 function getNavSectionId(hash) {
@@ -1092,6 +1094,9 @@ function setCurrentNav(sectionId) {
       link.removeAttribute('aria-current');
     }
   });
+  // 11주차: 브라우저 탭 제목도 현재 위치에 맞춤 (예: 학습 기록 | UI/UX 프로그래밍 · 11주차 과제)
+  const currentLink = navLinks.find(link => link.getAttribute('aria-current') === 'page');
+  document.title = currentLink ? `${currentLink.textContent.trim()} | ${baseTitle}` : baseTitle;
 }
 
 // 화면에 보이는 영역: 화면 위에서 40% 선을 지난 마지막 영역. 첫 화면이면 null
@@ -1152,6 +1157,11 @@ function handleMenuOutsideClick(event) {
   if (isMenuOpen() && !siteHeader.contains(event.target)) setMenuOpen(false);
 }
 
+// 11주차: Tab으로 헤더 밖으로 나가면 닫기. 열린 메뉴가 초점 받은 내용을 가리지 않게 함
+function handleMenuFocusOut(event) {
+  if (isMenuOpen() && event.relatedTarget !== null && !siteHeader.contains(event.relatedTarget)) setMenuOpen(false);
+}
+
 menuToggle.addEventListener('click', function () {
   setMenuOpen(!isMenuOpen());
 });
@@ -1163,6 +1173,7 @@ navLinks.forEach(function (link) {
 });
 document.addEventListener('keydown', handleMenuKeydown);
 document.addEventListener('click', handleMenuOutsideClick);
+siteHeader.addEventListener('focusout', handleMenuFocusOut);
 // 화면 폭이 바뀌면 열린 상태 초기화
 narrowScreen.addEventListener('change', function () {
   setMenuOpen(false);
