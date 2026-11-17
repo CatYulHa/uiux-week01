@@ -35,15 +35,20 @@ function handleTabClick(event) {
   selectDemoTab(event.currentTarget);
 }
 
+// 12주차: 방향키로 옮길 다음 위치. 예제 탭, 코드 탭(learning.js), 아코디언이 함께 씀
+// 위·아래(가로 배치면 왼쪽·오른쪽도), Home, End. 해당 키가 아니면 -1
+function getArrowIndex(key, index, length, isHorizontal) {
+  if (key === 'ArrowDown' || (isHorizontal && key === 'ArrowRight')) return (index + 1) % length;
+  if (key === 'ArrowUp' || (isHorizontal && key === 'ArrowLeft')) return (index - 1 + length) % length;
+  if (key === 'Home') return 0;
+  if (key === 'End') return length - 1;
+  return -1;
+}
+
 // 방향키, Home, End로 탭 이동
 function handleTabKeydown(event) {
   const tabList = [...demoTabs];
-  const index = tabList.indexOf(event.currentTarget);
-  let nextIndex = -1;
-  if (event.key === 'ArrowRight' || event.key === 'ArrowDown') nextIndex = (index + 1) % tabList.length;
-  if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') nextIndex = (index - 1 + tabList.length) % tabList.length;
-  if (event.key === 'Home') nextIndex = 0;
-  if (event.key === 'End') nextIndex = tabList.length - 1;
+  const nextIndex = getArrowIndex(event.key, tabList.indexOf(event.currentTarget), tabList.length, true);
   if (nextIndex === -1) return;
   event.preventDefault();
   selectDemoTab(tabList[nextIndex]);
@@ -694,7 +699,21 @@ const recordSubmitLabel = recordSubmit.querySelector('.button-label');
 const recordReset = document.querySelector('#record-reset');
 const recordList = document.querySelector('#record-list');
 const recordEmpty = document.querySelector('#record-empty');
-const recordTemplate = document.querySelector('#record-template');
+// 12주차: 카드 안내(화면 읽기용), 기록 상세 창(모달)
+const recordLive = document.querySelector('#record-live');
+const recordDialog = document.querySelector('#record-dialog');
+const recordDialogTitle = document.querySelector('#record-dialog-title');
+const recordDialogTime = document.querySelector('#record-dialog-time');
+const recordDialogBadge = document.querySelector('#record-dialog-badge');
+const recordDialogLearned = document.querySelector('#record-dialog-learned');
+const recordDialogQuestionRow = document.querySelector('#record-dialog-question-row');
+const recordDialogQuestion = document.querySelector('#record-dialog-question');
+const recordDialogActions = document.querySelector('#record-dialog-actions');
+const recordDeleteButton = document.querySelector('#record-delete');
+const recordDeleteConfirm = document.querySelector('#record-delete-confirm');
+const recordDeleteMessage = document.querySelector('#record-delete-message');
+const recordDeleteCancel = document.querySelector('#record-delete-cancel');
+const recordDeleteYes = document.querySelector('#record-delete-yes');
 // 10주차: 기록 필터, 결과 수, 빈 결과 안내
 const recordFilter = document.querySelector('#record-filter');
 const recordFilterButtons = document.querySelectorAll('.filter-button');
@@ -724,6 +743,13 @@ const recordFieldNames = {
 let isRecordSaving = false;
 // String: 고른 필터. all은 전체, 나머지는 예제 값(concept, structure, practice)
 let currentRecordFilter = 'all';
+// Object: 12주차. 복습 상태별 라벨과 버튼 문구 (헷갈린 부분이 없는 기록은 상태 없음)
+const reviewStates = {
+  todo: { label: '복습 필요', action: '복습 완료로 표시' },
+  done: { label: '복습 완료', action: '다시 복습하기' }
+};
+// String: 12주차. 상세 창에 열려 있는 기록의 id
+let openRecordId = '';
 // String: 결과 문구 종류 (none, invalid 입력 확인, loading, success, error)
 let recordStatusType = 'none';
 
@@ -852,16 +878,39 @@ function loadRecords() {
   }
 }
 
-// 기록 저장. 저장소를 쓸 수 없으면 false (사이트 데이터 차단, 저장 공간 부족 등)
-function saveRecord(record) {
+// 기록 목록 저장. 저장소를 쓸 수 없으면 false (사이트 데이터 차단, 저장 공간 부족 등)
+function saveRecords(records) {
   try {
-    const records = loadRecords();
-    records.unshift(record);
     localStorage.setItem(recordStorageKey, JSON.stringify(records));
     return true;
   } catch (error) {
     return false;
   }
+}
+
+// 새 기록을 맨 앞에 저장
+function saveRecord(record) {
+  const records = loadRecords();
+  records.unshift(record);
+  return saveRecords(records);
+}
+
+// 12주차: 기록 id는 저장한 시각(ms)
+function getRecordId(record) {
+  return String(record.savedAt);
+}
+
+function findRecord(id) {
+  return loadRecords().find(record => getRecordId(record) === id) || null;
+}
+
+// 12주차: 기록 한 건 고치기·지우기. 저장하지 못하면 false
+function updateRecord(id, changes) {
+  return saveRecords(loadRecords().map(record => (getRecordId(record) === id ? { ...record, ...changes } : record)));
+}
+
+function deleteRecord(id) {
+  return saveRecords(loadRecords().filter(record => getRecordId(record) !== id));
 }
 
 function getExampleName(value) {
@@ -904,24 +953,72 @@ function updateRecordEmpty(total, matched) {
   recordEmptyAll.hidden = !isFilteredEmpty;
 }
 
-// 저장한 기록 목록. 고른 예제의 기록을 최근 것부터 표시
+// 12주차: 태그, 클래스, 글로 요소 만들기. textContent라 입력한 글이 HTML로 해석되지 않음
+function createText(tag, className, text) {
+  const element = document.createElement(tag);
+  if (className) element.className = className;
+  element.textContent = text;
+  return element;
+}
+
+// 12주차: 카드 버튼 만들기. 모양은 .button + 변형 클래스, 할 일은 data-action, 대상 기록은 data-id
+// 카드마다 같은 글자의 버튼이 생기므로 읽는 이름(aria-label)에 어느 기록인지 덧붙임
+function createActionButton(text, variant, action, id, label) {
+  const button = createText('button', `button ${variant}`, text);
+  button.type = 'button';
+  button.dataset.action = action;
+  button.dataset.id = id;
+  button.setAttribute('aria-label', label);
+  return button;
+}
+
+// 12주차: 복습 상태. 헷갈린 부분이 있으면 todo(복습 필요) 또는 done(복습 완료), 없으면 none
+function getReviewState(record) {
+  if (!record.question) return 'none';
+  return record.reviewed ? 'done' : 'todo';
+}
+
+// 12주차: 상태 라벨. 카드와 상세 창이 함께 씀
+function createBadge(state) {
+  return createText('span', `badge badge-${state}`, reviewStates[state].label);
+}
+
+// 12주차: 기록 한 건 → 카드 한 장. 상태에 따라 클래스, 라벨, 버튼 문구가 달라짐
+function createRecordCard(record, isNew) {
+  const id = getRecordId(record);
+  const state = getReviewState(record);
+  const name = getExampleName(record.example);
+  const timeText = formatRecordTime(record.savedAt);
+  const card = document.createElement('li');
+  card.className = `record-item is-${state}`;
+  card.classList.toggle('is-new', isNew);
+
+  const head = createText('p', 'record-item-head', '');
+  const time = createText('time', '', timeText);
+  time.dateTime = new Date(record.savedAt).toISOString();
+  head.append(createText('strong', '', name), time);
+  card.append(head);
+  if (state !== 'none') card.append(createBadge(state));
+  card.append(createText('p', 'record-item-learned', record.learned));
+
+  const actions = createText('div', 'record-item-actions', '');
+  actions.append(createActionButton('자세히 보기', 'button-secondary', 'open', id, `${name} ${timeText} 기록 자세히 보기`));
+  if (state !== 'none') {
+    const actionText = reviewStates[state].action;
+    actions.append(createActionButton(actionText, 'button-text', 'toggle', id, `${name} ${timeText} 기록 ${actionText}`));
+  }
+  card.append(actions);
+  return card;
+}
+
+// 저장한 기록 목록. 고른 예제의 기록을 최근 것부터 카드로 표시
 function renderRecords(isNew) {
   const records = loadRecords();
   const matched = getVisibleRecords(records);
   const shown = matched.slice(0, recordShowCount);
   recordList.replaceChildren();
   shown.forEach(function (record, index) {
-    const item = recordTemplate.content.firstElementChild.cloneNode(true);
-    const time = item.querySelector('[data-record="time"]');
-    const question = item.querySelector('[data-record="question"]');
-    item.querySelector('[data-record="example"]').textContent = getExampleName(record.example);
-    item.querySelector('[data-record="learned"]').textContent = record.learned;
-    time.textContent = formatRecordTime(record.savedAt);
-    time.dateTime = new Date(record.savedAt).toISOString();
-    question.textContent = record.question ? `헷갈린 부분: ${record.question}` : '';
-    question.hidden = !record.question;
-    item.classList.toggle('is-new', isNew && index === 0);
-    recordList.append(item);
+    recordList.append(createRecordCard(record, isNew && index === 0));
   });
   updateRecordResult(records.length, matched.length, shown.length);
   updateRecordEmpty(records.length, matched.length);
@@ -1055,6 +1152,139 @@ recordSubmit.disabled = false;
 recordFilter.hidden = false;
 updateQuestionField();
 renderRecords(false);
+
+// 12주차: 공통 대화상자(모달). showModal로 열면 뒤 화면은 조작할 수 없고 Esc로 닫힘
+// data-dialog-close 버튼과 바깥 어두운 영역을 눌러도 닫히고, 닫으면 연 버튼으로 초점이 돌아감
+const dialogOpeners = new WeakMap();
+
+function openDialog(dialog, opener) {
+  dialogOpeners.set(dialog, opener);
+  dialog.showModal();
+}
+
+// getFallbackFocus: 연 버튼이 사라졌을 때(기록 삭제 등) 초점을 보낼 요소를 돌려주는 함수
+function setupDialog(dialog, getFallbackFocus) {
+  let pressedOnBackdrop = false;
+  dialog.addEventListener('pointerdown', function (event) {
+    pressedOnBackdrop = event.target === dialog;
+  });
+  dialog.addEventListener('click', function (event) {
+    const isBackdrop = event.target === dialog && pressedOnBackdrop;
+    if (isBackdrop || event.target.closest('[data-dialog-close]')) dialog.close();
+  });
+  dialog.addEventListener('close', function () {
+    const opener = dialogOpeners.get(dialog);
+    const target = opener && opener.isConnected ? opener : getFallbackFocus();
+    if (target) target.focus();
+  });
+}
+
+// 12주차: 카드 동작 결과를 화면 읽기 프로그램에 알림
+function announceRecord(message) {
+  recordLive.textContent = message;
+}
+
+// 12주차: 삭제 확인 펼치기·접기. 펼치면 지우기 전에 한 번 더 묻고 '삭제 취소'에 초점
+function showDeleteConfirm(isOpen) {
+  recordDeleteConfirm.hidden = !isOpen;
+  recordDialogActions.hidden = isOpen;
+  recordDeleteMessage.textContent = '이 기록을 삭제할까요? 삭제하면 되돌릴 수 없습니다.';
+}
+
+// 12주차: 기록 상세 창 열기. 고른 기록의 내용을 채우고 삭제 확인은 접은 채로 시작
+function openRecordDialog(record, opener) {
+  const state = getReviewState(record);
+  openRecordId = getRecordId(record);
+  recordDialogTitle.textContent = getExampleName(record.example);
+  recordDialogTime.textContent = formatRecordTime(record.savedAt);
+  recordDialogTime.dateTime = new Date(record.savedAt).toISOString();
+  recordDialogBadge.replaceChildren();
+  if (state !== 'none') recordDialogBadge.append(createBadge(state));
+  recordDialogBadge.hidden = state === 'none';
+  recordDialogLearned.textContent = record.learned;
+  recordDialogQuestion.textContent = record.question;
+  recordDialogQuestionRow.hidden = !record.question;
+  showDeleteConfirm(false);
+  openDialog(recordDialog, opener);
+}
+
+// 12주차: 복습 상태 바꾸기 → 저장 → 목록 다시 그리기 → 같은 카드의 버튼으로 초점 복귀
+function toggleRecordReview(record) {
+  const id = getRecordId(record);
+  const nextState = record.reviewed ? 'todo' : 'done';
+  if (!updateRecord(id, { reviewed: !record.reviewed })) {
+    announceRecord('상태를 저장하지 못했습니다. 브라우저 저장소를 쓸 수 없습니다.');
+    return;
+  }
+  renderRecords(false);
+  announceRecord(`${getExampleName(record.example)} 기록을 ${reviewStates[nextState].label}로 바꿨습니다.`);
+  const button = recordList.querySelector(`[data-action="toggle"][data-id="${id}"]`);
+  if (button) button.focus();
+}
+
+// 12주차: 카드마다 이벤트를 달지 않고 목록 하나에서 처리. data-action으로 할 일, data-id로 기록을 찾음
+function handleRecordListClick(event) {
+  const button = event.target.closest('button[data-action]');
+  if (!button) return;
+  const record = findRecord(button.dataset.id);
+  if (record === null) return;
+  if (button.dataset.action === 'open') openRecordDialog(record, button);
+  if (button.dataset.action === 'toggle') toggleRecordReview(record);
+}
+
+// 12주차: 기록 삭제. 목록을 다시 그린 뒤 창을 닫으면 초점은 고른 필터로 감
+function handleRecordDelete() {
+  const record = findRecord(openRecordId);
+  if (record === null || !deleteRecord(openRecordId)) {
+    recordDeleteMessage.textContent = '삭제하지 못했습니다. 브라우저 저장소를 쓸 수 없습니다.';
+    return;
+  }
+  renderRecords(false);
+  recordDialog.close();
+  announceRecord(`${getExampleName(record.example)} 기록을 삭제했습니다.`);
+}
+
+recordList.addEventListener('click', handleRecordListClick);
+setupDialog(recordDialog, function () {
+  return document.querySelector('.filter-button[aria-pressed="true"]');
+});
+recordDeleteButton.addEventListener('click', function () {
+  showDeleteConfirm(true);
+  recordDeleteCancel.focus();
+});
+recordDeleteCancel.addEventListener('click', function () {
+  showDeleteConfirm(false);
+  recordDeleteButton.focus();
+});
+recordDeleteYes.addEventListener('click', handleRecordDelete);
+
+// 12주차: 아코디언. data-accordion이 붙은 곳마다 같은 함수로 연결
+// 질문 버튼의 aria-expanded와 답 영역의 hidden을 함께 바꿈
+function setAccordionItem(button, isOpen) {
+  button.setAttribute('aria-expanded', String(isOpen));
+  document.getElementById(button.getAttribute('aria-controls')).hidden = !isOpen;
+}
+
+function initAccordion(accordion) {
+  const buttons = [...accordion.querySelectorAll('.accordion-button')];
+  // JavaScript가 켜지면 모두 접은 채로 시작
+  buttons.forEach(function (button) {
+    setAccordionItem(button, false);
+  });
+  accordion.addEventListener('click', function (event) {
+    const button = event.target.closest('.accordion-button');
+    if (button) setAccordionItem(button, button.getAttribute('aria-expanded') !== 'true');
+  });
+  // 위·아래 방향키, Home, End로 질문 사이 이동
+  accordion.addEventListener('keydown', function (event) {
+    const nextIndex = getArrowIndex(event.key, buttons.indexOf(event.target), buttons.length, false);
+    if (!event.target.matches('.accordion-button') || nextIndex === -1) return;
+    event.preventDefault();
+    buttons[nextIndex].focus();
+  });
+}
+
+document.querySelectorAll('[data-accordion]').forEach(initAccordion);
 
 // 10주차: 상단 메뉴 (현재 위치 표시, 모바일 메뉴 열기·닫기)
 const siteHeader = document.querySelector('.site-header');

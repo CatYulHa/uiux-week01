@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="하율의 UI/UX 프로그래밍 11주차 과제. 색 대비, 대체 텍스트, 버튼 이름, 키보드 조작과 초점 표시를 개선했습니다.">
-  <title>UI/UX 프로그래밍 · 11주차 과제</title>
+  <meta name="description" content="하율의 UI/UX 프로그래밍 12주차 과제. 학습 기록 상세 창(모달), 자주 묻는 질문(아코디언), 데이터로 만드는 기록 카드를 추가했습니다.">
+  <title>UI/UX 프로그래밍 · 12주차 과제</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="service-page">
@@ -27,6 +27,8 @@
     저장한 기록을 예제별로 보기(aria-pressed), 결과 수와 빈 결과 안내, 768px 이하 메뉴 열기·닫기
     11주차 접근성: 글자 대비 4.5:1 이상, 글자 12px 이상, 상태는 색과 기호·문구로 함께 표시
     이미지 대체 텍스트, 기호를 뺀 링크 이름, 본문 바로가기, 초점 표시, 메뉴에 맞춘 탭 제목
+    12주차 컴포넌트: 모달(기록 상세·삭제 확인), 아코디언(자주 묻는 질문), 기록 카드(복습 필요·완료)
+    공통 버튼 .button + 변형 클래스, 카드는 createRecordCard(), 카드 버튼은 목록 하나에서 data-action으로 처리
   -->
   <a class="skip-link" href="#main">본문 바로가기</a>
   <!-- 10주차: 스크롤해도 보이는 상단 메뉴. 768px 이하에서는 메뉴 열기 버튼으로 펼침 -->
@@ -43,7 +45,7 @@
           <li><a href="#record">학습 기록</a></li>
         </ul>
       </nav>
-      <span class="week-label">WEEK 11</span>
+      <span class="week-label">WEEK 12</span>
     </div>
   </header>
 
@@ -51,30 +53,30 @@
   <main id="main" tabindex="-1">
     <section class="hero wrap" id="top" aria-labelledby="hero-title">
       <div class="hero-copy">
-        <p class="eyebrow"><span class="dot"></span> UI/UX PROGRAMMING · WEEK 11</p>
-        <h1 id="hero-title">UI/UX 프로그래밍<span class="hero-tagline">11주차 과제</span></h1>
-        <p class="hero-description">웹 접근성 개선</p>
+        <p class="eyebrow"><span class="dot"></span> UI/UX PROGRAMMING · WEEK 12</p>
+        <h1 id="hero-title">UI/UX 프로그래밍<span class="hero-tagline">12주차 과제</span></h1>
+        <p class="hero-description">UI 컴포넌트와 반복 가능한 구조</p>
         <a class="primary-link" href="#start" data-plan-start>학습 계획 세우기 <span aria-hidden="true">↗</span></a>
         <a class="secondary-link" href="#about">과제 내용 보기 <span aria-hidden="true">↓</span></a>
-        <div class="student"><span class="avatar" aria-hidden="true">하</span><div><strong>하율</strong><span>12406050 · UI/UX 프로그래밍 · 11주차</span></div></div>
+        <div class="student"><span class="avatar" aria-hidden="true">하</span><div><strong>하율</strong><span>12406050 · UI/UX 프로그래밍 · 12주차</span></div></div>
       </div>
       <div class="hero-art" aria-hidden="true">
         <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
-        <span class="floating-label label-html">① 대비</span>
+        <span class="floating-label label-html">① 모달</span>
         <div class="browser-card">
-          <div class="browser-top"><span></span><span></span><span></span><small>style.css</small></div>
-          <div class="browser-body"><span class="mini-tag">WEEK 11 · ACCESSIBILITY</span><p class="art-title">누구나 읽고<br>조작할 수 있는 화면</p><div class="mock-line"></div><div class="mock-line short"></div><div class="mock-cards"><span>구조<br><b>HTML</b></span><span>표현<br><b>CSS</b></span><span>동작<br><b>JS</b></span></div><div class="mock-button">본문 바로가기 <span>↗</span></div></div>
+          <div class="browser-top"><span></span><span></span><span></span><small>script.js</small></div>
+          <div class="browser-body"><span class="mini-tag">WEEK 12 · COMPONENTS</span><p class="art-title">한 번 만들고<br>여러 곳에 쓰는 부품</p><div class="mock-line"></div><div class="mock-line short"></div><div class="mock-cards"><span>구조<br><b>HTML</b></span><span>표현<br><b>CSS</b></span><span>동작<br><b>JS</b></span></div><div class="mock-button">자세히 보기 <span>↗</span></div></div>
         </div>
-        <span class="floating-label label-css">② 이름</span><span class="floating-label label-js">③ 키보드</span><span class="art-caption">HTML · CSS · JAVASCRIPT</span>
+        <span class="floating-label label-css">② 아코디언</span><span class="floating-label label-js">③ 카드</span><span class="art-caption">HTML · CSS · JAVASCRIPT</span>
       </div>
     </section>
 
-    <div class="topic-strip"><div class="wrap"><span>WEEK 11 / ACCESSIBILITY</span><p>색 대비 → 대체 텍스트 → 이름과 라벨 → 키보드와 초점</p><span aria-hidden="true">✳</span></div></div>
+    <div class="topic-strip"><div class="wrap"><span>WEEK 12 / COMPONENTS</span><p>공통 버튼 → 데이터로 카드 → 모달로 자세히 → 아코디언으로 질문</p><span aria-hidden="true">✳</span></div></div>
 
     <section class="section wrap" id="about" aria-labelledby="about-title">
-      <div class="section-heading"><div><p class="eyebrow">01 — ASSIGNMENT</p><h2 id="about-title">과제 소개</h2></div><p>웹 접근성 원칙을 적용했습니다.</p></div>
+      <div class="section-heading"><div><p class="eyebrow">01 — ASSIGNMENT</p><h2 id="about-title">과제 소개</h2></div><p>재사용 UI 컴포넌트를 추가했습니다.</p></div>
       <div class="about-layout">
-        <div class="about-copy"><h3>웹 접근성 개선</h3><p>글자 대비와 크기를 키우고, 오류·선택 상태를 색과 함께 기호와 문구로 표시합니다.</p><p>키보드만으로 메뉴, 학습 계획, 학습 기록을 이용할 수 있고 초점 위치가 늘 보입니다.</p><a class="text-link" href="#record">학습 기록 보기 <span aria-hidden="true">↓</span></a></div>
+        <div class="about-copy"><h3>UI 컴포넌트와 반복 가능한 구조</h3><p>저장한 학습 기록은 같은 함수로 카드를 만들고, 자세히 보기를 누르면 상세 창이 열립니다.</p><p>자주 묻는 질문은 아코디언으로 펼치고 접으며, 버튼 모양은 공통 클래스로 맞췄습니다.</p><a class="text-link" href="#record">학습 기록 보기 <span aria-hidden="true">↓</span></a></div>
         <figure class="service-preview">
           <img src="assets/images/service.png" alt="UI 카드와 UX 카드를 나란히 비교한 실습 화면. UI는 메뉴, 버튼, 입력창 같은 화면 요소이고, UX는 목표 정하기에서 개념 확인, 직접 체험으로 이어지는 과정입니다. 아래에 좋은 경험의 5가지 기준인 명확성, 일관성, 피드백, 효율성, 접근성이 있습니다." width="1118" height="527" loading="lazy">
           <figcaption><span class="dot" aria-hidden="true"></span>실습 화면 · UI와 UX 비교하기</figcaption>
@@ -147,6 +149,33 @@
         <p id="steps-status" role="status" aria-live="polite">0 / 3단계 완료</p>
         <button class="interaction-button" id="finish-button" type="button" disabled><span class="button-label">오늘 학습 마치기</span> <span class="button-icon" aria-hidden="true">↗</span></button>
       </div>
+
+      <!-- 12주차: 아코디언. 질문 버튼을 누르면 답이 펼쳐지고 다시 누르면 접힘 (JavaScript가 꺼져 있으면 모두 펼쳐 둠) -->
+      <div class="faq">
+        <h3 class="faq-title">자주 묻는 질문</h3>
+        <div class="accordion" data-accordion>
+          <div class="accordion-item">
+            <h4 class="accordion-heading"><button class="accordion-button" id="faq-plan-button" type="button" aria-expanded="true" aria-controls="faq-plan"><span>학습 계획은 어떻게 세우나요?</span><span class="accordion-icon" aria-hidden="true"></span></button></h4>
+            <div class="accordion-panel" id="faq-plan" role="region" aria-labelledby="faq-plan-button"><p>학습 계획에서 목표를 5자 이상 적고, 실습할 예제와 시간을 고른 뒤 계획을 확정합니다. 확정하면 고른 예제의 이해도 퀴즈를 풀 수 있습니다.</p><a class="text-link" href="#start" data-plan-start>학습 계획 세우기 <span aria-hidden="true">↓</span></a></div>
+          </div>
+          <div class="accordion-item">
+            <h4 class="accordion-heading"><button class="accordion-button" id="faq-quiz-button" type="button" aria-expanded="true" aria-controls="faq-quiz"><span>퀴즈를 틀리면 어떻게 되나요?</span><span class="accordion-icon" aria-hidden="true"></span></button></h4>
+            <div class="accordion-panel" id="faq-quiz" role="region" aria-labelledby="faq-quiz-button"><p>틀린 문제에 힌트가 나오고, 틀린 문제 다시 풀기를 누르면 그 문제만 다시 풉니다. 세 문제를 모두 맞히면 통과입니다.</p></div>
+          </div>
+          <div class="accordion-item">
+            <h4 class="accordion-heading"><button class="accordion-button" id="faq-storage-button" type="button" aria-expanded="true" aria-controls="faq-storage"><span>학습 기록은 어디에 저장되나요?</span><span class="accordion-icon" aria-hidden="true"></span></button></h4>
+            <div class="accordion-panel" id="faq-storage" role="region" aria-labelledby="faq-storage-button"><p>지금 쓰는 브라우저에만 저장됩니다. 다른 기기나 다른 브라우저에서는 보이지 않고, 사이트 데이터를 지우면 함께 지워집니다.</p></div>
+          </div>
+          <div class="accordion-item">
+            <h4 class="accordion-heading"><button class="accordion-button" id="faq-record-button" type="button" aria-expanded="true" aria-controls="faq-record"><span>저장한 기록을 다시 보거나 지우려면?</span><span class="accordion-icon" aria-hidden="true"></span></button></h4>
+            <div class="accordion-panel" id="faq-record" role="region" aria-labelledby="faq-record-button"><p>저장한 기록에서 자세히 보기를 누르면 상세 창이 열립니다. 창에서 기록 삭제를 누르고 한 번 더 확인하면 지워집니다. 헷갈린 부분이 있는 기록은 복습을 마친 뒤 복습 완료로 표시할 수 있습니다.</p></div>
+          </div>
+          <div class="accordion-item">
+            <h4 class="accordion-heading"><button class="accordion-button" id="faq-keyboard-button" type="button" aria-expanded="true" aria-controls="faq-keyboard"><span>키보드만으로 쓸 수 있나요?</span><span class="accordion-icon" aria-hidden="true"></span></button></h4>
+            <div class="accordion-panel" id="faq-keyboard" role="region" aria-labelledby="faq-keyboard-button"><p>Tab으로 옮겨 다니고 Enter나 Space로 누릅니다. 예제 탭과 이 질문 목록은 방향키로도 이동하고, 상세 창과 모바일 메뉴는 Esc로 닫힙니다.</p></div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <section class="wrap reflection start-section" id="start" aria-labelledby="start-title">
@@ -190,7 +219,7 @@
           <label class="plan-label" for="plan-time">학습 시간</label>
           <select id="plan-time" name="time"><option value="10">10분</option><option value="20" selected>20분</option><option value="30">30분</option></select>
           <div class="plan-actions">
-            <button class="plan-back" id="plan-back-2" type="button"><span aria-hidden="true">←</span> 이전</button>
+            <button class="button button-secondary" id="plan-back-2" type="button"><span aria-hidden="true">←</span> 이전</button>
             <button class="interaction-button" id="plan-next-2" type="button"><span class="button-label">다음 · 계획 확인</span> <span class="button-icon" aria-hidden="true">→</span></button>
           </div>
         </div>
@@ -205,7 +234,7 @@
             <div><dt>학습 시간</dt><dd data-summary="time"></dd></div>
           </dl>
           <div class="plan-actions">
-            <button class="plan-back" id="plan-back-3" type="button"><span aria-hidden="true">←</span> 이전</button>
+            <button class="button button-secondary" id="plan-back-3" type="button"><span aria-hidden="true">←</span> 이전</button>
             <button class="interaction-button" id="plan-confirm" type="button"><span class="button-label">계획 확정</span> <span class="button-icon" aria-hidden="true">✓</span></button>
           </div>
         </div>
@@ -224,7 +253,7 @@
           <div class="plan-actions">
             <a class="interaction-button" id="plan-go" href="#concept"><span class="button-label">고른 예제 시작하기</span> <span class="button-icon" aria-hidden="true">↑</span></a>
             <button class="interaction-button" id="plan-quiz" type="button"><span class="button-label">이해도 퀴즈 풀기</span> <span class="button-icon" aria-hidden="true">→</span></button>
-            <button class="plan-back" id="plan-restart" type="button">다시 세우기</button>
+            <button class="button button-secondary" id="plan-restart" type="button">다시 세우기</button>
           </div>
           <a class="text-link plan-record" id="plan-record" href="#record">학습 기록 남기기 <span aria-hidden="true">↓</span></a>
         </div>
@@ -312,7 +341,7 @@
               <p id="quiz-score"></p>
             </div>
             <div class="plan-actions" id="quiz-actions">
-              <button class="plan-back" id="quiz-back" type="button"><span aria-hidden="true">←</span> 계획 보기</button>
+              <button class="button button-secondary" id="quiz-back" type="button"><span aria-hidden="true">←</span> 계획 보기</button>
               <button class="interaction-button" id="quiz-submit" type="submit"><span class="button-label">채점하기</span> <span class="button-icon" aria-hidden="true">✓</span></button>
               <button class="interaction-button" id="quiz-retry" type="button" hidden><span class="button-label">틀린 문제 다시 풀기</span> <span class="button-icon" aria-hidden="true">↻</span></button>
               <a class="interaction-button" id="quiz-go" href="#concept" hidden><span class="button-label">예제 다시 보기</span> <span class="button-icon" aria-hidden="true">↑</span></a>
@@ -321,7 +350,7 @@
             <div class="quiz-confirm" id="quiz-confirm" hidden>
               <p>그만두면 고른 답과 채점 결과가 지워집니다.</p>
               <div class="plan-actions">
-                <button class="plan-back" id="quiz-keep" type="button">계속 풀기</button>
+                <button class="button button-secondary" id="quiz-keep" type="button">계속 풀기</button>
                 <button class="interaction-button" id="quiz-stop" type="button"><span class="button-label">그만두기</span> <span class="button-icon" aria-hidden="true">×</span></button>
               </div>
             </div>
@@ -351,17 +380,12 @@
           <div class="record-empty" id="record-empty">
             <p class="record-empty-title" id="record-empty-title">아직 저장한 기록이 없습니다.</p>
             <p class="record-empty-help" id="record-empty-help">실습한 예제와 배운 점을 적어 첫 기록을 남겨 보세요.</p>
-            <button class="plan-back" id="record-empty-write" type="button" hidden>첫 기록 남기기</button>
-            <button class="plan-back" id="record-empty-all" type="button" hidden>전체 기록 보기</button>
+            <button class="button button-secondary" id="record-empty-write" type="button" hidden>첫 기록 남기기</button>
+            <button class="button button-secondary" id="record-empty-all" type="button" hidden>전체 기록 보기</button>
           </div>
+          <!-- 12주차: 카드는 script.js의 createRecordCard()가 기록 한 건마다 만듦 -->
           <ol class="record-list" id="record-list" aria-labelledby="record-list-title" hidden></ol>
-          <template id="record-template">
-            <li class="record-item">
-              <p class="record-item-head"><strong data-record="example"></strong> <time data-record="time"></time></p>
-              <p data-record="learned"></p>
-              <p class="record-item-question" data-record="question"></p>
-            </li>
-          </template>
+          <p class="visually-hidden" id="record-live" role="status" aria-live="polite"></p>
         </div>
       </div>
 
@@ -402,16 +426,46 @@
 
         <p class="record-status" id="record-status" role="status" aria-live="polite" tabindex="-1"></p>
         <div class="plan-actions">
-          <button class="plan-back" id="record-reset" type="button">다시 작성</button>
+          <button class="button button-secondary" id="record-reset" type="button">다시 작성</button>
           <button class="interaction-button" id="record-submit" type="submit" disabled><span class="button-label">기록 저장하기</span> <span class="button-icon" aria-hidden="true">↗</span></button>
         </div>
         <noscript><p>학습 기록은 JavaScript가 켜져 있어야 저장할 수 있습니다.</p></noscript>
       </form>
     </section>
+
+    <!-- 12주차: 모달. 기록 카드의 '자세히 보기'로 열고 Esc, 닫기 버튼, 바깥 클릭으로 닫음 -->
+    <dialog class="dialog" id="record-dialog" aria-labelledby="record-dialog-title">
+      <div class="dialog-inner">
+        <div class="dialog-head">
+          <div>
+            <p class="dialog-kicker">학습 기록 상세</p>
+            <h2 class="dialog-title" id="record-dialog-title">학습 기록</h2>
+            <time class="dialog-time" id="record-dialog-time"></time>
+          </div>
+          <button class="button icon-button" type="button" data-dialog-close aria-label="기록 상세 닫기"><span aria-hidden="true">×</span></button>
+        </div>
+        <p class="dialog-badge" id="record-dialog-badge" hidden></p>
+        <dl class="dialog-detail">
+          <div><dt>오늘 배운 점</dt><dd id="record-dialog-learned"></dd></div>
+          <div id="record-dialog-question-row"><dt>헷갈린 부분</dt><dd id="record-dialog-question"></dd></div>
+        </dl>
+        <div class="dialog-actions" id="record-dialog-actions">
+          <button class="button button-danger" id="record-delete" type="button">기록 삭제</button>
+          <button class="button button-primary" type="button" data-dialog-close>닫기</button>
+        </div>
+        <div class="dialog-confirm" id="record-delete-confirm" role="group" aria-labelledby="record-delete-message" hidden>
+          <p class="dialog-confirm-message" id="record-delete-message" aria-live="polite">이 기록을 삭제할까요? 삭제하면 되돌릴 수 없습니다.</p>
+          <div class="dialog-actions">
+            <button class="button button-secondary" id="record-delete-cancel" type="button">삭제 취소</button>
+            <button class="button button-danger-solid" id="record-delete-yes" type="button">삭제하기</button>
+          </div>
+        </div>
+      </div>
+    </dialog>
   </main>
 
   <!-- 11주차: 같은 곳으로 가는 로고 링크는 빼고 '맨 위로' 하나만 남김 -->
-  <footer class="wrap footer"><span class="logo service-logo" aria-hidden="true">HY<span>↗</span></span><p>UI/UX 프로그래밍 · 11주차 과제<br><span>하율 · 12406050 · 2026</span></p><a class="back-top" href="#top">맨 위로 <span aria-hidden="true">↑</span></a></footer>
+  <footer class="wrap footer"><span class="logo service-logo" aria-hidden="true">HY<span>↗</span></span><p>UI/UX 프로그래밍 · 12주차 과제<br><span>하율 · 12406050 · 2026</span></p><a class="back-top" href="#top">맨 위로 <span aria-hidden="true">↑</span></a></footer>
 
   <!-- 5주차: body 끝에서 JavaScript 연결 -->
   <script src="script.js"></script>

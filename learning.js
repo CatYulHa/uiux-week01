@@ -15,8 +15,8 @@ const examples = {
   js: {
     filename: 'script.js',
     description: 'JavaScript는 클릭과 입력에 반응해 화면을 바꿉니다.',
-    code: "function setCurrentNav(sectionId) {\n  navLinks.forEach(function (link) {\n    if (link.hash === `#${sectionId}`) {\n      link.setAttribute('aria-current', 'page');\n    } else {\n      link.removeAttribute('aria-current');\n    }\n  });\n  const currentLink = navLinks.find(link =>\n    link.getAttribute('aria-current') === 'page');\n  document.title = currentLink\n    ? `${currentLink.textContent.trim()} | ${baseTitle}`\n    : baseTitle;\n}",
-    analogy: '이 페이지에서 찾기 · 상단 메뉴와 브라우저 탭 제목'
+    code: "function setAccordionItem(button, isOpen) {\n  button.setAttribute('aria-expanded', String(isOpen));\n  const panelId = button.getAttribute('aria-controls');\n  document.getElementById(panelId).hidden = !isOpen;\n}\n\n// data-accordion이 붙은 곳마다 같은 함수로 연결\ndocument.querySelectorAll('[data-accordion]')\n  .forEach(initAccordion);",
+    analogy: '이 페이지에서 찾기 · 실습 순서의 자주 묻는 질문'
   }
 };
 
@@ -36,14 +36,10 @@ function selectTab(tab) {
 }
 tabs.forEach((tab, index) => {
   tab.addEventListener('click', () => selectTab(tab));
-  // 위/아래 방향키, Home, End로 탭 이동
+  // 위/아래 방향키, Home, End로 탭 이동 (12주차: script.js의 공통 함수 getArrowIndex 사용)
   tab.addEventListener('keydown', event => {
-    let next;
-    if (event.key === 'ArrowDown') next = (index + 1) % tabs.length;
-    if (event.key === 'ArrowUp') next = (index - 1 + tabs.length) % tabs.length;
-    if (event.key === 'Home') next = 0;
-    if (event.key === 'End') next = tabs.length - 1;
-    if (next === undefined) return;
+    const next = getArrowIndex(event.key, index, tabs.length, false);
+    if (next === -1) return;
     event.preventDefault();
     selectTab(tabs[next]);
     tabs[next].focus();
