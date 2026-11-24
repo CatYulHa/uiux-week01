@@ -268,6 +268,9 @@ const planTime = document.querySelector('#plan-time');
 const planSummaryItems = document.querySelectorAll('[data-summary]');
 const planGo = document.querySelector('#plan-go');
 const planGoLabel = planGo.querySelector('.button-label');
+// 13주차: 작성 중인 계획의 임시 보관함과 안내 (함수는 아래 13주차 부분)
+const planDraft = createDraftStore('hy-uiux-plan-draft-v1', draft => typeof draft.goal === 'string' && Number.isInteger(draft.step));
+const planDraftNotice = getDraftNotice('plan-draft-notice');
 
 // Array: 단계 이름
 const planStepNames = ['목표 입력', '예제·시간 선택', '계획 확인'];
@@ -367,6 +370,9 @@ function handlePlanCheck() {
 
 // 다시 세우기: 입력, 선택, 오류, 진행 상태 초기화
 function resetPlan() {
+  // 13주차: 임시 보관한 계획도 지움
+  planDraft.clear();
+  showDraftNotice(planDraftNotice, '처음부터 다시 세울 수 있습니다.', 'cleared');
   savedGoal = '';
   goalInput.value = '';
   showGoalMessage('', 'none');
@@ -678,13 +684,14 @@ document.querySelector('#quiz-back').addEventListener('click', function () {
 quizCancel.addEventListener('click', handleQuizCancel);
 document.querySelector('#quiz-keep').addEventListener('click', handleQuizKeep);
 document.querySelector('#quiz-stop').addEventListener('click', handleQuizStop);
-// 다시 세우기: 퀴즈도 처음 상태로
-document.querySelector('#plan-restart').addEventListener('click', function () {
+// 다시 세우기: 퀴즈도 처음 상태로 (13주차: '처음부터 다시 세우기' 버튼도 함께 씀)
+function resetPlanQuiz() {
   resetQuiz();
   quiz.hidden = true;
   currentQuizSet = null;
   updatePlanQuiz();
-});
+}
+document.querySelector('#plan-restart').addEventListener('click', resetPlanQuiz);
 
 // 9주차: 학습 기록 폼 (입력 조건 안내 → 검사 → 저장 중 → 완료·실패)
 const recordForm = document.querySelector('#record-form');
@@ -714,6 +721,9 @@ const recordDeleteConfirm = document.querySelector('#record-delete-confirm');
 const recordDeleteMessage = document.querySelector('#record-delete-message');
 const recordDeleteCancel = document.querySelector('#record-delete-cancel');
 const recordDeleteYes = document.querySelector('#record-delete-yes');
+// 13주차: 작성 중인 기록의 임시 보관함과 안내 (함수는 아래 13주차 부분)
+const recordDraft = createDraftStore('hy-uiux-record-draft-v1', draft => typeof draft.learned === 'string');
+const recordDraftNotice = getDraftNotice('record-draft-notice');
 // 10주차: 기록 필터, 결과 수, 빈 결과 안내
 const recordFilter = document.querySelector('#record-filter');
 const recordFilterButtons = document.querySelectorAll('.filter-button');
@@ -858,6 +868,8 @@ function setRecordSubmitState(state) {
   isRecordSaving = state === 'loading';
   recordSubmit.disabled = isRecordSaving;
   recordReset.disabled = isRecordSaving;
+  // 13주차: 저장하는 동안에는 '처음부터 다시 쓰기'도 잠금
+  recordDraftNotice.discard.disabled = isRecordSaving;
   recordForm.setAttribute('aria-busy', String(isRecordSaving));
   if (state === 'loading') {
     recordSubmitLabel.textContent = '저장 중…';
@@ -1065,6 +1077,9 @@ function finishRecordSave(data) {
     recordSubmit.focus();
     return;
   }
+  // 13주차: 최종 저장에 성공하면 임시 보관한 작성 내용을 지움 (실패하면 남겨 둠)
+  recordDraft.clear();
+  showDraftNotice(recordDraftNotice, '', 'none');
   // 10주차: 고른 필터에 새 기록이 안 보이면 전체 보기로 바꿈
   const isHiddenByFilter = currentRecordFilter !== 'all' && currentRecordFilter !== record.example;
   if (isHiddenByFilter) selectRecordFilter('all');
@@ -1100,8 +1115,11 @@ function handleRecordSubmit(event) {
   }, recordSaveDelay);
 }
 
-// 다시 작성: 입력값, 안내 문구, 버튼 상태 초기화
+// 다시 작성: 입력값, 안내 문구, 버튼 상태 초기화 (13주차: '처음부터 다시 쓰기'도 같은 함수)
 function handleRecordReset() {
+  if (isRecordSaving) return;
+  recordDraft.clear();
+  showDraftNotice(recordDraftNotice, '처음부터 다시 쓸 수 있습니다.', 'cleared');
   clearRecordForm();
   showRecordStatus('', 'none');
   setRecordSubmitState('idle');
@@ -1416,3 +1434,166 @@ window.addEventListener('resize', handleNavScroll);
 menuToggle.hidden = false;
 siteHeader.classList.add('has-menu-toggle');
 setCurrentNav(getNavSectionId(location.hash));
+
+// 13주차: 작성 중 상태 복구
+// 작성 중인 값은 현재 탭(sessionStorage)에 임시 보관하고, 같은 탭에서 새로고침하면 불러옴
+// 저장한 학습 기록 목록(localStorage)과는 따로 관리. 학습 계획과 학습 기록 폼이 같은 함수를 씀
+
+// String: 임시 보관에 실패했을 때 안내
+const draftErrorMessage = '작성 내용을 임시 보관하지 못했습니다. 새로고침하면 입력이 사라질 수 있습니다.';
+
+// 임시 보관함 만들기. key는 저장 이름, isValid는 꺼낸 값이 쓸 수 있는 모양인지 검사하는 함수
+// 저장소를 쓸 수 없거나 값이 깨졌으면 save는 false, read는 null을 돌려주고 화면 코드는 계속 실행됨
+function createDraftStore(key, isValid) {
+  return {
+    save(value) {
+      try {
+        sessionStorage.setItem(key, JSON.stringify(value));
+        return true;
+      } catch (error) {
+        return false;
+      }
+    },
+    read() {
+      try {
+        const value = JSON.parse(sessionStorage.getItem(key));
+        return value && isValid(value) ? value : null;
+      } catch (error) {
+        return null;
+      }
+    },
+    clear() {
+      try {
+        sessionStorage.removeItem(key);
+      } catch (error) {
+        // 저장소를 쓸 수 없으면 지울 값도 없음
+      }
+    }
+  };
+}
+
+// 안내 영역: 문구(role="status")와 '처음부터' 버튼
+function getDraftNotice(id) {
+  const box = document.getElementById(id);
+  return { box, status: box.querySelector('.draft-status'), discard: box.querySelector('button') };
+}
+
+// 안내 바꾸기. state: restored 불러옴, cleared 처음부터, error 보관 실패, none 안내 없음
+// '처음부터' 버튼은 불러온 뒤에 나타나고, 처음부터 시작하거나 저장을 마치면 숨김
+function showDraftNotice(notice, message, state) {
+  if (notice.status.textContent !== message) notice.status.textContent = message;
+  notice.box.dataset.state = state;
+  if (state === 'restored') notice.discard.hidden = false;
+  if (state === 'cleared' || state === 'none') notice.discard.hidden = true;
+}
+
+// 보관 결과 처리. 실패하면 경고, 다시 성공하면 경고를 지움
+function handleDraftSaveResult(notice, isSaved) {
+  if (!isSaved) {
+    showDraftNotice(notice, draftErrorMessage, 'error');
+  } else if (notice.box.dataset.state === 'error') {
+    showDraftNotice(notice, '', 'none');
+  }
+}
+
+// 학습 계획: 목표 입력값, 정한 목표, 고른 예제, 학습 시간, 현재 단계(1~4)
+function getPlanDraft() {
+  const example = document.querySelector('input[name="plan-example"]:checked');
+  return { goal: goalInput.value, savedGoal, example: example ? example.value : '', time: planTime.value, step: currentPlanStep };
+}
+
+// 시작 화면이거나 아무것도 쓰지 않은 1단계는 보관하지 않음
+function hasPlanInput(draft) {
+  return draft.step >= 1 && (draft.goal.trim() !== '' || draft.savedGoal !== '' || draft.example !== '' || draft.time !== defaultPlanTime);
+}
+
+function savePlanDraft() {
+  const draft = getPlanDraft();
+  if (!hasPlanInput(draft)) {
+    planDraft.clear();
+    return;
+  }
+  handleDraftSaveResult(planDraftNotice, planDraft.save(draft));
+}
+
+// 새로고침 뒤 계획 불러오기. 값을 먼저 채우고, 갈 수 있는 단계인지 확인한 뒤 그 단계를 표시
+function restorePlanDraft() {
+  const draft = planDraft.read();
+  if (draft === null) return;
+  const timeValues = [...planTime.options].map(option => option.value);
+  goalInput.value = draft.goal.slice(0, goalInput.maxLength);
+  savedGoal = typeof draft.savedGoal === 'string' && draft.savedGoal.trim().length >= minGoalLength ? draft.savedGoal.trim().slice(0, goalInput.maxLength) : '';
+  // 글자 수, 목표 안내, 버튼 상태, '다음' 버튼을 입력값에 맞춤
+  handleGoalInput();
+  planExamples.forEach(function (radio) {
+    radio.checked = radio.value === draft.example;
+  });
+  updatePlanOptions();
+  planTime.value = timeValues.includes(draft.time) ? draft.time : defaultPlanTime;
+
+  // 2단계부터는 정한 목표, 3단계부터는 고른 예제가 있어야 함. 조건이 맞지 않으면 1단계
+  const example = document.querySelector('input[name="plan-example"]:checked');
+  const canReach = [false, true, savedGoal !== '', savedGoal !== '' && example !== null, savedGoal !== '' && example !== null];
+  const step = canReach[draft.step] ? draft.step : 1;
+  if (step >= 3) fillPlanSummary(example);
+  showPlanStep(step);
+  const message = step === planDoneStep
+    ? '확정한 학습 계획을 불러왔습니다. 새로 세우려면 처음부터 다시 세우기를 누르세요.'
+    : `작성하던 학습 계획을 불러왔습니다. ${step}단계 ${planStepNames[step - 1]}부터 이어서 하세요.`;
+  showDraftNotice(planDraftNotice, message, 'restored');
+}
+
+// 학습 기록 폼: 고른 예제, 배운 점, 헷갈린 부분 체크와 내용
+function getRecordDraft() {
+  return { example: recordExample.value, learned: recordLearned.value, hasQuestion: recordHasQuestion.checked, question: recordQuestion.value };
+}
+
+function hasRecordInput(draft) {
+  return draft.example !== '' || draft.learned.trim() !== '' || draft.hasQuestion || draft.question.trim() !== '';
+}
+
+function saveRecordDraft() {
+  if (isRecordSaving) return;
+  const draft = getRecordDraft();
+  if (!hasRecordInput(draft)) {
+    recordDraft.clear();
+    return;
+  }
+  handleDraftSaveResult(recordDraftNotice, recordDraft.save(draft));
+}
+
+// 새로고침 뒤 기록 폼 불러오기. 값을 채운 뒤 헷갈린 부분 칸, 글자 수, 조건 안내를 맞춤
+function restoreRecordDraft() {
+  const draft = recordDraft.read();
+  if (draft === null) return;
+  const exampleValues = [...recordExample.options].map(option => option.value);
+  recordExample.value = exampleValues.includes(draft.example) ? draft.example : '';
+  recordLearned.value = draft.learned.slice(0, recordLearned.maxLength);
+  recordHasQuestion.checked = draft.hasQuestion === true;
+  recordQuestion.value = String(draft.question || '').slice(0, recordQuestion.maxLength);
+  updateQuestionField();
+  if (recordExample.value !== '') validateRecordExample();
+  updateRecordText(recordTextRules.learned);
+  updateRecordText(recordTextRules.question);
+  showDraftNotice(recordDraftNotice, '작성하던 학습 기록을 불러왔습니다. 이어서 쓰고 저장하세요.', 'restored');
+}
+
+// 입력하거나 고르거나 단계를 옮길 때마다 보관 (단계 이동 버튼은 클릭이 목록까지 올라온 뒤 저장)
+['input', 'change', 'submit'].forEach(function (type) {
+  planFlow.addEventListener(type, savePlanDraft);
+});
+planFlow.addEventListener('click', function (event) {
+  if (event.target.closest('button')) savePlanDraft();
+});
+recordForm.addEventListener('input', saveRecordDraft);
+recordForm.addEventListener('change', saveRecordDraft);
+
+// '처음부터' 버튼: 임시값을 지우고 빈 첫 단계로
+planDraftNotice.discard.addEventListener('click', function () {
+  resetPlan();
+  resetPlanQuiz();
+});
+recordDraftNotice.discard.addEventListener('click', handleRecordReset);
+
+restorePlanDraft();
+restoreRecordDraft();

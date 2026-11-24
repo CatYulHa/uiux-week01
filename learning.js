@@ -15,8 +15,8 @@ const examples = {
   js: {
     filename: 'script.js',
     description: 'JavaScript는 클릭과 입력에 반응해 화면을 바꿉니다.',
-    code: "function setAccordionItem(button, isOpen) {\n  button.setAttribute('aria-expanded', String(isOpen));\n  const panelId = button.getAttribute('aria-controls');\n  document.getElementById(panelId).hidden = !isOpen;\n}\n\n// data-accordion이 붙은 곳마다 같은 함수로 연결\ndocument.querySelectorAll('[data-accordion]')\n  .forEach(initAccordion);",
-    analogy: '이 페이지에서 찾기 · 실습 순서의 자주 묻는 질문'
+    code: "function createDraftStore(key, isValid) {\n  return {\n    save(value) {\n      try {\n        sessionStorage.setItem(key, JSON.stringify(value));\n        return true;\n      } catch (error) {\n        return false;\n      }\n    },\n    read() {\n      try {\n        const value = JSON.parse(sessionStorage.getItem(key));\n        return value && isValid(value) ? value : null;\n      } catch (error) {\n        return null;\n      }\n    }\n  };\n}",
+    analogy: '이 페이지에서 찾기 · 학습 계획과 학습 기록의 임시 보관'
   }
 };
 

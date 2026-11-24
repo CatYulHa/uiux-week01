@@ -536,3 +536,18 @@ body:has(.dialog[open]) { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .button, .accordion-button, .accordion-icon::before, .accordion-icon::after { transition: none; }
 }
+
+/* 13주차: 임시 보관 안내. 문구가 없으면 자리를 차지하지 않고, 읽기용 영역(role="status")은 남겨 둠 */
+.draft-notice { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 16px; margin-bottom: 18px; padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--radius-md); background-color: #fff; }
+.draft-notice:has(.draft-status:empty) { margin: 0; padding: 0; border: 0; }
+.record-form .draft-notice { margin: 8px 0 4px; }
+.record-form .draft-notice:has(.draft-status:empty) { margin: 0; }
+.draft-status { flex: 1 1 220px; margin: 0; font-size: 13px; font-weight: 700; color: var(--muted); }
+.draft-status:not(:empty)::before { display: inline-grid; place-items: center; width: 16px; height: 16px; margin-right: 6px; border-radius: 50%; color: #fff; font-size: 11px; line-height: 1; vertical-align: -2px; }
+.draft-notice[data-state="restored"] { border-color: #b9c8a8; background-color: #edf2e4; }
+.draft-notice[data-state="restored"] .draft-status { color: var(--green); }
+.draft-notice[data-state="restored"] .draft-status::before { content: '✓'; content: '✓' / ''; background-color: var(--green); }
+.draft-notice[data-state="error"] { border-color: #e7b9b2; background-color: var(--danger-bg); }
+.draft-notice[data-state="error"] .draft-status { color: var(--danger); }
+.draft-notice[data-state="error"] .draft-status::before { content: '!'; content: '!' / ''; background-color: var(--danger); }
+.draft-notice .button { flex: none; }

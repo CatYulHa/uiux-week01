@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="하율의 UI/UX 프로그래밍 12주차 과제. 학습 기록 상세 창(모달), 자주 묻는 질문(아코디언), 데이터로 만드는 기록 카드를 추가했습니다.">
-  <title>UI/UX 프로그래밍 · 12주차 과제</title>
+  <meta name="description" content="하율의 UI/UX 프로그래밍 13주차 과제. 작성 중인 학습 계획과 학습 기록을 새로고침한 뒤에도 이어 쓸 수 있게 했습니다.">
+  <title>UI/UX 프로그래밍 · 13주차 과제</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body class="service-page">
@@ -29,6 +29,8 @@
     이미지 대체 텍스트, 기호를 뺀 링크 이름, 본문 바로가기, 초점 표시, 메뉴에 맞춘 탭 제목
     12주차 컴포넌트: 모달(기록 상세·삭제 확인), 아코디언(자주 묻는 질문), 기록 카드(복습 필요·완료)
     공통 버튼 .button + 변형 클래스, 카드는 createRecordCard(), 카드 버튼은 목록 하나에서 data-action으로 처리
+    13주차 상태 복구: 작성 중인 계획(목표·예제·시간·단계)과 기록(예제·배운 점·헷갈린 부분)을 sessionStorage에 임시 보관
+    새로고침하면 불러오고, 처음부터 다시 시작하거나 기록 저장에 성공하면 지움
   -->
   <a class="skip-link" href="#main">본문 바로가기</a>
   <!-- 10주차: 스크롤해도 보이는 상단 메뉴. 768px 이하에서는 메뉴 열기 버튼으로 펼침 -->
@@ -45,7 +47,7 @@
           <li><a href="#record">학습 기록</a></li>
         </ul>
       </nav>
-      <span class="week-label">WEEK 12</span>
+      <span class="week-label">WEEK 13</span>
     </div>
   </header>
 
@@ -53,30 +55,30 @@
   <main id="main" tabindex="-1">
     <section class="hero wrap" id="top" aria-labelledby="hero-title">
       <div class="hero-copy">
-        <p class="eyebrow"><span class="dot"></span> UI/UX PROGRAMMING · WEEK 12</p>
-        <h1 id="hero-title">UI/UX 프로그래밍<span class="hero-tagline">12주차 과제</span></h1>
-        <p class="hero-description">UI 컴포넌트와 반복 가능한 구조</p>
+        <p class="eyebrow"><span class="dot"></span> UI/UX PROGRAMMING · WEEK 13</p>
+        <h1 id="hero-title">UI/UX 프로그래밍<span class="hero-tagline">13주차 과제</span></h1>
+        <p class="hero-description">사용자 테스트와 QA</p>
         <a class="primary-link" href="#start" data-plan-start>학습 계획 세우기 <span aria-hidden="true">↗</span></a>
         <a class="secondary-link" href="#about">과제 내용 보기 <span aria-hidden="true">↓</span></a>
-        <div class="student"><span class="avatar" aria-hidden="true">하</span><div><strong>하율</strong><span>12406050 · UI/UX 프로그래밍 · 12주차</span></div></div>
+        <div class="student"><span class="avatar" aria-hidden="true">하</span><div><strong>하율</strong><span>12406050 · UI/UX 프로그래밍 · 13주차</span></div></div>
       </div>
       <div class="hero-art" aria-hidden="true">
         <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
-        <span class="floating-label label-html">① 모달</span>
+        <span class="floating-label label-html">① 재현</span>
         <div class="browser-card">
           <div class="browser-top"><span></span><span></span><span></span><small>script.js</small></div>
-          <div class="browser-body"><span class="mini-tag">WEEK 12 · COMPONENTS</span><p class="art-title">한 번 만들고<br>여러 곳에 쓰는 부품</p><div class="mock-line"></div><div class="mock-line short"></div><div class="mock-cards"><span>구조<br><b>HTML</b></span><span>표현<br><b>CSS</b></span><span>동작<br><b>JS</b></span></div><div class="mock-button">자세히 보기 <span>↗</span></div></div>
+          <div class="browser-body"><span class="mini-tag">WEEK 13 · QA</span><p class="art-title">새로고침해도<br>이어 쓰는 화면</p><div class="mock-line"></div><div class="mock-line short"></div><div class="mock-cards"><span>구조<br><b>HTML</b></span><span>표현<br><b>CSS</b></span><span>동작<br><b>JS</b></span></div><div class="mock-button">이어서 작성하기 <span>↗</span></div></div>
         </div>
-        <span class="floating-label label-css">② 아코디언</span><span class="floating-label label-js">③ 카드</span><span class="art-caption">HTML · CSS · JAVASCRIPT</span>
+        <span class="floating-label label-css">② 복구</span><span class="floating-label label-js">③ 테스트</span><span class="art-caption">HTML · CSS · JAVASCRIPT</span>
       </div>
     </section>
 
-    <div class="topic-strip"><div class="wrap"><span>WEEK 12 / COMPONENTS</span><p>공통 버튼 → 데이터로 카드 → 모달로 자세히 → 아코디언으로 질문</p><span aria-hidden="true">✳</span></div></div>
+    <div class="topic-strip"><div class="wrap"><span>WEEK 13 / QA</span><p>문제 재현 → 상태 복구 → 사용자 테스트 → 수정 후 확인</p><span aria-hidden="true">✳</span></div></div>
 
     <section class="section wrap" id="about" aria-labelledby="about-title">
-      <div class="section-heading"><div><p class="eyebrow">01 — ASSIGNMENT</p><h2 id="about-title">과제 소개</h2></div><p>재사용 UI 컴포넌트를 추가했습니다.</p></div>
+      <div class="section-heading"><div><p class="eyebrow">01 — ASSIGNMENT</p><h2 id="about-title">과제 소개</h2></div><p>작성 중 상태 복구를 추가했습니다.</p></div>
       <div class="about-layout">
-        <div class="about-copy"><h3>UI 컴포넌트와 반복 가능한 구조</h3><p>저장한 학습 기록은 같은 함수로 카드를 만들고, 자세히 보기를 누르면 상세 창이 열립니다.</p><p>자주 묻는 질문은 아코디언으로 펼치고 접으며, 버튼 모양은 공통 클래스로 맞췄습니다.</p><a class="text-link" href="#record">학습 기록 보기 <span aria-hidden="true">↓</span></a></div>
+        <div class="about-copy"><h3>사용자 테스트와 QA</h3><p>학습 계획과 학습 기록을 쓰다가 새로고침해도 입력값, 선택값, 진행 단계가 그대로 돌아옵니다.</p><p>처음부터 다시 시작하거나 학습 기록 저장에 성공하면 임시로 보관한 내용을 지웁니다.</p><a class="text-link" href="#record">학습 기록 보기 <span aria-hidden="true">↓</span></a></div>
         <figure class="service-preview">
           <img src="assets/images/service.png" alt="UI 카드와 UX 카드를 나란히 비교한 실습 화면. UI는 메뉴, 버튼, 입력창 같은 화면 요소이고, UX는 목표 정하기에서 개념 확인, 직접 체험으로 이어지는 과정입니다. 아래에 좋은 경험의 5가지 기준인 명확성, 일관성, 피드백, 효율성, 접근성이 있습니다." width="1118" height="527" loading="lazy">
           <figcaption><span class="dot" aria-hidden="true"></span>실습 화면 · UI와 UX 비교하기</figcaption>
@@ -164,7 +166,7 @@
           </div>
           <div class="accordion-item">
             <h4 class="accordion-heading"><button class="accordion-button" id="faq-storage-button" type="button" aria-expanded="true" aria-controls="faq-storage"><span>학습 기록은 어디에 저장되나요?</span><span class="accordion-icon" aria-hidden="true"></span></button></h4>
-            <div class="accordion-panel" id="faq-storage" role="region" aria-labelledby="faq-storage-button"><p>지금 쓰는 브라우저에만 저장됩니다. 다른 기기나 다른 브라우저에서는 보이지 않고, 사이트 데이터를 지우면 함께 지워집니다.</p></div>
+            <div class="accordion-panel" id="faq-storage" role="region" aria-labelledby="faq-storage-button"><p>저장한 기록은 지금 쓰는 브라우저에만 저장됩니다. 다른 기기나 다른 브라우저에서는 보이지 않고, 사이트 데이터를 지우면 함께 지워집니다. 아직 저장하지 않은 계획과 기록은 이 탭에만 임시로 보관되어 새로고침해도 남고, 처음부터 다시 시작하거나 기록을 저장하면 지워집니다.</p></div>
           </div>
           <div class="accordion-item">
             <h4 class="accordion-heading"><button class="accordion-button" id="faq-record-button" type="button" aria-expanded="true" aria-controls="faq-record"><span>저장한 기록을 다시 보거나 지우려면?</span><span class="accordion-icon" aria-hidden="true"></span></button></h4>
@@ -182,6 +184,11 @@
       <div class="start-copy"><p class="eyebrow">04 — PLAN</p><h2 id="start-title">학습 계획</h2><p>목표를 적고 예제와 시간을 고르면 학습 계획이 완성됩니다. 계획을 마치면 퀴즈로 확인합니다.</p><a class="text-link" href="#concept">개념 예제 보기 <span aria-hidden="true">↑</span></a></div>
       <!-- 7주차: 학습 계획 흐름. data-step 중 현재 단계만 표시 -->
       <div class="plan-flow" id="plan-flow">
+        <!-- 13주차: 작성 중 상태 안내. 새로고침 뒤 불러오면 '처음부터 다시 세우기'를 함께 표시 -->
+        <div class="draft-notice" id="plan-draft-notice">
+          <p class="draft-status" id="plan-draft-status" role="status" aria-live="polite"></p>
+          <button class="button button-secondary" id="plan-draft-discard" type="button" hidden>처음부터 다시 세우기</button>
+        </div>
         <div class="plan-head" id="plan-head" hidden>
           <p id="plan-progress" role="status" aria-live="polite">1 / 3 · 목표 입력</p>
           <ol class="plan-track" aria-hidden="true"><li>목표 입력</li><li>예제·시간 선택</li><li>계획 확인</li></ol>
@@ -200,7 +207,7 @@
           <div class="goal-label-row"><label for="learning-goal">오늘의 학습 목표 <span>(필수)</span></label><span id="goal-count">0 / 80자</span></div>
           <input type="text" id="learning-goal" name="goal" placeholder="예: UI와 UX의 차이 이해하기" minlength="5" maxlength="80" required aria-describedby="goal-count goal-help goal-feedback">
           <button class="interaction-button" id="goal-submit" type="submit" disabled><span class="button-label">학습 목표 정하기</span> <span class="button-icon" aria-hidden="true">↗</span></button>
-          <p id="goal-help">5~80자로 적어 주세요. 새로고침하면 지워집니다.</p>
+          <p id="goal-help">5~80자로 적어 주세요. 이 탭에서는 새로고침해도 남습니다.</p>
           <p id="goal-feedback" role="status" aria-live="polite"></p>
           <button class="interaction-button" id="goal-next" type="button" hidden><span class="button-label">다음 · 예제 고르기</span> <span class="button-icon" aria-hidden="true">→</span></button>
           <noscript><p>학습 계획은 JavaScript가 켜져 있어야 사용할 수 있습니다.</p></noscript>
@@ -391,7 +398,12 @@
 
       <form class="record-form" id="record-form" action="#record" method="get" aria-busy="false" novalidate>
         <h3 class="plan-title">오늘의 학습 기록</h3>
-        <p class="plan-help">(필수) 표시 항목을 모두 채우고 저장하세요.</p>
+        <p class="plan-help">(필수) 표시 항목을 모두 채우고 저장하세요. 작성 중인 내용은 이 탭에서 새로고침해도 남습니다.</p>
+        <!-- 13주차: 작성 중 상태 안내. 새로고침 뒤 불러오면 '처음부터 다시 쓰기'를 함께 표시 -->
+        <div class="draft-notice" id="record-draft-notice">
+          <p class="draft-status" id="record-draft-status" role="status" aria-live="polite"></p>
+          <button class="button button-secondary" id="record-draft-discard" type="button" hidden>처음부터 다시 쓰기</button>
+        </div>
 
         <div class="record-field" id="record-example-field">
           <label for="record-example">실습한 예제 <span>(필수)</span></label>
@@ -465,7 +477,7 @@
   </main>
 
   <!-- 11주차: 같은 곳으로 가는 로고 링크는 빼고 '맨 위로' 하나만 남김 -->
-  <footer class="wrap footer"><span class="logo service-logo" aria-hidden="true">HY<span>↗</span></span><p>UI/UX 프로그래밍 · 12주차 과제<br><span>하율 · 12406050 · 2026</span></p><a class="back-top" href="#top">맨 위로 <span aria-hidden="true">↑</span></a></footer>
+  <footer class="wrap footer"><span class="logo service-logo" aria-hidden="true">HY<span>↗</span></span><p>UI/UX 프로그래밍 · 13주차 과제<br><span>하율 · 12406050 · 2026</span></p><a class="back-top" href="#top">맨 위로 <span aria-hidden="true">↑</span></a></footer>
 
   <!-- 5주차: body 끝에서 JavaScript 연결 -->
   <script src="script.js"></script>
